@@ -1,0 +1,14 @@
+version: 2
+
+updates:
+  # note, we do not update packages/playwright-examples as this is a specific test for
+  # an exact version of playwright
+
+  - package-ecosystem: "npm"
+    directory: "packages/shotbro"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: weekly
+      day: "monday"
+      time: "09:00"
+      timezone: "Pacific/Auckland"
