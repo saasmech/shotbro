@@ -33,27 +33,27 @@ jobs:
             ./**/__snapshots__/compare
 
 
-  test-packages:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # note, node 14 was giving trouble Sep 2022, drop support for now
-        node: [ 16, 18 ]
-    name: Node ${{ matrix.node }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install dependencies
-        working-directory: test-packages/playwright-v1
-        run: npm ci
-
-      - name: Test
-        working-directory: test-packages/playwright-v1
-        run: npm run test
+#  test-packages:
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      matrix:
+#        # note, node 14 was giving trouble Sep 2022, drop support for now
+#        node: [ 16, 18 ]
+#    name: Node ${{ matrix.node }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Setup node
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node }}
+#
+#      - name: Install dependencies
+#        working-directory: test-packages/playwright-v1
+#        run: npm ci
+#
+#      - name: Test
+#        working-directory: test-packages/playwright-v1
+#        run: npm run test
