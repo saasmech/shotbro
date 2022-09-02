@@ -7,5 +7,6 @@
   "workspaces": [
     "packages/shotbro",
     "packages/playwright-examples"
-  ]
+  ],
+  "version": "1.0.0"
 }
