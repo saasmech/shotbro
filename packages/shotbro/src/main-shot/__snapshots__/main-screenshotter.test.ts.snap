@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main screenshotter when default used, box should match whole page html: main-default 1`] = `
-"<html><head>
+"<html lang=\\"en\\"><head>
     <title>Test</title>
     <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
     <!-- bootstrap is used because it resets each browser to a standard baseline -->
