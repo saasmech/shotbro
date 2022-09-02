@@ -44,7 +44,7 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
       path: url.pathname,
       method: 'POST',
     }, (res) => {
-      console.log('post cb', res);
+      //console.log('post cb', res);
       if (res.statusCode < 200 || res.statusCode >= 300) {
         return reject(new Error(`File upload returned status of ${res.statusCode}`));
       }
@@ -88,7 +88,7 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
         'Content-Type': 'application/json'
       }
     }, (res) => {
-      console.log('post cb', res);
+      //console.log('post cb', res);
       // reject on bad status
       if (res.statusCode < 200 || res.statusCode >= 300) {
         // todo: reject with json response

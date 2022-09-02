@@ -34,4 +34,4 @@ jobs:
           retention-days: 2
           name: playwright-tests-compare-to
           path: |
-            packages/**/__img_snapshots__/compare
+            packages/**/__snapshots__/compare
