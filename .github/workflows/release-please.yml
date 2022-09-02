@@ -28,12 +28,14 @@ jobs:
 
       - uses: google-github-actions/release-please-action@v3
         id: release
-        name: Release
+        name: Release ShotBro
         with:
+          path: packages/shotbro
           release-type: node
           package-name: 'shotbro'
 
       - if: ${{ steps.release.outputs.releases_created }}
+        name: Publish ShotBro
         working-directory: packages/shotbro
         run: npm publish
         env:

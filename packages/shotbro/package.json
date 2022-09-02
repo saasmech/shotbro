@@ -22,6 +22,7 @@
   "main": "dist/shotbro.js",
   "types": "dist/shotbro-type.d.ts",
   "files": [
+    "README.md",
     "/dist"
   ],
   "scripts": {
