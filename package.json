@@ -1,0 +1,11 @@
+{
+  "name": "shotbro-monorepo",
+  "scripts": {
+    "build:ci": "npm run build --workspaces --if-present",
+    "test:ci": "npm run test --workspaces --if-present"
+  },
+  "workspaces": [
+    "packages/shotbro",
+    "packages/playwright-examples"
+  ]
+}

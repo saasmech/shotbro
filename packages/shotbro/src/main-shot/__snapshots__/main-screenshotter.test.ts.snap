@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main screenshotter when default used, box should match whole page html: main-default 1`] = `
+"<html><head>
+    <title>Test</title>
+    <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
+    <!-- bootstrap is used because it resets each browser to a standard baseline -->
+    <link href=\\"../../../../node_modules/bootstrap/dist/css/bootstrap.min.css\\" rel=\\"stylesheet\\">
+    <style>
+        body {
+            font-family: Inter, sans-serif;
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+<body class=\\"p-4\\" style=\\"background-color: whitesmoke;display: flex;flex-wrap: wrap;    align-content: flex-start;\\" data-sb-bb=\\"x:0;y:0;w:320;h:888;\\">
+
+<div id=\\"box1\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:34;w:50;h:50;\\"></div>
+<div id=\\"box2\\" style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:34;w:50;h:50;\\"></div>
+<div id=\\"box3\\" style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:34;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:104;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:104;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:104;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:174;w:50;h:50;\\"></div>
+
+<div id=\\"box8\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:174;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:174;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:244;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:244;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:244;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:314;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:314;w:50;h:50;\\"></div>
+
+<div id=\\"box15\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:314;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:384;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:384;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:384;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:454;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:454;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:454;w:50;h:50;\\"></div>
+
+<div id=\\"box22\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:524;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:524;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:524;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:594;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:594;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:594;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:664;w:50;h:50;\\"></div>
+
+<div style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:664;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:664;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:734;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:734;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:734;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:804;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:804;w:50;h:50;\\"></div>
+
+
+
+</body></html>"
+`;

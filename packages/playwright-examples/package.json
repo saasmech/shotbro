@@ -1,0 +1,18 @@
+{
+  "name": "playwright-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npx playwright install-deps chromium",
+    "test": "npx playwright test --reporter=list"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.25.0",
+    "shotbro": "file:../shotbro",
+    "typescript": "^4.7.4"
+  }
+}
