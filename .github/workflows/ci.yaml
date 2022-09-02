@@ -32,6 +32,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           retention-days: 2
-          name: playwright-tests-compare-to
+          name: node-${{ matrix.node }}-playwright-tests-compare-to
           path: |
             packages/**/__snapshots__/compare
