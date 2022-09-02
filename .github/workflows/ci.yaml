@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         node: [ 14, 16, 18 ]
-    name: Node ${{ matrix.node }} sample
+    name: Node ${{ matrix.node }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
