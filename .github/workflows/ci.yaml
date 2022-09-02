@@ -54,18 +54,6 @@ jobs:
         working-directory: test-packages/playwright-v1
         run: npm ci
 
-      - name: Build
-        working-directory: test-packages/playwright-v1
-        run: npm run build
-
       - name: Test
         working-directory: test-packages/playwright-v1
         run: npm run test
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          retention-days: 2
-          name: node-${{ matrix.node }}-playwright-tests-compare-to
-          path: |
-            test-packages/playwright-v1/**/__snapshots__/compare
