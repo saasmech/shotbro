@@ -21,22 +21,20 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build:ci
+        run: npm run build
 
       - name: Test
-        run: npm run test:ci
+        run: npm run test
 
       - uses: google-github-actions/release-please-action@v3
         id: release
         name: Release ShotBro
         with:
-          path: packages/shotbro
           release-type: node
           package-name: 'shotbro'
 
       - if: ${{ steps.release.outputs.releases_created }}
         name: Publish ShotBro
-        working-directory: packages/shotbro
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

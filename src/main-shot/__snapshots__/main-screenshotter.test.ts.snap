@@ -5,7 +5,7 @@ exports[`Main screenshotter when default used, box should match whole page html:
     <title>Test</title>
     <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
     <!-- bootstrap is used because it resets each browser to a standard baseline -->
-    <link href=\\"../../../../node_modules/bootstrap/dist/css/bootstrap.min.css\\" rel=\\"stylesheet\\">
+    <link href=\\"../../node_modules/bootstrap/dist/css/bootstrap.min.css\\" rel=\\"stylesheet\\">
     <style>
         body {
             font-family: Inter, sans-serif;

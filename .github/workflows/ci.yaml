@@ -5,12 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # note, node 14 was giving trouble Sep 2022, drop support for now
-        node: [ 16, 18 ]
-    name: Node ${{ matrix.node }}
+    name: Build
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,21 +13,47 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16.x
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build
-        run: npm run build:ci
+        run: npm run build
 
       - name: Test
-        run: npm run test:ci
+        run: npm run test
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           retention-days: 2
-          name: node-${{ matrix.node }}-playwright-tests-compare-to
+          name: playwright-tests-compare-to
           path: |
-            packages/**/__snapshots__/compare
+            ./**/__snapshots__/compare
+
+
+#  test-packages:
+#    runs-on: ubuntu-latest
+#
+#    strategy:
+#      matrix:
+#        # note, node 14 was giving trouble Sep 2022, drop support for now
+#        node: [ 16, 18 ]
+#    name: Node ${{ matrix.node }}
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Setup node
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: ${{ matrix.node }}
+#
+#      - name: Install dependencies
+#        working-directory: test-packages/playwright-v1
+#        run: npm ci
+#
+#      - name: Test
+#        working-directory: test-packages/playwright-v1
+#        run: npm run test

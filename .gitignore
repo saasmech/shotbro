@@ -50,3 +50,13 @@ dist
 
 # IntelliJ config dir
 .idea
+
+# tests
+/test-results/
+/playwright-report/
+/playwright/.cache/
+**/__img_snapshots__/compare/
+**/__snapshots__/compare/
+
+# shotbro tmp dir
+.shotbro/out/

@@ -1,12 +1,51 @@
 {
-  "name": "shotbro-monorepo",
-  "scripts": {
-    "build:ci": "npm run build --workspaces --if-present",
-    "test:ci": "npm run test --workspaces --if-present"
+  "name": "shotbro",
+  "version": "1.2.0",
+  "description": "Screenshot annotation and hosting for PlayWright",
+  "publishConfig": {
+    "access": "public"
   },
-  "workspaces": [
-    "packages/shotbro",
-    "packages/playwright-examples"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saasmech/shotbro.git"
+  },
+  "keywords": [
+    "screenshot",
+    "playwright"
   ],
-  "version": "1.1.0"
+  "author": "SaasMech Ltd",
+  "bugs": {
+    "url": "https://github.com/saasmech/shotbro/issues"
+  },
+  "homepage": "https://github.com/saasmech/shotbro#readme",
+  "license": "MIT",
+  "main": "dist/shotbro.js",
+  "types": "dist/shotbro-type.d.ts",
+  "files": [
+    "README.md",
+    "/dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "test:update-snapshots": "jest --updateSnapshot",
+    "build": "npx tsc"
+  },
+  "peerDependencies": {
+    "playwright": "^1.x"
+  },
+  "dependencies": {
+    "playwright": "^1.25.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.7",
+    "bootstrap": "^5.2.0",
+    "csstype": "^3.1.0",
+    "jest": "^28.1.3",
+    "nock": "^13.2.9",
+    "pngjs": "^6.0.0",
+    "pixelmatch": "^5.3.0",
+    "ts-jest": "^28.0.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2"
+  }
 }
