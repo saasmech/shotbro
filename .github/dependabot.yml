@@ -1,11 +1,11 @@
 version: 2
 
 updates:
-  # note, we do not update packages/playwright-examples as this is a specific test for
+  # note, we do not update examples/playwright as this is a specific test for
   # an exact version of playwright
 
   - package-ecosystem: "npm"
-    directory: "packages/shotbro"
+    directory: "./"
     open-pull-requests-limit: 5
     schedule:
       interval: weekly
