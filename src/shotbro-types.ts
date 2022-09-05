@@ -44,7 +44,7 @@ export type CommonProps = {
   color?: Property.Color
 }
 
-export type ShotBox = { x: number; width: number; y: number; height: number };
+export type ShotBox = { x: number; w: number; y: number; h: number };
 
 
 export type PositionProps = {
@@ -76,7 +76,13 @@ export type PositionProps = {
 }
 
 export type ShotBroOutputConfig = {
-  file?: string
+  file?: string,
+
+  /**
+   * Base URL for uploads. Should never end with a slash.
+   * Default "https://showbro.io"
+   */
+  baseUrl?: string
 }
 
 export type PaddingProps = {

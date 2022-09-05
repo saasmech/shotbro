@@ -6,7 +6,7 @@ import {postFileToUrl, postToApi} from "./uploader";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import * as nock from 'nock'
+import nock from 'nock'
 
 describe('Uploader', () => {
 
@@ -56,6 +56,11 @@ describe('Uploader', () => {
       }
       expect(ex).toMatchObject({message:'API returned status of 500'});
     });
+
+  test('localhost post', async () => {
+    let res = await postToApi('http://127.0.0.1:5001/api/incoming/CmdGetUploadUrlsV1', '', JSON.stringify({}));
+    expect(res).toMatchObject({message:'hi'});
+  });
 
 
 });

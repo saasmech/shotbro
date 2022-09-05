@@ -68,7 +68,7 @@ export async function shotBro(shotName: string, page: Page, shotBroConfig: ShotB
   return {shotId: shotId}
 }
 
-function cleanupOutDir(outDir) {
+function cleanupOutDir(outDir: string) {
   try {
     if (outDir) fs.rmSync(outDir, {recursive: true});
   } catch (e) {

@@ -12,6 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.25.0",
-    "typescript": "^4.7.4"
+    "dotenv": "^16.0.2",
+    "typescript": "^4.7.4",
+    "shotbro": "file:../../"
   }
 }

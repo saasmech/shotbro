@@ -1,13 +1,13 @@
-import * as pixelmatch from 'pixelmatch';
+import pixelmatch from 'pixelmatch';
 import * as fs from 'fs';
 import {PNG} from 'pngjs';
 import * as path from "path";
 
-export function currentRunImgPath(folder, fileName) {
+export function currentRunImgPath(folder: string, fileName: string) {
   return path.join(folder, '__img_snapshots__', COMPARE_DIR_NAME, fileName);
 }
 
-export async function expectImageToMatchBaseline(outFile) {
+export async function expectImageToMatchBaseline(outFile: string) {
   const fileName = path.basename(outFile);
   const parentDir = path.resolve(path.dirname(outFile), '..');
   const baselineFilePath = path.join(parentDir, fileName);

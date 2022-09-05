@@ -108,9 +108,10 @@ export function factory(currPrng?: PRNG): ULID {
     currPrng = detectPrng()
   }
   return function ulid(seedTime?: number): string {
-    if (isNaN(seedTime)) {
+    if (!seedTime || isNaN(seedTime)) {
       seedTime = Date.now()
     }
+    if (!currPrng) throw new Error('could not detect prng');
     return encodeTime(seedTime, TIME_LEN) + encodeRandom(RANDOM_LEN, currPrng)
   }
 }

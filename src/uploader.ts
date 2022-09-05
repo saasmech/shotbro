@@ -1,23 +1,24 @@
 import {ShotBroInput} from "./shotbro-types";
 
 import * as https from 'https';
+import * as http from 'http';
 import * as fs from "fs";
 
 export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string) {
   try {
     await uploadToApiThrows(input, htmlPath, pngPath)
-  } catch (e){
-    console.warn(`ShotBro!: Error uploading screenshot. ${e.message}`);
+  } catch (e: any) {
+    console.warn(`ShotBro!: Error uploading screenshot. ${e?.message || e}`);
   }
 }
 
 export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, pngPath: string) {
   const authToken = process.env.SHOTBRO_TOKEN;
   if (!authToken) throw new Error('Could not find env var SHOTBRO_TOKEN')
-  const uploadUrlsRes = await postToApi('https://shotbro.io/api/incoming/CmdUploadUrlV1', authToken, JSON.stringify({}))
+  const uploadUrlsRes = await postToApi('https://shotbro.io/api/incoming/CmdGetUploadUrlsV1', authToken, JSON.stringify({}))
   await postFileToUrl(htmlPath, uploadUrlsRes.htmlUrl);
   await postFileToUrl(pngPath, uploadUrlsRes.pngUrl);
-  const incomingCmdRes = await postToApi('https://shotbro.io/api/incoming/IcomingCmdV1', authToken, JSON.stringify({}))
+  const incomingCmdRes = await postToApi('https://shotbro.io/api/incoming/CmdAddShotVariantVersionV1', authToken, JSON.stringify({}))
   // shotVariantVersionRn: string,
   //     shotEmbedHtml: string,
   //     markdownCode: string,
@@ -45,10 +46,10 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
       method: 'POST',
     }, (res) => {
       //console.log('post cb', res);
-      if (res.statusCode < 200 || res.statusCode >= 300) {
+      if (!res.statusCode || res.statusCode < 200 || res.statusCode >= 300) {
         return reject(new Error(`File upload returned status of ${res.statusCode}`));
       }
-      const body = [];
+      const body: Uint8Array[] = [];
       res.on('data', function (chunk) {
         body.push(chunk);
       });
@@ -78,7 +79,11 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
 export async function postToApi(apiUrl: string, authToken: string, jsonStr: string): Promise<any> {
   return new Promise(function (resolve, reject) {
     let url = new URL(apiUrl);
-    const postReq = https.request({
+
+    // let httpClientLib = https;
+    const httpClientLib = http;
+
+    const postReq = httpClientLib.request({
       hostname: url.hostname,
       port: url.port,
       path: url.pathname,
@@ -90,11 +95,11 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
     }, (res) => {
       //console.log('post cb', res);
       // reject on bad status
-      if (res.statusCode < 200 || res.statusCode >= 300) {
+      if (!res.statusCode || res.statusCode < 200 || res.statusCode >= 300) {
         // todo: reject with json response
         return reject(new Error(`API returned status of ${res.statusCode}`));
       }
-      const body = [];
+      const body: Uint8Array[] = [];
       res.on('data', function (chunk) {
         body.push(chunk);
       });
