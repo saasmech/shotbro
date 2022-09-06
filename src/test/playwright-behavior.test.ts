@@ -1,9 +1,9 @@
-import {chromium} from 'playwright';
+import {Browser, chromium, Page} from 'playwright';
 import * as path from "path";
 import {expectImageToMatchBaseline, currentRunImgPath} from "./test-utils";
 
-let browser;
-let page;
+let browser: Browser;
+let page: Page;
 beforeAll(async () => {
   browser = await chromium.launch();
 });
@@ -12,7 +12,6 @@ afterAll(async () => {
 });
 beforeEach(async () => {
   page = await browser.newPage();
-  console.log('set viewport size')
   await page.setViewportSize({width: 320, height: 320});
 });
 afterEach(async () => {
