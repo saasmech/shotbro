@@ -15,7 +15,6 @@ describe('Main screenshotter', () => {
     afterAll(async () => await browser.close());
     beforeEach(async () => {
       page = await browser.newPage();
-      console.log('set viewport size')
       await page.setViewportSize({width: 320, height: 320});
       await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes.html')}`);
     });
@@ -47,7 +46,6 @@ describe('Main screenshotter', () => {
     afterAll(async () => await browser.close());
     beforeEach(async () => {
       page = await browser.newPage();
-      console.log('set viewport size')
       await page.setViewportSize({width: 320, height: 320});
       await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes-extra-long.html')}`);
     });
@@ -56,9 +54,9 @@ describe('Main screenshotter', () => {
     test('when page extra long capture should be limited', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.png');
       const htmlPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.html');
+      await generateMainScreenshot(page, pngPath, htmlPath);
 
       expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
-      await generateMainScreenshot(page, pngPath, htmlPath);
       await expectImageToMatchBaseline(pngPath);
     })
 

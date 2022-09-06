@@ -12,7 +12,6 @@ afterAll(async () => {
 });
 beforeEach(async () => {
   page = await browser.newPage();
-  console.log('set viewport size')
   await page.setViewportSize({width: 320, height: 320});
 });
 afterEach(async () => {

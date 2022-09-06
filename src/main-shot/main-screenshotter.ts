@@ -12,7 +12,8 @@ export async function generateMainScreenshot(page: Page, screenshotPath: string,
     fullPage: true,
     animations: 'disabled',
     clip: {
-      x: bodyBb.x, y: bodyBb.y, width: bodyBb.width,
+      x: bodyBb.x, y: bodyBb.y,
+      width: bodyBb.width, // todo: future, handle very wide also
       height: bodyBb.height > 4000 ? MAIN_CAPTURE_HEIGHT_LIMIT: bodyBb.height
     }
   });
