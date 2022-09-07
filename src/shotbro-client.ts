@@ -22,14 +22,11 @@ function parpareConfig(rawInput: ShotBroInput): ShotBroInput {
     throw e;
   }
 
-  if (!input.shotName) {
-
+  if (!input.shotName || input.shotName.length < 3) {
+    throw new Error('shotName must be at least 3 characters')
   }
   if (input.shotName.length > 120) {
-    // 120 = same as length of code in intellij
-  }
-  if (input.shotName != encodeURIComponent(input.shotName)) {
-    // shotname must be url safe (for now)
+    throw new Error('shotName must be less than 120 characters')
   }
 
   if (!input.metadata) input.metadata = {}
@@ -94,6 +91,8 @@ export async function shotBro(page: Page, shotBroInput: ShotBroInput): Promise<S
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainPngPath, mainHtmlPath);
     await uploadToApi(input, mainPngPath, mainHtmlPath, log);
+
+    // TODO: generate markdown doc of screenshots appended to for each test run
 
   } finally {
     if (cleanupWhenDone) cleanupOutDir(outDir)

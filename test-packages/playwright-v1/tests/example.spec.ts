@@ -30,7 +30,6 @@ playwrightTest('test1', async ({page}) => {
       }],
     out: {
       file: 'out.png',
-      baseUrl: 'http://localhost:5001',
       debug: true,
     }
   })
