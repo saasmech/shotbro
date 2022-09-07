@@ -54,7 +54,7 @@ describe('Uploader', () => {
     expect(ex?.message).toMatch('API returned status of 500');
   });
 
-  test.skip('localhost post', async () => {
+  test.skip('localhost post api', async () => {
     //let res = await postToApi('https://httpbin.org/post', 'sdsds', JSON.stringify({hello: 1234}));
     let res = await postToApi('http://127.0.0.1:5002/api/incoming/CmdGetUploadUrlsV1', 'rk:1:unit-test-org-token', JSON.stringify({}));
     expect(res?.result?.htmlUploadId).toHaveLength(26);
@@ -63,5 +63,10 @@ describe('Uploader', () => {
     expect(res?.result?.pngUploadUrl).toContain('https://');
   });
 
+  test.skip('my post file', async () => {
+    fs.writeFileSync('tmp.tmp', 'hello', 'utf-8');
+    await postFileToUrl('tmp.tmp',
+      'https://shotbro-dev1-upload-v2.s3.us-west-1.amazonaws.com/hello?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAXXCU2TH35CPCSH3Y%2F20220907%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Date=20220907T045141Z&X-Amz-Expires=3600&X-Amz-Signature=eb2ab3e6fa1eda76192011adfa5039e51418f8c57d4e4e95797c1b02ac4f9f0e&X-Amz-SignedHeaders=host&x-id=PutObject');
+  });
 
 });
