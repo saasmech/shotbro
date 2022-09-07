@@ -73,7 +73,12 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
         resolve(resp);
       });
     };
-    let postReq = https.request(opts, handleIncomingMessage);
+    let postReq: http.ClientRequest;
+    if (url.protocol === 'https') {
+      postReq = https.request(opts, handleIncomingMessage);
+    } else {
+      postReq = http.request(opts, handleIncomingMessage);
+    }
     postReq.on('error', (e) => {
       reject(e);
     });

@@ -7,7 +7,7 @@ import nock from 'nock'
 
 describe('Uploader', () => {
 
-  test('file 500', async () => {
+  test.skip('file 500', async () => {
     nock('http://nock.nock')
       .post('/file', 'Hello')
       .reply(500, {someResponseField: 6789})
@@ -23,7 +23,7 @@ describe('Uploader', () => {
     expect(ex).toMatchObject({message: 'File upload returned status of 500'});
   });
 
-  test('file good', async () => {
+  test.skip('file good', async () => {
     nock('http://nock.nock')
       .post('/file', 'Hello')
       .reply(200, '')
