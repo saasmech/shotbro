@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/saasmech/shotbro/compare/v1.4.0...v1.5.0) (2022-09-07)
+
+
+### Features
+
+* dev5 ([#13](https://github.com/saasmech/shotbro/issues/13)) ([517813b](https://github.com/saasmech/shotbro/commit/517813b2b3b745f8c38b875f44b21bd7ecececea))
+
 ## [1.4.0](https://github.com/saasmech/shotbro/compare/v1.3.0...v1.4.0) (2022-09-06)
 
 
