@@ -1,19 +1,21 @@
-import {ShotBroInput} from "./shotbro-types";
+import {ShotBroInput, ShotBroMetadata} from "./shotbro-types";
 
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string, log: CliLog) {
+export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string,
+                                  defaultMetadata: ShotBroMetadata, log: CliLog) {
   try {
-    await uploadToApiThrows(input, htmlPath, pngPath, log)
+    await uploadToApiThrows(input, htmlPath, pngPath, defaultMetadata, log)
   } catch (e: any) {
     log.warn(`Could not upload screenshot. ${e?.message || e}`);
   }
 }
 
-export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, pngPath: string, log: CliLog) {
+export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, pngPath: string,
+                                        defaultMetadata: ShotBroMetadata, log: CliLog) {
   if (!input.out?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
   if (!input.out?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
@@ -31,7 +33,8 @@ export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, p
   log.debug(`Posting Shot metadata to ${addShotUrl}`)
   const incomingCmdRes = await postToApi(addShotUrl, input.out?.appApiKey, JSON.stringify({
     incomingShotRn: uploadUrlsRes.result.incomingShotRn,
-    shotDetails: input
+    shotDetails: input,
+    defaultMetadata,
   }))
 
   log.info('Uploaded shot.')

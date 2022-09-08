@@ -5,7 +5,7 @@ import {ulid} from "./util/ulid";
 import type {Page} from "playwright";
 import {uploadToApi} from "./uploader";
 import {generateMainScreenshot} from "./main-shot/main-screenshotter";
-import {ShotBroInput, ShotBroResult} from './shotbro-types';
+import {ShotBroInput, ShotBroMetadata, ShotBroResult} from './shotbro-types';
 import {CliLog} from "./util/log";
 
 // use date at start so it will be the same for all invocations while node is running
@@ -17,7 +17,7 @@ function parpareConfig(rawInput: ShotBroInput): ShotBroInput {
   let input: ShotBroInput;
   try {
     input = JSON.parse(JSON.stringify(rawInput)) as ShotBroInput;
-  } catch(e) {
+  } catch (e) {
     console.error('Could not parse input', rawInput)
     throw e;
   }
@@ -29,21 +29,6 @@ function parpareConfig(rawInput: ShotBroInput): ShotBroInput {
     throw new Error('shotName must be less than 120 characters')
   }
 
-  if (!input.metadata) input.metadata = {}
-  if (!input.metadata.app) input.metadata.app = {}
-  if (!input.metadata.app.appVersion) input.metadata.app.appVersion = ISO_DATE_AT_START;
-
-  if (!input.metadata.device) input.metadata.device = {}
-  if (!input.metadata.device.osVersion) input.metadata.device.osVersion = os.version();
-  if (!input.metadata.device.osPlatform) input.metadata.device.osVersion = os.platform();
-  if (!input.metadata.device.browserType) input.metadata.device.browserType = ''; // TODO
-  if (!input.metadata.device.browserVersion) input.metadata.device.browserVersion = ''; // TODO
-  if (!input.metadata.device.browserUserAgent) input.metadata.device.browserUserAgent = ''; // TODO
-  if (!input.metadata.device.browserLangPrimary) input.metadata.device.browserLangPrimary = ''; // TODO
-  if (!input.metadata.device.browserLangSecondary) input.metadata.device.browserLangSecondary = ''; // TODO
-  if (!input.metadata.device.browserViewportWidth) input.metadata.device.browserViewportWidth = 123; // TODO
-  if (!input.metadata.device.browserViewportHeight) input.metadata.device.browserViewportHeight = 123; // TODO
-  if (!input.metadata.device.browserPrefersColorScheme) input.metadata.device.browserPrefersColorScheme = ''; // TODO
 
   if (!input.out) input.out = {}
   if (!input.out.appApiKey) input.out.appApiKey = process.env.SHOTBRO_APP_API_KEY;
@@ -52,6 +37,27 @@ function parpareConfig(rawInput: ShotBroInput): ShotBroInput {
 
   return input;
 }
+
+function prepareMetadata(page: Page): ShotBroMetadata {
+  return {
+    app: {
+      appVersion: ISO_DATE_AT_START
+    },
+    device: {
+      osVersion: os.version(),
+      osPlatform: os.platform(),
+      browserType: '', // TODO
+      browserVersion: '', // TODO
+      browserUserAgent: '', // TODO
+      browserLangPrimary: '', // TODO
+      browserLangSecondary: '', // TODO
+      browserViewportWidth: 123, // TODO
+      browserViewportHeight: 123, // TODO
+      browserPrefersColorScheme: '' // TODO
+    }
+  };
+}
+
 
 function prepareOutDir(outDir: string, cleanOutDir: boolean) {
   if (!outDir) {
@@ -74,9 +80,10 @@ function prepareOutDir(outDir: string, cleanOutDir: boolean) {
  * @param shotBroInput
  */
 export async function shotBro(page: Page, shotBroInput: ShotBroInput): Promise<ShotBroResult> {
-  const log = new CliLog(shotBroInput.out?.debug ? 'debug':'info');
+  const log = new CliLog(shotBroInput.out?.debug ? 'debug' : 'info');
   const shotId = ulid();
   const input = parpareConfig(shotBroInput);
+  const defaultMetadata = prepareMetadata(page);
 
   let outDir = '.shotbro/out';
   let cleanOutDir = true;
@@ -90,7 +97,7 @@ export async function shotBro(page: Page, shotBroInput: ShotBroInput): Promise<S
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainPngPath, mainHtmlPath);
-    await uploadToApi(input, mainPngPath, mainHtmlPath, log);
+    await uploadToApi(input, mainPngPath, mainHtmlPath, defaultMetadata, log);
 
     // TODO: generate markdown doc of screenshots appended to for each test run
 
