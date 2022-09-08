@@ -17,7 +17,7 @@ export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, p
   if (!input.out?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
   if (!input.out?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
-  const getUploadUrl = `${input.out.baseUrl}/api/incoming/CmdGetUploadUrlsV1`;
+  const getUploadUrl = `${input.out.baseUrl}/api/incoming/get-upload-urls-v1`;
   log.debug(`Getting upload urls from ${getUploadUrl}`)
   const uploadUrlsRes = await postToApi(getUploadUrl, input.out?.appApiKey, JSON.stringify({}))
 
@@ -27,7 +27,7 @@ export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, p
   log.debug(`Uploading PNG to ${uploadUrlsRes.result.pngUploadUrl}`)
   await postFileToUrl(pngPath, uploadUrlsRes.result.pngUploadUrl);
 
-  const addShotUrl = `${input.out.baseUrl}/api/incoming/CmdAddShotVariantVersionV1`;
+  const addShotUrl = `${input.out.baseUrl}/api/incoming/add-shot-version-v1`;
   log.debug(`Posting Shot metadata to ${addShotUrl}`)
   const incomingCmdRes = await postToApi(addShotUrl, input.out?.appApiKey, JSON.stringify({
     incomingShotRn: uploadUrlsRes.result.incomingShotRn,

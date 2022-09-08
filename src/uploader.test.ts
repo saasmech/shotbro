@@ -56,7 +56,7 @@ describe('Uploader', () => {
 
   test.skip('localhost post api', async () => {
     //let res = await postToApi('https://httpbin.org/post', 'sdsds', JSON.stringify({hello: 1234}));
-    let res = await postToApi('http://127.0.0.1:5002/api/incoming/CmdGetUploadUrlsV1', 'rk:1:unit-test-org-token', JSON.stringify({}));
+    let res = await postToApi('http://127.0.0.1:5002/api/incoming/get-upload-urls-v1', 'rk:1:unit-test-org-token', JSON.stringify({}));
     expect(res?.result?.htmlUploadId).toHaveLength(26);
     expect(res?.result?.htmlUploadUrl).toContain('https://');
     expect(res?.result?.pngUploadId).toHaveLength(26);

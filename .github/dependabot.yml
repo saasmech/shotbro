@@ -12,3 +12,12 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Pacific/Auckland"
+
+  - package-ecosystem: "npm"
+    directory: "test-packages/playwright-v1"
+    open-pull-requests-limit: 5
+    schedule:
+      interval: weekly
+      day: "monday"
+      time: "09:00"
+      timezone: "Pacific/Auckland"
