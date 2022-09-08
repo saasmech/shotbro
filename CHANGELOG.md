@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.0](https://github.com/saasmech/shotbro/compare/v1.3.0...v1.4.0) (2022-09-06)
+
+
+### Features
+
+* improve docs ([febb4aa](https://github.com/saasmech/shotbro/commit/febb4aa8d389a53c268beae244f6323708809b3b))
+* progress ([5dc222a](https://github.com/saasmech/shotbro/commit/5dc222a32bc7bd31678c5ae09c38a528b4ed98d5))
+* progress ([54687a8](https://github.com/saasmech/shotbro/commit/54687a869bc2738fc91c118523f7efffe114df42))
+* progress ([0eef4f5](https://github.com/saasmech/shotbro/commit/0eef4f5afb8d8747b6e6714b98131b25043181c9))
+* progress ([8b259fc](https://github.com/saasmech/shotbro/commit/8b259fc2a8132085fcc7d893c7752e12b7194d99))
+
 ## [1.3.0](https://github.com/saasmech/shotbro/compare/v1.2.0...v1.3.0) (2022-09-02)
 
 
