@@ -5,7 +5,7 @@ import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string,
+export async function uploadToApi(input: ShotBroInput, pngPath: string, htmlPath: string,
                                   defaultMetadata: ShotBroMetadata, log: CliLog) {
   try {
     await uploadToApiThrows(input, htmlPath, pngPath, defaultMetadata, log)

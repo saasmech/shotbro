@@ -4,8 +4,7 @@ exports[`Main screenshotter Box when default used, box should match whole page h
 "<html lang=\\"en\\"><head>
     <title>Test</title>
     <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
-    <!-- bootstrap is used because it resets each browser to a standard baseline -->
-    <link href=\\"../../node_modules/bootstrap/dist/css/bootstrap.min.css\\" rel=\\"stylesheet\\">
+    <link href=\\"../../node_modules/modern-normalize/modern-normalize.css\\" rel=\\"stylesheet\\">
     <style>
         body {
             font-family: Inter, sans-serif;
@@ -13,47 +12,47 @@ exports[`Main screenshotter Box when default used, box should match whole page h
         }
     </style>
 </head>
-<body class=\\"p-4\\" style=\\"background-color: whitesmoke;display: flex;flex-wrap: wrap;    align-content: flex-start;\\" data-sb-bb=\\"x:0;y:0;w:320;h:888;\\">
+<body class=\\"p-4\\" style=\\"background-color: whitesmoke;display: flex;flex-wrap: wrap;align-content: flex-start;\\" data-sb-bb=\\"x:0;y:0;w:320;h:630;\\">
 
-<div id=\\"box1\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:34;w:50;h:50;\\"></div>
-<div id=\\"box2\\" style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:34;w:50;h:50;\\"></div>
-<div id=\\"box3\\" style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:34;w:50;h:50;\\"></div>
-<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:104;w:50;h:50;\\"></div>
-<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:104;w:50;h:50;\\"></div>
-<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:104;w:50;h:50;\\"></div>
-<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:174;w:50;h:50;\\"></div>
+<div id=\\"box1\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:10;w:50;h:50;\\"></div>
+<div id=\\"box2\\" style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:10;w:50;h:50;\\"></div>
+<div id=\\"box3\\" style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:10;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:10;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:80;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:80;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:80;w:50;h:50;\\"></div>
 
-<div id=\\"box8\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:174;w:50;h:50;\\"></div>
-<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:174;w:50;h:50;\\"></div>
-<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:244;w:50;h:50;\\"></div>
-<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:244;w:50;h:50;\\"></div>
-<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:244;w:50;h:50;\\"></div>
-<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:314;w:50;h:50;\\"></div>
-<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:314;w:50;h:50;\\"></div>
+<div id=\\"box8\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:80;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:150;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:150;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:150;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:150;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:220;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:220;w:50;h:50;\\"></div>
 
-<div id=\\"box15\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:314;w:50;h:50;\\"></div>
-<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:384;w:50;h:50;\\"></div>
-<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:384;w:50;h:50;\\"></div>
-<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:384;w:50;h:50;\\"></div>
-<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:454;w:50;h:50;\\"></div>
-<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:454;w:50;h:50;\\"></div>
-<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:454;w:50;h:50;\\"></div>
+<div id=\\"box15\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:220;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:220;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:290;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:290;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:290;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:290;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:360;w:50;h:50;\\"></div>
 
-<div id=\\"box22\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:524;w:50;h:50;\\"></div>
-<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:524;w:50;h:50;\\"></div>
-<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:524;w:50;h:50;\\"></div>
-<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:594;w:50;h:50;\\"></div>
-<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:594;w:50;h:50;\\"></div>
-<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:594;w:50;h:50;\\"></div>
-<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:664;w:50;h:50;\\"></div>
+<div id=\\"box22\\" style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:360;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:360;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:360;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:430;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:430;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:430;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:430;w:50;h:50;\\"></div>
 
-<div style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:664;w:50;h:50;\\"></div>
-<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:664;w:50;h:50;\\"></div>
-<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:734;w:50;h:50;\\"></div>
-<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:734;w:50;h:50;\\"></div>
-<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:174;y:734;w:50;h:50;\\"></div>
-<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:34;y:804;w:50;h:50;\\"></div>
-<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:104;y:804;w:50;h:50;\\"></div>
+<div style=\\"background-color: red;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:500;w:50;h:50;\\"></div>
+<div style=\\"background-color: orange;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:500;w:50;h:50;\\"></div>
+<div style=\\"background-color: yellow;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:500;w:50;h:50;\\"></div>
+<div style=\\"background-color: green;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:220;y:500;w:50;h:50;\\"></div>
+<div style=\\"background-color: blue;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:10;y:570;w:50;h:50;\\"></div>
+<div style=\\"background-color: indigo;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:80;y:570;w:50;h:50;\\"></div>
+<div style=\\"background-color: violet;width: 50px;height: 50px;margin: 10px;\\" data-sb-bb=\\"x:150;y:570;w:50;h:50;\\"></div>
 
 
 

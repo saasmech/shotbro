@@ -130,7 +130,7 @@ export type ShotBroResult = {
 }
 export type ShotBroInput = {
   /**
-   * Make sure this is unique within your app
+   * Make sure this is unique within your app (3-120 characters long).
    */
   shotName: string
 

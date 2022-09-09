@@ -4,7 +4,7 @@ import {PNG} from 'pngjs';
 import * as path from "path";
 
 export function currentRunImgPath(folder: string, fileName: string) {
-  return path.join(folder, '__img_snapshots__', COMPARE_DIR_NAME, fileName);
+  return path.join(folder, '__snapshots__', COMPARE_DIR_NAME, fileName);
 }
 
 export async function expectImageToMatchBaseline(outFile: string) {

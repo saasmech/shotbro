@@ -12,7 +12,7 @@ playwrightTest('test1', async ({page}) => {
   await page.goto(`file:${examplePath}`);
 
   await shotBro(page, {
-    shotName: 'myform',
+    shotName: 'My Form',
     shapes: [
       {
         at: '#myform',
