@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/saasmech/shotbro/compare/v1.6.0...v1.7.0) (2022-09-11)
+
+
+### Features
+
+* add scale and translate to focus box ([#18](https://github.com/saasmech/shotbro/issues/18)) ([6e5ba9b](https://github.com/saasmech/shotbro/commit/6e5ba9bf3e5fee353fb629fe8209ee69302d1527))
+
 ## [1.6.0](https://github.com/saasmech/shotbro/compare/v1.5.0...v1.6.0) (2022-09-11)
 
 
