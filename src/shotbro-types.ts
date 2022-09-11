@@ -50,30 +50,21 @@ export type ShotBroFocusProps = {
   atText?: string
 
   /**
-   * Add extra space (in pixels) all around the edge of the focus area (effectively makes the screenshot have padding)
-   * Default: 10
+   * Number from 0-1, 0.5 will scale by half/50%.  Scales both X and Y.
+   * Example: 0.5
+   * Default: 1.1
    */
-  margin?: number
+  scale?: number
+  scaleX?: number
+  scaleY?: number
 
   /**
-   * Optional override for margin, (no default)
+   * Move the focus box (in pixels) on both axis (x and y).  Can be negative.
+   * Default: 0
    */
-  marginTop?: number
-
-  /**
-   * Optional override for margin, (no default)
-   */
-  marginRight?: number
-
-  /**
-   * Optional override for margin, (no default)
-   */
-  marginBottom?: number
-
-  /**
-   * Optional override for margin, (no default)
-   */
-  marginLeft?: number
+  translate?: number
+  translateX?: number
+  translateY?: number
 }
 
 
