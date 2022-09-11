@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pretest": "npx playwright install-deps chromium",
+    "postinstall": "npx playwright install-deps chromium",
     "test": "npx playwright test --reporter=list"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.25.0",
+    "@playwright/test": "^1.25.2",
     "dotenv": "^16.0.2",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.3",
     "shotbro": "file:../../"
   }
 }

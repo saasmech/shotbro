@@ -1,51 +1,46 @@
-import {ShotBroInput} from "./shotbro-types";
+import {ShotBroInput, ShotBroMetadata} from "./shotbro-types";
 
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string, log: CliLog) {
-  try {
-    await uploadToApiThrows(input, htmlPath, pngPath, log)
-  } catch (e: any) {
-    log.warn(`Could not upload screenshot. ${e?.message || e}`);
-  }
-}
-
-export async function uploadToApiThrows(input: ShotBroInput, htmlPath: string, pngPath: string, log: CliLog) {
+export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string,
+                                        systemInfo: ShotBroMetadata, log: CliLog): Promise<string> {
   if (!input.out?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
   if (!input.out?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
-  const getUploadUrl = `${input.out.baseUrl}/api/incoming/CmdGetUploadUrlsV1`;
-  log.debug(`Getting upload urls from ${getUploadUrl}`)
-  const uploadUrlsRes = await postToApi(getUploadUrl, input.out?.appApiKey, JSON.stringify({}))
+  const createIncomingShotUrl = `${input.out.baseUrl}/api/incoming/create-incoming-shot-v1`;
+  log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
+  const createIncomingShotRes = await postToApi(createIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
+    shotDetails: input, systemInfo
+  }))
 
-  log.debug(`Uploading HTML to ${uploadUrlsRes.result.htmlUploadUrl}`)
-  await postFileToUrl(htmlPath, uploadUrlsRes.result.htmlUploadUrl);
+  log.debug(`Uploading HTML to ${createIncomingShotRes.result.htmlUploadUrl}`)
+  await postFileToUrl(htmlPath, createIncomingShotRes.result.htmlUploadUrl);
 
-  log.debug(`Uploading PNG to ${uploadUrlsRes.result.pngUploadUrl}`)
-  await postFileToUrl(pngPath, uploadUrlsRes.result.pngUploadUrl);
+  log.debug(`Uploading PNG to ${createIncomingShotRes.result.pngUploadUrl}`)
+  await postFileToUrl(pngPath, createIncomingShotRes.result.pngUploadUrl);
 
-  const addShotUrl = `${input.out.baseUrl}/api/incoming/CmdAddShotVariantVersionV1`;
-  log.debug(`Posting Shot metadata to ${addShotUrl}`)
-  const incomingCmdRes = await postToApi(addShotUrl, input.out?.appApiKey, JSON.stringify({
-    incomingShotRn: uploadUrlsRes.result.incomingShotRn,
-    shotDetails: input
+  const startIncomingShotUrl = `${input.out.baseUrl}/api/incoming/start-incoming-shot-v1`;
+  log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
+  const startIncomingShotRes = await postToApi(startIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
+    incomingShotRn: createIncomingShotRes.result.incomingShotRn,
   }))
 
   log.info('Uploaded shot.')
   log.info('')
-  if (incomingCmdRes?.result?.shotEmbedHtml) {
+  if (startIncomingShotRes?.result?.embedHtml) {
     log.info('Embed in HTML with:')
-    log.info(incomingCmdRes.result.shotEmbedHtml)
+    log.info(startIncomingShotRes.result.embedHtml)
     log.info('')
   }
-  if (incomingCmdRes?.result?.markdownCode) {
+  if (startIncomingShotRes?.result?.embedMarkdown) {
     log.info('Embed in Markdown with:')
-    log.info(`${incomingCmdRes.result.markdownCode}`)
+    log.info(`${startIncomingShotRes.result.embedMarkdown}`)
     log.info('')
   }
+  return startIncomingShotRes.result.shotUrl
 }
 
 export async function postFileToUrl(filePath: string, uploadUrl: string): Promise<string> {
@@ -54,10 +49,11 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
     const opts: https.RequestOptions = {
       hostname: url.hostname,
       port: url.port,
-      path: url.pathname + (url.search||''),
+      path: url.pathname + (url.search || ''),
       method: 'PUT',
       headers: {
         'Content-length': fs.statSync(filePath).size,
+        'User-Agent': `ShotBro-Client/1.0.0 NodeJS/${process.version}`,
       },
     }
     const handleIncomingMessage = (res: http.IncomingMessage) => {
@@ -74,7 +70,7 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
       });
     };
     let postReq: http.ClientRequest;
-    if (url.protocol === 'https') {
+    if (url.protocol === 'https:') {
       postReq = https.request(opts, handleIncomingMessage);
     } else {
       postReq = http.request(opts, handleIncomingMessage);
@@ -101,13 +97,13 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
     const opts = {
       hostname: url.hostname,
       port: url.port,
-      path: url.pathname,
+      path: url.pathname + (url.search || ''),
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authToken}`,
         'Content-Type': 'application/json',
         'Content-Length': jsonStr.length,
-        'ShotBro-Api-Client-Version': '1.0.0'
+        'User-Agent': `ShotBro-Client/1.0.0 NodeJS/${process.version}`,
       }
     }
     const handleIncomingMessage = (res: http.IncomingMessage) => {
@@ -136,7 +132,7 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
       });
     };
     let postReq: http.ClientRequest;
-    if (url.protocol === 'https') {
+    if (url.protocol === 'https:') {
       postReq = https.request(opts, handleIncomingMessage);
     } else {
       postReq = http.request(opts, handleIncomingMessage);

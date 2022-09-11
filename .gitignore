@@ -55,7 +55,6 @@ dist
 /test-results/
 /playwright-report/
 /playwright/.cache/
-**/__img_snapshots__/compare/
 **/__snapshots__/compare/
 
 # shotbro tmp dir

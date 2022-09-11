@@ -2,24 +2,24 @@ import {Browser, chromium, Page} from 'playwright';
 import * as path from "path";
 import {expectImageToMatchBaseline, currentRunImgPath} from "./test-utils";
 
-let browser: Browser;
-let page: Page;
-beforeAll(async () => {
-  browser = await chromium.launch();
-});
-afterAll(async () => {
-  await browser.close();
-});
-beforeEach(async () => {
-  page = await browser.newPage();
-  await page.setViewportSize({width: 320, height: 320});
-});
-afterEach(async () => {
-  await page.close();
-});
-
-
 describe('Playwright Behavior', () => {
+
+  let browser: Browser;
+  let page: Page;
+  beforeAll(async () => {
+    browser = await chromium.launch();
+  });
+  afterAll(async () => {
+    await browser.close();
+  });
+  beforeEach(async () => {
+    page = await browser.newPage();
+    await page.setViewportSize({width: 320, height: 320});
+  });
+  afterEach(async () => {
+    await page.close();
+  });
+
   describe('Boxes', () => {
 
     beforeEach(async () => {
@@ -40,7 +40,7 @@ describe('Playwright Behavior', () => {
       const box = await page.locator('body').boundingBox();
       // height should be bigger than the viewport specified
       expect(page.viewportSize()).toMatchObject({width: 320, height: 320});
-      expect(box).toMatchObject({x: 0, y: 0, width: 320, height: 888});
+      expect(box).toMatchObject({x: 0, y: 0, width: 320, height: 630});
     })
 
   });
