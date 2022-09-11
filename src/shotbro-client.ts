@@ -1,11 +1,10 @@
 import * as fs from "fs";
 import * as os from 'os';
 import * as path from 'path';
-import {ulid} from "./util/ulid";
 import type {Page} from "playwright";
 import {uploadToApi} from "./uploader";
 import {generateMainScreenshot} from "./main-shot/main-screenshotter";
-import {ShotBroInput, ShotBroMetadata, ShotBroResult} from './shotbro-types';
+import {ShotBroInput, ShotBroOutput, ShotBroSystemInfo} from './shotbro-types';
 import {CliLog} from "./util/log";
 
 // use date at start so it will be the same for all invocations while node is running
@@ -34,24 +33,46 @@ function prepareConfig(rawInput: ShotBroInput): ShotBroInput {
   return input;
 }
 
-function prepareMetadata(page: Page): ShotBroMetadata {
-  return {
-    app: {
-      appVersion: ISO_DATE_AT_START
-    },
-    device: {
-      osVersion: os.version(),
-      osPlatform: os.platform(),
-      browserType: '', // TODO
-      browserVersion: '', // TODO
-      browserUserAgent: '', // TODO
-      browserLangPrimary: '', // TODO
-      browserLangSecondary: '', // TODO
-      browserViewportWidth: 123, // TODO
-      browserViewportHeight: 123, // TODO
-      browserPrefersColorScheme: '' // TODO
-    }
+export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
+  const browserInfo = await page.evaluate(async () => {
+    let scheme = undefined
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) scheme = 'light'
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) scheme = 'dark'
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API
+    // @ts-ignore
+    let userAgentData = navigator?.userAgentData;
+    let browserVersion = userAgentData?.brands[0]?.version;
+    let browserBrand = userAgentData?.brands[0]?.brand;
+    let browserPlatform = userAgentData?.platform;
+    return {
+      infoPlatform: browserPlatform,
+      infoBrand: browserBrand,
+      infoVersion: browserVersion,
+      infoLanguage: navigator.language,
+      infoUserAgent: navigator.userAgent,
+      infoViewportWidth: window.innerWidth,
+      infoViewportHeight: window.innerHeight,
+      infoColorScheme: scheme
+    };
+  });
+  log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
+  const systemInfo:ShotBroSystemInfo =  {
+    appVersion: ISO_DATE_AT_START,
+    // if running on github actions use something sensible.  If undefined the server can decide.
+    appBranch: process.env.GITHUB_HEAD_REF,
+    osPlatform: browserInfo.infoPlatform || os.platform(),
+    osVersion: os.release(),
+    browserType: browserInfo.infoBrand || page.context().browser()?.browserType()?.name(),
+    browserVersion: browserInfo.infoVersion || page.context().browser()?.version(),
+    browserUserAgent: browserInfo.infoUserAgent,
+    browserLanguage: browserInfo.infoLanguage,
+    browserViewportWidth: browserInfo.infoViewportWidth,
+    browserViewportHeight: browserInfo.infoViewportHeight,
+    browserPrefersColorScheme: browserInfo.infoColorScheme
   };
+  log.debug(`systemInfo ${JSON.stringify(systemInfo)}`)
+  return systemInfo;
 }
 
 
@@ -70,18 +91,21 @@ function prepareOutDir(outDir: string, cleanOutDir: boolean) {
   return path.resolve(outDir);
 }
 
+// noinspection JSUnusedGlobalSymbols
 /**
  *
  * @param page Playwright page that you want to screenshot
  * @param shotBroInput
  */
-export async function shotBro(page: Page, shotBroInput: ShotBroInput): Promise<ShotBroResult> {
-  const log = new CliLog(shotBroInput.out?.debug ? 'debug' : 'info');
-  const shotId = ulid();
+export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput): Promise<ShotBroOutput> {
+  const log = new CliLog(shotBroInput.out?.logLevel || 'info');
   const input = prepareConfig(shotBroInput);
-  const defaultMetadata = prepareMetadata(page);
+  const systemInfo = await prepareSystemInfo(page, log);
 
-  let outDir = '.shotbro/out';
+  let outDir = shotBroInput.out?.workingDirectory || '.shotbro/out';
+  let result: ShotBroOutput = {
+    shotAdded: false,
+  };
   let cleanOutDir = true;
   let cleanupWhenDone = false;
   try {
@@ -93,15 +117,18 @@ export async function shotBro(page: Page, shotBroInput: ShotBroInput): Promise<S
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainPngPath, mainHtmlPath);
-    await uploadToApi(input, mainPngPath, mainHtmlPath, defaultMetadata, log);
+    result.shotUrl = await uploadToApi(input, mainPngPath, mainHtmlPath, systemInfo, log);
+    result.shotAdded = true;
 
     // TODO: generate markdown doc of screenshots appended to for each test run
+  } catch(e) {
+    result.error = String(e)
+    log.warn(`Could not capture ${shotBroInput.shotName}: ${e}`)
 
   } finally {
     if (cleanupWhenDone) cleanupOutDir(outDir)
   }
-
-  return {shotId: shotId}
+  return result
 }
 
 function cleanupOutDir(outDir: string) {

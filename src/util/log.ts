@@ -1,5 +1,5 @@
+import {ShotBroLogLevel} from "../shotbro-types";
 
-type CliLogLevel = 'debug'|'info'|'warn'|'error';
 
 /**
  * Ideally we would rely on another library for this, but we want to have as few dependencies as possible.
@@ -7,7 +7,7 @@ type CliLogLevel = 'debug'|'info'|'warn'|'error';
 export class CliLog {
   logLevel: string
 
-  constructor(logLevel: CliLogLevel) {
+  constructor(logLevel: ShotBroLogLevel) {
     this.logLevel = logLevel;
   }
 
@@ -22,5 +22,7 @@ export class CliLog {
   warn(msg: string) {
     if (['warn', 'info', 'debug'].includes(this.logLevel)) console.warn(msg);
   }
+
+  // not sure if we need error.  We don't want to fail ever as it could block a users test pipeline.
 
 }

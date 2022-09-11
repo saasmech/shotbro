@@ -1,5 +1,5 @@
 
-# ShotBro!
+# Shot Bro!
 
 ############ UNDER CONSTRUCTION ###############
 
@@ -15,7 +15,7 @@
 
 Sick of out of date screenshots in support sites and websites.  
 
-Generate them automatically using PlayWright and ShotBro!
+Generate them automatically using PlayWright and Shot Bro!
 
 ## Getting Started
 
