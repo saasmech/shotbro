@@ -116,8 +116,8 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
     let mainHtmlPath = path.join(outDir, 'main.html');
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
-    await generateMainScreenshot(page, mainPngPath, mainHtmlPath);
-    result.shotUrl = await uploadToApi(input, mainPngPath, mainHtmlPath, systemInfo, log);
+    await generateMainScreenshot(page, mainHtmlPath, mainPngPath);
+    result.shotUrl = await uploadToApi(input, mainHtmlPath, mainPngPath, systemInfo, log);
     result.shotAdded = true;
 
     // TODO: generate markdown doc of screenshots appended to for each test run

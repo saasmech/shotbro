@@ -3,7 +3,7 @@ import * as fs from "fs";
 
 const MAIN_CAPTURE_HEIGHT_LIMIT = 4000;
 
-export async function generateMainScreenshot(page: Page, screenshotPath: string, htmlContentPath: string) {
+export async function generateMainScreenshot(page: Page, htmlContentPath: string, screenshotPath: string) {
   const body  = await page.locator('body');
   const bodyBb = await body.boundingBox()
   if (!bodyBb) throw new Error('Could not get size of HTML body');
