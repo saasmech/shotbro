@@ -23,7 +23,7 @@ describe('Main screenshotter', () => {
     test('when default used, box should match whole page html', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
       const htmlPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.html');
-      await generateMainScreenshot(page, pngPath, htmlPath);
+      await generateMainScreenshot(page, htmlPath, pngPath);
       const outHtml = fs.readFileSync(htmlPath, 'utf-8');
       expect(outHtml).toMatchSnapshot('main-default');
     })
@@ -31,7 +31,7 @@ describe('Main screenshotter', () => {
     test('when default used, box should match whole page png', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
       const htmlPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.html');
-      await generateMainScreenshot(page, pngPath, htmlPath);
+      await generateMainScreenshot(page, htmlPath, pngPath);
       await expectImageToMatchBaseline(pngPath);
     })
 
@@ -54,7 +54,7 @@ describe('Main screenshotter', () => {
     test('when page extra long capture should be limited', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.png');
       const htmlPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.html');
-      await generateMainScreenshot(page, pngPath, htmlPath);
+      await generateMainScreenshot(page, htmlPath, pngPath);
 
       expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
       await expectImageToMatchBaseline(pngPath);
