@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/saasmech/shotbro/compare/v1.7.0...v1.7.1) (2022-09-12)
+
+
+### Bug Fixes
+
+* order of props ([#21](https://github.com/saasmech/shotbro/issues/21)) ([fd469d4](https://github.com/saasmech/shotbro/commit/fd469d494dfd73863f18839214fb18c4eaf98a3e))
+
 ## [1.7.0](https://github.com/saasmech/shotbro/compare/v1.6.0...v1.7.0) (2022-09-11)
 
 
