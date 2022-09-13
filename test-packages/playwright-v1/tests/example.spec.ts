@@ -13,19 +13,19 @@ playwrightTest('test1', async ({page}) => {
   await shotBroPlaywright(page, {
     shotName: 'My Form',
     focus: {
-      at: '#myform', margin: 30,
+      at: '#myform',
     },
     shapes: [
-      {circle: {at: '.btn-primary'}},
-      {circle: {atText: 'Available in', id: 'abc', padding: '70px'}},
-      {circle: {at: '#myform', id: 'abc', padding: '70px'}},
-      {circle: {atTestId: 'ssss', id: 'abc', padding: '70px'}},
-      {arrow: {atTestId: 'abc'}},
-      {circle: {translate: -10, id: 'abc', padding: '70px'}},
-      {arrow: {atTestId: '', translate: -10, id: 'abc'}},
+      {circle: {at: '#phone-field'}},
+      // {circle: {atText: 'Available in', id: 'abc', padding: '70px'}},
+      // {circle: {at: '#myform', id: 'abc', padding: '70px'}},
+      // {circle: {atTestId: 'ssss', id: 'abc', padding: '70px'}},
+      // {arrow: {atTestId: 'abc'}},
+      // {circle: {translate: -10, id: 'abc', padding: '70px'}},
+      // {arrow: {atTestId: '', translate: -10, id: 'abc'}},
     ],
     out: {
-      file: 'out.png',
+      //file: 'out.png',
       logLevel: 'debug',
     }
   })

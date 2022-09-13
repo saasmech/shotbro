@@ -13,34 +13,35 @@ export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath
   const createIncomingShotUrl = `${input.out.baseUrl}/api/incoming/create-incoming-shot-v1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
   const createIncomingShotRes = await postToApi(createIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
+    clientUserAgent: 'shotbro-client-uploader-v1.0.0',
     shotDetails: input, systemInfo
   }))
 
-  log.debug(`Uploading HTML to ${createIncomingShotRes.result.htmlUploadUrl}`)
-  await postFileToUrl(htmlPath, createIncomingShotRes.result.htmlUploadUrl);
+  log.debug(`Uploading HTML to ${createIncomingShotRes.output.htmlUploadUrl}`)
+  await postFileToUrl(htmlPath, createIncomingShotRes.output.htmlUploadUrl);
 
-  log.debug(`Uploading PNG to ${createIncomingShotRes.result.pngUploadUrl}`)
-  await postFileToUrl(pngPath, createIncomingShotRes.result.pngUploadUrl);
+  log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
+  await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl);
 
   const startIncomingShotUrl = `${input.out.baseUrl}/api/incoming/start-incoming-shot-v1`;
   log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
   const startIncomingShotRes = await postToApi(startIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
-    incomingShotRn: createIncomingShotRes.result.incomingShotRn,
+    incomingShotRn: createIncomingShotRes.output.incomingShotRn,
   }))
 
   log.info('Uploaded shot.')
   log.info('')
-  if (startIncomingShotRes?.result?.embedHtml) {
+  if (startIncomingShotRes?.output?.embedHtml) {
     log.info('Embed in HTML with:')
-    log.info(startIncomingShotRes.result.embedHtml)
+    log.info(startIncomingShotRes.output.embedHtml)
     log.info('')
   }
-  if (startIncomingShotRes?.result?.embedMarkdown) {
+  if (startIncomingShotRes?.output?.embedMarkdown) {
     log.info('Embed in Markdown with:')
-    log.info(`${startIncomingShotRes.result.embedMarkdown}`)
+    log.info(`${startIncomingShotRes.output.embedMarkdown}`)
     log.info('')
   }
-  return startIncomingShotRes.result.shotUrl
+  return startIncomingShotRes.output.shotUrl
 }
 
 export async function postFileToUrl(filePath: string, uploadUrl: string): Promise<string> {
