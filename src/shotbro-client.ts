@@ -103,7 +103,7 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
   const systemInfo = await prepareSystemInfo(page, log);
 
   let outDir = shotBroInput.out?.workingDirectory || '.shotbro/out';
-  let result: ShotBroOutput = {
+  let output: ShotBroOutput = {
     shotAdded: false,
   };
   let cleanOutDir = true;
@@ -117,18 +117,18 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainHtmlPath, mainPngPath);
-    result.shotUrl = await uploadToApi(input, mainHtmlPath, mainPngPath, systemInfo, log);
-    result.shotAdded = true;
+    output.shotUrl = await uploadToApi(input, mainHtmlPath, mainPngPath, systemInfo, log);
+    output.shotAdded = true;
 
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch(e) {
-    result.error = String(e)
+    output.error = String(e)
     log.warn(`Could not capture ${shotBroInput.shotName}: ${e}`)
 
   } finally {
     if (cleanupWhenDone) cleanupOutDir(outDir)
   }
-  return result
+  return output
 }
 
 function cleanupOutDir(outDir: string) {

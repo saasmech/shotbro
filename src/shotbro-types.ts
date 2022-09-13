@@ -199,9 +199,9 @@ export type ShotBroMetadata = {
 
   /**
    * Tags you want to make available for this shot
-   * eg, "settings-screen", "New Feature", "Authentication"
+   * eg, "enterprise-view", "paid plan only", "public-view"
    */
-  shotTags?: string[]
+  shotVersionTags?: string[]
 
   /**
    * The version of your app when the screenshot was taken.
