@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/saasmech/shotbro/compare/v1.7.1...v1.8.0) (2022-09-13)
+
+
+### Features
+
+* rename fields to cleanup ([#23](https://github.com/saasmech/shotbro/issues/23)) ([6d8103c](https://github.com/saasmech/shotbro/commit/6d8103cb1c8e32f2185cdab01aba8a713fd3f9b3))
+
 ## [1.7.1](https://github.com/saasmech/shotbro/compare/v1.7.0...v1.7.1) (2022-09-12)
 
 
