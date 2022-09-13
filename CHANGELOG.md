@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/saasmech/shotbro/compare/v1.8.0...v1.9.0) (2022-09-13)
+
+
+### Features
+
+* simplify shapes for now ([#26](https://github.com/saasmech/shotbro/issues/26)) ([bef37ea](https://github.com/saasmech/shotbro/commit/bef37ea94518d46050968ef25488c82d6bc73215))
+
 ## [1.8.0](https://github.com/saasmech/shotbro/compare/v1.7.1...v1.8.0) (2022-09-13)
 
 
