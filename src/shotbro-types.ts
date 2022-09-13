@@ -97,22 +97,22 @@ export type ShapePosition = {
 }
 
 
-export type ShapePadding = {
-  padding?: number
-  paddingTop?: number
-  paddingRight?: number
-  paddingBottom?: number
-  paddingLeft?: number
-}
+// todo export type ShapePadding = {
+//   padding?: number
+//   paddingTop?: number
+//   paddingRight?: number
+//   paddingBottom?: number
+//   paddingLeft?: number
+// }
 
 export type ShapeTransform = {
   /**
    * Number from 0-1, 0.5 will scale by half/50%
    * Example: 0.5
    */
-  scale?: number
-  scaleX?: number
-  scaleY?: number
+  // scale?: number
+  // scaleX?: number
+  // scaleY?: number
 
   /**
    * Number of pixels to shift the shape by in both X and Y axis (can be negative)
@@ -126,35 +126,37 @@ export type ShapeTransform = {
    * Number of degrees to rotate the shape by (must be <360, can be negative).
    * Example: 90, 180
    */
-  rotate?: number
+  // rotate?: number
 }
 
 export type CircleShape = {
   thickness?: number
-  margin?: number
+  //margin?: number
 
-} & ShapeCommon & ShapePosition & ShapeTransform & ShapePadding
+} & ShapeCommon & ShapePosition & ShapeTransform //& ShapePadding
 
-export type ArrowShape = {
-  thickness?: number
-  length?: number
-  alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
-} & ShapeCommon & ShapePosition & ShapeTransform
+// export type ArrowShape = {
+//   thickness?: number
+//   length?: number
+//   alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
+// } & ShapeCommon & ShapePosition & ShapeTransform
 
 export type BoxShape = {
   thickness?: number
-} & ShapeCommon & ShapePosition & ShapeTransform & ShapePadding
+} & ShapeCommon & ShapePosition & ShapeTransform //& ShapePadding
 
 export type TextShape = {
   value?: string
   fontSize?: number
-} & ShapeCommon & ShapePosition & ShapeTransform & ShapePadding
+} & ShapeCommon & ShapePosition & ShapeTransform //& ShapePadding
 
 export type ShotBroShape = {
   circle?: CircleShape
-  arrow?: ArrowShape
   box?: BoxShape
   text?: TextShape
+  // todo line?: LineShape
+  // todo arrow?: ArrowShape
+  // todo redact?: RedactShape
 }
 
 export type ShotBroOutput = {
@@ -301,6 +303,7 @@ export type ShotBroSystemInfo = {
   browserVersion?: string
   browserViewportWidth?: number
   browserViewportHeight?: number
+  browserDevicePixelRatio?: number
 
   /**
    * Browser's: navigator.userAgent
