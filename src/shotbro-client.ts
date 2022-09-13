@@ -53,7 +53,8 @@ export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBr
       infoUserAgent: navigator.userAgent,
       infoViewportWidth: window.innerWidth,
       infoViewportHeight: window.innerHeight,
-      infoColorScheme: scheme
+      infoColorScheme: scheme,
+      infoDevicePixelRatio: window.devicePixelRatio
     };
   });
   log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
@@ -69,7 +70,8 @@ export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBr
     browserLanguage: browserInfo.infoLanguage,
     browserViewportWidth: browserInfo.infoViewportWidth,
     browserViewportHeight: browserInfo.infoViewportHeight,
-    browserPrefersColorScheme: browserInfo.infoColorScheme
+    browserPrefersColorScheme: browserInfo.infoColorScheme,
+    browserDevicePixelRatio: browserInfo.infoDevicePixelRatio,
   };
   log.debug(`systemInfo ${JSON.stringify(systemInfo)}`)
   return systemInfo;
