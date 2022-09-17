@@ -51,6 +51,7 @@ export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath
       log.info('')
     }
     output.shotUrl = startIncomingShotRes.output.shotUrl
+    output.shotAdded = true
   }
   return output
 }
