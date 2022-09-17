@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Main screenshotter Box when default used, box should match whole page html: main-default 1`] = `
-"<html lang="en"><head>
+"<html lang="en" data-sb-bb="x:0;y:0;w:320;h:630;"><head>
     <title>Test</title>
     <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
     <link href="../../node_modules/modern-normalize/modern-normalize.css" rel="stylesheet">
