@@ -34,6 +34,8 @@ describe('ShotBro Client', () => {
       expect(systemInfo.browserViewportWidth).toBe(320);
       expect(systemInfo.browserViewportHeight).toBe(640);
       expect(systemInfo.browserPrefersColorScheme).toBe('light');
+      expect(systemInfo.browserDevicePixelRatio).toBe(1);
+      expect(systemInfo.inputUlid).toHaveLength(29);
     })
 
 });

@@ -27,13 +27,20 @@ npm install shotbro
 
 Add to your gitignore:
 ```gitignore
-.shotbro/out/
+.shotbro/
 ```
 
 Get a key and add it to a `.env` file
 ```bash
 SHOTBRO_API_KEY=keyGoesHere
 ```
+
+
+# How does it work
+
+during your test run calling `shotbroPlaywright` will save full page shot and html with positional info to disk.
+
+When `shotbro` cli is called this will upload the generated shots annotation info ready for processing
 
 # TODO
 
