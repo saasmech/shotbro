@@ -6,6 +6,7 @@ import {uploadToApi} from "./uploader";
 import {generateMainScreenshot} from "./main-shot/main-screenshotter";
 import {ShotBroInput, ShotBroOutput, ShotBroSystemInfo} from './shotbro-types';
 import {CliLog} from "./util/log";
+import {ulid} from "./util/ulid";
 
 // use date at start so it will be the same for all invocations while node is running
 const ISO_DATE_AT_START = new Date().toISOString();
@@ -59,6 +60,7 @@ export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBr
   });
   log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
   const systemInfo:ShotBroSystemInfo =  {
+    inputUlid: `iu:${ulid()}`,
     appVersion: ISO_DATE_AT_START,
     // if running on github actions use something sensible.  If undefined the server can decide.
     appBranch: process.env.GITHUB_HEAD_REF,
