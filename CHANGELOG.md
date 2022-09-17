@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/saasmech/shotbro/compare/v1.9.0...v1.10.0) (2022-09-17)
+
+
+### Features
+
+* add client ulid ([#30](https://github.com/saasmech/shotbro/issues/30)) ([2d76848](https://github.com/saasmech/shotbro/commit/2d7684843dd430650352a557b1a349f0767623ab))
+
 ## [1.9.0](https://github.com/saasmech/shotbro/compare/v1.8.0...v1.9.0) (2022-09-13)
 
 
