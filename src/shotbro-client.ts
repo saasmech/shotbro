@@ -121,8 +121,7 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainHtmlPath, mainPngPath);
-    output.shotUrl = await uploadToApi(input, mainHtmlPath, mainPngPath, systemInfo, log);
-    output.shotAdded = true;
+    output = await uploadToApi(input, mainHtmlPath, mainPngPath, systemInfo, log);
 
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch(e) {
