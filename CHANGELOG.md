@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/saasmech/shotbro/compare/v1.10.1...v1.11.0) (2022-09-22)
+
+
+### Features
+
+* trigger release ([#37](https://github.com/saasmech/shotbro/issues/37)) ([938412a](https://github.com/saasmech/shotbro/commit/938412aececce56f7de748361c877df795a0c98d))
+
 ## [1.10.1](https://github.com/saasmech/shotbro/compare/v1.10.0...v1.10.1) (2022-09-22)
 
 
