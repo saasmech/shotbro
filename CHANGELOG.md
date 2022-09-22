@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/saasmech/shotbro/compare/v1.10.0...v1.10.1) (2022-09-22)
+
+
+### Features
+
+* use root html ([#35](https://github.com/saasmech/shotbro/issues/35)) ([5aa1c1c](https://github.com/saasmech/shotbro/commit/5aa1c1c75a50add12b712203b1f201e6bb7d0971))
+
 ## [1.10.0](https://github.com/saasmech/shotbro/compare/v1.9.0...v1.10.0) (2022-09-17)
 
 
