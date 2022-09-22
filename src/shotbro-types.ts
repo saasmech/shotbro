@@ -135,11 +135,11 @@ export type CircleShape = {
 
 } & ShapeCommon & ShapePosition & ShapeTransform //& ShapePadding
 
-// export type ArrowShape = {
-//   thickness?: number
-//   length?: number
-//   alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
-// } & ShapeCommon & ShapePosition & ShapeTransform
+export type ArrowShape = {
+  thickness?: number
+  length?: number
+  alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
+} & ShapeCommon & ShapePosition & ShapeTransform
 
 export type BoxShape = {
   thickness?: number
@@ -155,7 +155,7 @@ export type ShotBroShape = {
   box?: BoxShape
   text?: TextShape
   // todo line?: LineShape
-  // todo arrow?: ArrowShape
+  arrow?: ArrowShape
   // todo redact?: RedactShape
 }
 
