@@ -29,6 +29,7 @@
     "node": ">=14"
   },
   "scripts": {
+    "pretest": "npx playwright install",
     "test": "jest",
     "test:update-snapshots": "jest --updateSnapshot",
     "build": "npx tsc"
