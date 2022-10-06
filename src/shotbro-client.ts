@@ -1,15 +1,32 @@
+import type {Page} from '@playwright/test';
+import type {
+  ShotBroInput,
+  ShotBroOutput,
+  ShotBroSystemInfo,
+  ShotBroUploadConfig
+} from './shotbro-types';
+
 import * as fs from 'fs';
+import * as readline from 'readline';
 import * as os from 'os';
 import * as path from 'path';
-import {Page} from '@playwright/test';
 import {uploadToApi} from './uploader';
 import {generateMainScreenshot} from './main-shot/main-screenshotter';
-import {ShotBroInput, ShotBroOutput, ShotBroOutputConfig, ShotBroSystemInfo} from './shotbro-types';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 
-// use date at start so it will be the same for all invocations while node is running
+// use date at start, so it will be the same for all invocations while node is running
 const ISO_DATE_AT_START = new Date().toISOString();
+
+function prepareUploadConfig(uploadConfig: ShotBroUploadConfig): ShotBroUploadConfig {
+  if (!uploadConfig) uploadConfig = {}
+  if (!uploadConfig.appApiKey) uploadConfig.appApiKey = process.env.SHOTBRO_APP_API_KEY;
+  if (!uploadConfig.baseUrl) uploadConfig.baseUrl = process.env.SHOTBRO_BASE_URL;
+  if (!uploadConfig.baseUrl) uploadConfig.baseUrl = 'https://shotbro.io';
+  if (!uploadConfig.workingDirectory) uploadConfig.workingDirectory = '.shotbro/out';
+  return uploadConfig;
+
+}
 
 function prepareConfig(rawInput: ShotBroInput): ShotBroInput {
   let input: ShotBroInput;
@@ -28,9 +45,6 @@ function prepareConfig(rawInput: ShotBroInput): ShotBroInput {
     throw new Error('shotName must be less than 120 characters')
   }
   if (!input.out) input.out = {}
-  if (!input.out.appApiKey) input.out.appApiKey = process.env.SHOTBRO_APP_API_KEY;
-  if (!input.out.baseUrl) input.out.baseUrl = process.env.SHOTBRO_BASE_URL;
-  if (!input.out.baseUrl) input.out.baseUrl = 'https://shotbro.io';
   if (!input.out.workingDirectory) input.out.workingDirectory = '.shotbro/out';
   return input;
 }
@@ -63,7 +77,7 @@ export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBr
   const systemInfo: ShotBroSystemInfo = {
     inputUlid: `iu:${ulid()}`,
     appVersion: ISO_DATE_AT_START,
-    // if running on github actions use something sensible.  If undefined the server can decide.
+    // if running on GitHub actions use something sensible.  If undefined the server can decide.
     appBranch: process.env.GITHUB_HEAD_REF,
     osPlatform: browserInfo.infoPlatform || os.platform(),
     osVersion: os.release(),
@@ -101,7 +115,7 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
   const input = prepareConfig(shotBroInput);
   const systemInfo = await prepareSystemInfo(page, log);
 
-  let outDir = shotBroInput.out!.workingDirectory!;
+  let outDir = input.out!.workingDirectory!;
   let output: ShotBroOutput = {
     shotAdded: false,
   };
@@ -111,33 +125,53 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
 
     log.debug(`Prepare output dir ${outDir}`)
     outDir = prepareOutDir(outDir);
-
-    let mainPngPath = path.join(outDir, 'main.png');
-    let mainHtmlPath = path.join(outDir, 'main.html');
+    let indexJsonLPath = path.join(outDir, 'index.jsonl');
+    let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
+    let mainHtmlPath = path.join(outDir, `${systemInfo.inputUlid}.html`);
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
     log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
     await generateMainScreenshot(page, mainHtmlPath, mainPngPath);
-    fs.writeFileSync(path.join(outDir, 'main.json'), JSON.stringify({
+    fs.writeFileSync(path.join(outDir, `${systemInfo.inputUlid}.json`), JSON.stringify({
       shotBroInput: input, systemInfo
     }), 'utf-8')
+    const lineObj: IndexLineObj = {inputUlid: systemInfo.inputUlid!}
+    if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
+    fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj))
 
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
     output.error = String(e)
-    log.warn(`Could not capture ${shotBroInput.shotName}: ${e}`)
+    log.warn(`Could not capture ${input.shotName}: ${e}`)
 
   }
   return output
 }
 
-export async function shotBroUpload(out: ShotBroOutputConfig): Promise<ShotBroOutput> {
-  const log = new CliLog(out.logLevel || 'info');
-  let outDir = out!.workingDirectory!;
-  const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, 'main.json')).toString('utf-8'))
-  let mainPngPath = path.join(outDir, 'main.png');
-  let mainHtmlPath = path.join(outDir, 'main.html');
-  const output = await uploadToApi(mainJson.shotBroInput, mainHtmlPath, mainPngPath, mainJson.systemInfo, log);
-  return output;
+type IndexLineObj = {
+  inputUlid: string
+}
+
+export async function shotBroUpload(uploadConfigRaw: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
+  const log = new CliLog(uploadConfigRaw.logLevel || 'info');
+  const uploadConfig = prepareUploadConfig(uploadConfigRaw)
+  let outDir = uploadConfig!.workingDirectory!;
+  let indexJsonLPath = path.join(outDir, 'index.jsonl');
+  const fileStream = fs.createReadStream(indexJsonLPath);
+
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity    // recognize all instances of CR LF ('\r\n') in input.txt as a single line break
+  });
+  const outputs = [];
+  for await (const line of rl) {
+    const lineObj = JSON.parse(line) as IndexLineObj;
+    const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${lineObj.inputUlid}.json`)).toString('utf-8'))
+    let mainPngPath = path.join(outDir, `${lineObj.inputUlid}.png`);
+    let mainHtmlPath = path.join(outDir, `${lineObj.inputUlid}.html`);
+    const output = await uploadToApi(uploadConfig, mainJson.shotBroInput, mainHtmlPath, mainPngPath, mainJson.systemInfo, log);
+    outputs.push(output)
+  }
+  return outputs;
 }
 
 function cleanupOutDir(outDir: string) {
@@ -147,3 +181,24 @@ function cleanupOutDir(outDir: string) {
     console.error(`An error has occurred while cleaning up ${outDir}. Error: ${e}`);
   }
 }
+
+// types
+export type {
+  ShotBroInput,
+  ShotBroOutput,
+  ShotBroSystemInfo,
+  ShotBroUploadConfig,
+  ShotBroLogLevel,
+  ShotBroOutputConfig,
+  ShotBroMetadata,
+  ShotBroBox,
+  BoxShape,
+  ArrowShape,
+  CircleShape,
+  ShapeCommon,
+  ShotBroFocus,
+  ShotBroShape,
+  TextShape,
+  ShapePosition,
+  ShapeTransform
+} from './shotbro-types';

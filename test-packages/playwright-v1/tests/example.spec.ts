@@ -1,7 +1,7 @@
 import {test as playwrightTest} from '@playwright/test';
 import * as path from 'path';
 import * as dotenv from 'dotenv'
-import {shotBroPlaywright, shotBroUpload} from "../../../src/shotbro-client";
+import {shotBroPlaywright, shotBroUpload} from "shotbro";
 
 dotenv.config()
 
@@ -25,13 +25,11 @@ playwrightTest('test1', async ({page}) => {
       // {arrow: {atTestId: '', translate: -10, id: 'abc'}},
     ],
     out: {
-      //file: 'out.png',
       logLevel: 'debug',
     }
   })
 
   await shotBroUpload({
-    //file: 'out.png',
     logLevel: 'debug',
   });
 });
