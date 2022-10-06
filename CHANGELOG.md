@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/saasmech/shotbro/compare/v1.11.0...v1.12.0) (2022-10-06)
+
+
+### Features
+
+* separate out upload ([#47](https://github.com/saasmech/shotbro/issues/47)) ([8895604](https://github.com/saasmech/shotbro/commit/8895604172c8b4e3b170c5c15829fd89a8cbb7c4))
+
 ## [1.11.0](https://github.com/saasmech/shotbro/compare/v1.10.1...v1.11.0) (2022-09-22)
 
 
