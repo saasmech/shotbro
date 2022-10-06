@@ -1,4 +1,4 @@
-import type {Page} from "playwright";
+import type {Page} from "@playwright/test";
 import * as fs from "fs";
 
 const MAIN_CAPTURE_HEIGHT_LIMIT = 4000;

@@ -1,21 +1,21 @@
-import {ShotBroInput, ShotBroMetadata, ShotBroOutput} from "./shotbro-types";
+import {ShotBroInput, ShotBroMetadata, ShotBroOutput, ShotBroUploadConfig} from "./shotbro-types";
 
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath: string,
+export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: ShotBroInput, htmlPath: string, pngPath: string,
                                   systemInfo: ShotBroMetadata, log: CliLog): Promise<ShotBroOutput> {
-  if (!input.out?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
-  if (!input.out?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
+  if (!uploadConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
+  if (!uploadConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
   const output: ShotBroOutput = {
     shotAdded: false
   }
-  const createIncomingShotUrl = `${input.out.baseUrl}/api/incoming/create-incoming-shot-v1`;
+  const createIncomingShotUrl = `${uploadConfig.baseUrl}/api/incoming/create-incoming-shot-v1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
-  const createIncomingShotRes = await postToApi(createIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
+  const createIncomingShotRes = await postToApi(createIncomingShotUrl, uploadConfig?.appApiKey, JSON.stringify({
     clientUserAgent: 'shotbro-client-uploader-v1.0.0',
     shotDetails: input, systemInfo
   }))
@@ -32,9 +32,9 @@ export async function uploadToApi(input: ShotBroInput, htmlPath: string, pngPath
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl);
 
-    const startIncomingShotUrl = `${input.out.baseUrl}/api/incoming/start-incoming-shot-v1`;
+    const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/incoming/start-incoming-shot-v1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
-    const startIncomingShotRes = await postToApi(startIncomingShotUrl, input.out?.appApiKey, JSON.stringify({
+    const startIncomingShotRes = await postToApi(startIncomingShotUrl, uploadConfig.appApiKey, JSON.stringify({
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
     }))
 

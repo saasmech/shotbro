@@ -173,6 +173,20 @@ export type ShotBroOutputConfig = {
   workingDirectory?: string
 
   /**
+   * Sets the log level.
+   * Default: "info"
+   */
+  logLevel?: ShotBroLogLevel
+}
+
+export type ShotBroUploadConfig = {
+  /**
+   * The directory to save work files into
+   * Default: `<current-directory>/.shotbro/out`
+   */
+  workingDirectory?: string
+
+  /**
    * The API Key for the app this shot belongs to.
    * If not set then process.env.SHOTBRO_APP_API_KEY will be used.
    */
@@ -190,7 +204,6 @@ export type ShotBroOutputConfig = {
    * Default: "https://showbro.io"
    */
   baseUrl?: string
-
 }
 
 /**

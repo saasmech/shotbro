@@ -1,4 +1,4 @@
-import {chromium, Browser, Page} from 'playwright';
+import {chromium, Browser, Page} from '@playwright/test';
 import * as path from "path";
 import * as fs from "fs";
 import {generateMainScreenshot} from "./main-screenshotter";
@@ -25,7 +25,8 @@ describe('Main screenshotter', () => {
       const htmlPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.html');
       await generateMainScreenshot(page, htmlPath, pngPath);
       const outHtml = fs.readFileSync(htmlPath, 'utf-8');
-      expect(outHtml).toMatchSnapshot('main-default');
+      expect(outHtml).toContain('<body ');
+      expect(outHtml).toContain(' data-sb-bb="x:0;y:0;w:320;h:630;">');
     })
 
     test('when default used, box should match whole page png', async () => {

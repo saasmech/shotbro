@@ -1,4 +1,4 @@
-import {chromium, Browser, Page} from 'playwright';
+import {chromium, Browser, Page} from '@playwright/test';
 import * as path from "path";
 import {prepareSystemInfo} from "./shotbro-client";
 import {CliLog} from "./util/log";
