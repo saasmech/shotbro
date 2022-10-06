@@ -1,4 +1,4 @@
-import {Browser, chromium, Page} from 'playwright';
+import {Browser, chromium, Page} from '@playwright/test';
 import * as path from "path";
 import {expectImageToMatchBaseline, currentRunImgPath} from "./test-utils";
 
