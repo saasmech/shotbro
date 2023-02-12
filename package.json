@@ -43,7 +43,7 @@
     "@types/jest": "^29.4.0",
     "@types/pixelmatch": "^5.2.4",
     "@types/pngjs": "^6.0.1",
-    "jest": "^29.4.1",
+    "jest": "^29.4.2",
     "modern-normalize": "^1.1.0",
     "nock": "^13.3.0",
     "pixelmatch": "^5.3.0",
