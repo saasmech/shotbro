@@ -8,7 +8,6 @@ dotenv.config()
 playwrightTest.afterAll(async ({}, testInfo) => {
   if (testInfo.status === 'passed') {
     // SHOTBRO_APP_API_KEY;
-    // SHOTBRO_BASE_URL;
     await shotBroUpload({});
   }
 });
