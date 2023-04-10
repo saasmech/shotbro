@@ -32,7 +32,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         id: release
         name: Release ShotBro
-        working-directory: ./client
+        path: ./client
         with:
           release-type: node
           package-name: 'shotbro'
