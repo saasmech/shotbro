@@ -20,28 +20,29 @@ jobs:
             client/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./client
+        working-directory: client
         run: npm ci
 
       - name: Build
-        working-directory: ./client
+        working-directory: client
         run: npm run build
 
       - name: Test
-        working-directory: ./client
+        working-directory: client
         run: npm run test
 
       - uses: google-github-actions/release-please-action@v3
         id: release
         name: Release ShotBro
         with:
-          path: ./client
+          path: client
+          changelog-path: client/CHANGELOG.md
           release-type: node
           package-name: 'shotbro'
 
       - if: ${{ steps.release.outputs.releases_created }}
         name: Publish ShotBro
-        working-directory: ./client
+        working-directory: client
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

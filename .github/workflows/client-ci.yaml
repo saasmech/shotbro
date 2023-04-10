@@ -20,15 +20,15 @@ jobs:
             client/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./client
+        working-directory: client
         run: npm ci
 
       - name: Build
-        working-directory: ./client
+        working-directory: client
         run: npm run build
 
       - name: Test
-        working-directory: ./client
+        working-directory: client
         run: npm run test
 
       - name: Upload Artifact
@@ -37,7 +37,7 @@ jobs:
           retention-days: 2
           name: playwright-tests-compare-to
           path: |
-            ./client/**/__snapshots__/compare
+            client/**/__snapshots__/compare
 
 
 #  examples:
