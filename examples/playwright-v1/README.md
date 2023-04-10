@@ -1,7 +1,7 @@
 
 # Playwright v1
 
-A simple example of how Shot Bro can be used with playwright.
+A simple example of how ShotBro can be used with playwright.
 
 
 # During development
