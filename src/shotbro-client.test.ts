@@ -19,7 +19,7 @@ describe('ShotBro Client', () => {
 
     test('system info looks pretty good', async () => {
       const log = new CliLog('debug');
-      const systemInfo = await playwrightPrepareSystemInfo(page, log)
+      const systemInfo = await playwrightPrepareSystemInfo(page, log, 'upload-group')
       console.log(systemInfo)
       expect(systemInfo.appVersion?.length).toBeGreaterThan(10);
       expect(systemInfo.osPlatform?.length).toBeGreaterThan(3);
@@ -36,6 +36,7 @@ describe('ShotBro Client', () => {
       expect(systemInfo.browserPrefersColorScheme).toBe('light');
       expect(systemInfo.browserDevicePixelRatio).toBe(1);
       expect(systemInfo.inputUlid).toHaveLength(29);
+      expect(systemInfo.uploadGroupUlid).toBe('ug:upload-group');
     })
 
 });

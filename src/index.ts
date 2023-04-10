@@ -49,7 +49,7 @@ function prepareConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureConfig {
   return input;
 }
 
-export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
+export async function playwrightPrepareSystemInfo(page: Page, log: CliLog, uploadGroupUlid: string): Promise<ShotBroSystemInfo> {
   const browserInfo = await page.evaluate(async () => {
     let scheme = undefined
     if (window.matchMedia('(prefers-color-scheme: light)').matches) scheme = 'light'
@@ -76,6 +76,7 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Prom
   log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
   const systemInfo: ShotBroSystemInfo = {
     inputUlid: `iu:${ulid()}`,
+    uploadGroupUlid: `ug:${uploadGroupUlid}`,
     appVersion: ISO_DATE_AT_START,
     // if running on GitHub actions use something sensible.  If undefined the server can decide.
     appBranch: process.env.GITHUB_HEAD_REF,
@@ -113,7 +114,8 @@ function prepareOutDir(outDir: string) {
 export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBroCaptureConfig): Promise<ShotBroOutput> {
   const log = new CliLog(shotBroCaptureConfig.out?.logLevel || 'info');
   const input = prepareConfig(shotBroCaptureConfig);
-  const systemInfo = await playwrightPrepareSystemInfo(page, log);
+  const uploadGroupUlid = ulid();
+  const systemInfo = await playwrightPrepareSystemInfo(page, log, uploadGroupUlid);
 
   let outDir = input.out!.workingDirectory!;
   let output: ShotBroOutput = {
@@ -136,7 +138,8 @@ export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBr
     }), 'utf-8')
     const lineObj: IndexLineObj = {inputUlid: systemInfo.inputUlid!}
     if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
-    fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj))
+    fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj), 'utf-8');
+    fs.appendFileSync(indexJsonLPath, '\n', 'utf-8');
 
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
@@ -150,6 +153,7 @@ type IndexLineObj = {
   inputUlid: string
 }
 
+// noinspection JSUnusedGlobalSymbols
 export async function shotBroUpload(uploadConfig: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
   const log = new CliLog(uploadConfig.logLevel || 'info');
   const preparedUploadConfig = prepareUploadConfig(uploadConfig)

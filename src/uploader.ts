@@ -40,16 +40,17 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
 
     log.info('Uploaded shot.')
     log.info('')
-    if (startIncomingShotRes?.output?.embedHtml) {
-      log.info('Embed in HTML with:')
-      log.info(startIncomingShotRes.output.embedHtml)
-      log.info('')
-    }
-    if (startIncomingShotRes?.output?.embedMarkdown) {
-      log.info('Embed in Markdown with:')
-      log.info(`${startIncomingShotRes.output.embedMarkdown}`)
-      log.info('')
-    }
+
+    // if (startIncomingShotRes?.output?.embedHtml) {
+    //   log.info('Embed in HTML with:')
+    //   log.info(startIncomingShotRes.output.embedHtml)
+    //   log.info('')
+    // }
+    // if (startIncomingShotRes?.output?.embedMarkdown) {
+    //   log.info('Embed in Markdown with:')
+    //   log.info(`${startIncomingShotRes.output.embedMarkdown}`)
+    //   log.info('')
+    // }
     output.shotUrl = startIncomingShotRes.output.shotUrl
     output.shotAdded = true
   }
