@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/saasmech/shotbro/compare/v1.12.0...v1.13.0) (2023-04-10)
+
+
+### Features
+
+* reduce scope to exclude shapes ([#105](https://github.com/saasmech/shotbro/issues/105)) ([05df7c0](https://github.com/saasmech/shotbro/commit/05df7c013688a233c416caa418cf9ce4091b81ae))
+
 ## [1.12.0](https://github.com/saasmech/shotbro/compare/v1.11.0...v1.12.0) (2022-10-06)
 
 
