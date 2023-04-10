@@ -18,12 +18,15 @@ jobs:
           node-version: 16.x
 
       - name: Install dependencies
+        working-directory: ./client
         run: npm ci
 
       - name: Build
+        working-directory: ./client
         run: npm run build
 
       - name: Test
+        working-directory: ./client
         run: npm run test
 
       - name: Upload Artifact
@@ -32,7 +35,7 @@ jobs:
           retention-days: 2
           name: playwright-tests-compare-to
           path: |
-            ./**/__snapshots__/compare
+            ./client/**/__snapshots__/compare
 
 
 #  test-packages:
