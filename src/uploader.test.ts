@@ -3,7 +3,9 @@ import {postFileToUrl, postToApi} from "./uploader";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import nock from 'nock'
+
+// @ts-ignore
+import nock from 'nock';
 
 describe('Uploader', () => {
 

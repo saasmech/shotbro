@@ -342,6 +342,26 @@ export type ShotBroSystemInfo = {
 };
 
 
+
+export type ShotBroCaptureConfig = {
+  /**
+   * Make sure this is unique within your app (3-120 characters long).  Use kebab-case (eg, cars-n-stuff).
+   * Mandatory
+   */
+  shotStreamCode: string
+
+  /**
+   * How to output the shot (optional)
+   */
+  out?: ShotBroOutputConfig
+
+  /**
+   * Metadata about the shot and your app
+   */
+  metadata?: ShotBroMetadata
+}
+
+
 export type ShotBroInput = {
   /**
    * Make sure this is unique within your app (3-120 characters long).

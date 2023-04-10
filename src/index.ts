@@ -1,6 +1,5 @@
 import type {Page} from '@playwright/test';
 import type {
-  ShotBroInput,
   ShotBroOutput,
   ShotBroSystemInfo,
   ShotBroUploadConfig
@@ -14,6 +13,7 @@ import {uploadToApi} from './uploader';
 import {generateMainScreenshot} from './main-shot/main-screenshotter';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
+import {ShotBroCaptureConfig} from "./shotbro-types";
 
 // use date at start, so it will be the same for all invocations while node is running
 const ISO_DATE_AT_START = new Date().toISOString();
@@ -28,20 +28,20 @@ function prepareUploadConfig(uploadConfig: ShotBroUploadConfig): ShotBroUploadCo
 
 }
 
-function prepareConfig(rawInput: ShotBroInput): ShotBroInput {
-  let input: ShotBroInput;
+function prepareConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureConfig {
+  let input: ShotBroCaptureConfig;
   try {
     // make a copy of the original, so we don't screw it up in any way
     // (use most portable way to do this)
-    input = JSON.parse(JSON.stringify(rawInput)) as ShotBroInput;
+    input = JSON.parse(JSON.stringify(rawInput)) as ShotBroCaptureConfig;
   } catch (e) {
     console.error('Could not copy input', rawInput)
     throw e;
   }
-  if (!input.shotName || input.shotName.length < 3) {
+  if (!input.shotStreamCode || input.shotStreamCode.length < 3) {
     throw new Error('shotName must be at least 3 characters')
   }
-  if (input.shotName.length > 120) {
+  if (input.shotStreamCode.length > 120) {
     throw new Error('shotName must be less than 120 characters')
   }
   if (!input.out) input.out = {}
@@ -49,7 +49,7 @@ function prepareConfig(rawInput: ShotBroInput): ShotBroInput {
   return input;
 }
 
-export async function prepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
+export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
   const browserInfo = await page.evaluate(async () => {
     let scheme = undefined
     if (window.matchMedia('(prefers-color-scheme: light)').matches) scheme = 'light'
@@ -108,12 +108,12 @@ function prepareOutDir(outDir: string) {
 /**
  *
  * @param page Playwright page that you want to screenshot
- * @param shotBroInput
+ * @param shotBroCaptureConfig
  */
-export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput): Promise<ShotBroOutput> {
-  const log = new CliLog(shotBroInput.out?.logLevel || 'info');
-  const input = prepareConfig(shotBroInput);
-  const systemInfo = await prepareSystemInfo(page, log);
+export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBroCaptureConfig): Promise<ShotBroOutput> {
+  const log = new CliLog(shotBroCaptureConfig.out?.logLevel || 'info');
+  const input = prepareConfig(shotBroCaptureConfig);
+  const systemInfo = await playwrightPrepareSystemInfo(page, log);
 
   let outDir = input.out!.workingDirectory!;
   let output: ShotBroOutput = {
@@ -127,10 +127,10 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
     outDir = prepareOutDir(outDir);
     let indexJsonLPath = path.join(outDir, 'index.jsonl');
     let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
-    let mainHtmlPath = path.join(outDir, `${systemInfo.inputUlid}.html`);
+    let elPosJsonPath = path.join(outDir, `${systemInfo.inputUlid}.json`);
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
-    log.debug(`  HTML be saved locally to ${mainHtmlPath}`)
-    await generateMainScreenshot(page, mainHtmlPath, mainPngPath);
+    log.debug(`  JSON be saved locally to ${elPosJsonPath}`)
+    await generateMainScreenshot(page, elPosJsonPath, mainPngPath);
     fs.writeFileSync(path.join(outDir, `${systemInfo.inputUlid}.json`), JSON.stringify({
       shotBroInput: input, systemInfo
     }), 'utf-8')
@@ -141,8 +141,7 @@ export async function shotBroPlaywright(page: Page, shotBroInput: ShotBroInput):
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
     output.error = String(e)
-    log.warn(`Could not capture ${input.shotName}: ${e}`)
-
+    log.warn(`Could not capture ${input.shotStreamCode}: ${e}`)
   }
   return output
 }
@@ -151,10 +150,10 @@ type IndexLineObj = {
   inputUlid: string
 }
 
-export async function shotBroUpload(uploadConfigRaw: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
-  const log = new CliLog(uploadConfigRaw.logLevel || 'info');
-  const uploadConfig = prepareUploadConfig(uploadConfigRaw)
-  let outDir = uploadConfig!.workingDirectory!;
+export async function shotBroUpload(uploadConfig: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
+  const log = new CliLog(uploadConfig.logLevel || 'info');
+  const preparedUploadConfig = prepareUploadConfig(uploadConfig)
+  let outDir = preparedUploadConfig!.workingDirectory!;
   let indexJsonLPath = path.join(outDir, 'index.jsonl');
   const fileStream = fs.createReadStream(indexJsonLPath);
 
@@ -167,9 +166,9 @@ export async function shotBroUpload(uploadConfigRaw: ShotBroUploadConfig): Promi
     const lineObj = JSON.parse(line) as IndexLineObj;
     const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${lineObj.inputUlid}.json`)).toString('utf-8'))
     let mainPngPath = path.join(outDir, `${lineObj.inputUlid}.png`);
-    let mainHtmlPath = path.join(outDir, `${lineObj.inputUlid}.html`);
-    const output = await uploadToApi(uploadConfig, mainJson.shotBroInput, mainHtmlPath, mainPngPath, mainJson.systemInfo, log);
-    outputs.push(output)
+    let elPosJsonPath = path.join(outDir, `${lineObj.inputUlid}.json`);
+    const output = await uploadToApi(preparedUploadConfig, mainJson.shotBroInput, elPosJsonPath, mainPngPath, mainJson.systemInfo, log);
+    outputs.push(output);
   }
   return outputs;
 }
@@ -184,21 +183,11 @@ function cleanupOutDir(outDir: string) {
 
 // types
 export type {
-  ShotBroInput,
+  ShotBroCaptureConfig,
   ShotBroOutput,
   ShotBroSystemInfo,
   ShotBroUploadConfig,
   ShotBroLogLevel,
   ShotBroOutputConfig,
-  ShotBroMetadata,
-  ShotBroBox,
-  BoxShape,
-  ArrowShape,
-  CircleShape,
-  ShapeCommon,
-  ShotBroFocus,
-  ShotBroShape,
-  TextShape,
-  ShapePosition,
-  ShapeTransform
+  ShotBroMetadata
 } from './shotbro-types';
