@@ -16,6 +16,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
+          cache-dependency-path: |
+            client/package-lock.json
 
       - name: Install dependencies
         working-directory: ./client
