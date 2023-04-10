@@ -3,11 +3,9 @@
 
 ############ UNDER CONSTRUCTION ###############
 
-############ UNDER CONSTRUCTION ###############
-
 Sick of out of date screenshots in support sites and websites.
 
-Generate them automatically using PlayWright and ShotBro!
+Generate them using PlayWright, upload them to ShotBro! them embed them in your docs.
 
 ## Getting Started
 
