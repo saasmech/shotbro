@@ -40,7 +40,7 @@ jobs:
             ./client/**/__snapshots__/compare
 
 
-#  test-packages:
+#  examples:
 #    runs-on: ubuntu-latest
 #
 #    strategy:
@@ -58,9 +58,9 @@ jobs:
 #          node-version: ${{ matrix.node }}
 #
 #      - name: Install dependencies
-#        working-directory: test-packages/playwright-v1
+#        working-directory: examples/playwright-v1
 #        run: npm ci
 #
 #      - name: Test
-#        working-directory: test-packages/playwright-v1
+#        working-directory: examples/playwright-v1
 #        run: npm run test

@@ -42,7 +42,7 @@ export async function generateMainScreenshot(page: Page, jsonElPositionsPath: st
       // https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
       if (!el) return;
       const bb = await el.getBoundingClientRect();
-      // data-sb-bb = Shot Bro Bounding Box / in css style key:value;...
+      // data-sb-bb = ShotBro Bounding Box / in css style key:value;...
       // el.setAttribute('data-sb-bb', `x:${bb.x};y:${bb.y};w:${bb.width};h:${bb.height};`)
 
       elPositions.push({
