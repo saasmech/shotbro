@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/saasmech/shotbro/compare/v1.13.0...v1.14.0) (2023-04-10)
+
+
+### Features
+
+* add upload groupid ([#107](https://github.com/saasmech/shotbro/issues/107)) ([9cd401f](https://github.com/saasmech/shotbro/commit/9cd401fb4f3e5a9c4ed673a804ac48347f45e969))
+
 ## [1.13.0](https://github.com/saasmech/shotbro/compare/v1.12.0...v1.13.0) (2023-04-10)
 
 
