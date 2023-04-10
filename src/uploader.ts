@@ -5,7 +5,7 @@ import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: ShotBroInput, htmlPath: string, pngPath: string,
+export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: ShotBroInput, elPosJsonPath: string, pngPath: string,
                                   systemInfo: ShotBroMetadata, log: CliLog): Promise<ShotBroOutput> {
   if (!uploadConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
   if (!uploadConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
@@ -23,11 +23,11 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
   if (createIncomingShotRes.output.error) {
     output.error = createIncomingShotRes.output.error;
   }
-  if (createIncomingShotRes?.output?.htmlUploadUrl && createIncomingShotRes?.output?.pngUploadUrl
+  if (createIncomingShotRes?.output?.jsonUploadUrl && createIncomingShotRes?.output?.pngUploadUrl
     && createIncomingShotRes?.output?.incomingShotRn) {
 
-    log.debug(`Uploading HTML to ${createIncomingShotRes.output.htmlUploadUrl}`)
-    await postFileToUrl(htmlPath, createIncomingShotRes.output.htmlUploadUrl);
+    log.debug(`Uploading JSON to ${createIncomingShotRes.output.jsonUploadUrl}`)
+    await postFileToUrl(elPosJsonPath, createIncomingShotRes.output.jsonUploadUrl);
 
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl);

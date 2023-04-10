@@ -1,6 +1,6 @@
 import {chromium, Browser, Page} from '@playwright/test';
 import * as path from "path";
-import {prepareSystemInfo} from "./shotbro-client";
+import {playwrightPrepareSystemInfo} from "./index";
 import {CliLog} from "./util/log";
 
 describe('ShotBro Client', () => {
@@ -19,7 +19,7 @@ describe('ShotBro Client', () => {
 
     test('system info looks pretty good', async () => {
       const log = new CliLog('debug');
-      const systemInfo = await prepareSystemInfo(page, log)
+      const systemInfo = await playwrightPrepareSystemInfo(page, log)
       console.log(systemInfo)
       expect(systemInfo.appVersion?.length).toBeGreaterThan(10);
       expect(systemInfo.osPlatform?.length).toBeGreaterThan(3);

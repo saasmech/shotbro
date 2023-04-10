@@ -5,31 +5,36 @@ import {shotBroPlaywright, shotBroUpload} from "shotbro";
 
 dotenv.config()
 
-playwrightTest('test1', async ({page}) => {
+playwrightTest.afterAll(async ({}, testInfo) => {
+  if (testInfo.status === 'passed') {
+    // SHOTBRO_APP_API_KEY;
+    // SHOTBRO_BASE_URL;
+    await shotBroUpload({});
+  }
+});
+
+playwrightTest('mobile test', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
   await page.setViewportSize({width: 320, height: 640});
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
-    shotName: 'My Form',
-    focus: {
-      at: '#myform',
-    },
-    shapes: [
-      {circle: {at: '#phone-field'}},
-      // {circle: {atText: 'Available in', id: 'abc', padding: '70px'}},
-      // {circle: {at: '#myform', id: 'abc', padding: '70px'}},
-      // {circle: {atTestId: 'ssss', id: 'abc', padding: '70px'}},
-      // {arrow: {atTestId: 'abc'}},
-      // {circle: {translate: -10, id: 'abc', padding: '70px'}},
-      // {arrow: {atTestId: '', translate: -10, id: 'abc'}},
-    ],
+    shotStreamCode: 'my-form',
     out: {
       logLevel: 'debug',
     }
   })
+});
 
-  await shotBroUpload({
-    logLevel: 'debug',
-  });
+playwrightTest('desktop test', async ({page}) => {
+  const examplePath = path.join(__dirname, "example.html");
+  await page.setViewportSize({width: 1024, height: 768});
+  await page.goto(`file:${examplePath}`);
+
+  await shotBroPlaywright(page, {
+    shotStreamCode: 'my-form',
+    out: {
+      logLevel: 'debug',
+    }
+  })
 });
