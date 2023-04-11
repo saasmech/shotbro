@@ -13,7 +13,7 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
   const output: ShotBroOutput = {
     shotAdded: false
   }
-  const createIncomingShotUrl = `${uploadConfig.baseUrl}/api/incoming/create-incoming-shot-v1`;
+  const createIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
   const createIncomingShotRes = await postToApi(createIncomingShotUrl, uploadConfig?.appApiKey, JSON.stringify({
     clientUserAgent: 'shotbro-client-uploader-v1.0.0',
@@ -32,7 +32,7 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl);
 
-    const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/incoming/start-incoming-shot-v1`;
+    const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
     const startIncomingShotRes = await postToApi(startIncomingShotUrl, uploadConfig.appApiKey, JSON.stringify({
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
