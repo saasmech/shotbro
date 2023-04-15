@@ -36,7 +36,7 @@ jobs:
         name: Release ShotBro
         with:
           path: client
-          changelog-path: client/CHANGELOG.md
+          changelog-path: CHANGELOG.md
           release-type: node
           package-name: 'shotbro'
 
