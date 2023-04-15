@@ -12,28 +12,49 @@ playwrightTest.afterAll(async ({}, testInfo) => {
   }
 });
 
-playwrightTest('mobile test', async ({page}) => {
+playwrightTest('mobile light', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 320, height: 640});
+  await page.setViewportSize({width: 320, height: 320});
+  await page.emulateMedia({media: 'screen', colorScheme: 'light'});
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'my-form',
-    out: {
-      logLevel: 'debug',
-    }
+    metadata: {shotVersionTags: ['mobile', 'light']},
   })
 });
 
-playwrightTest('desktop test', async ({page}) => {
+playwrightTest('mobile dark', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 1024, height: 768});
+  await page.setViewportSize({width: 320, height: 320});
+  await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'my-form',
-    out: {
-      logLevel: 'debug',
-    }
-  })
+    metadata: {shotVersionTags: ['mobile', 'dark']}
+  });
+});
+
+playwrightTest('desktop light', async ({page}) => {
+  const examplePath = path.join(__dirname, "example.html");
+  await page.setViewportSize({width: 1024, height: 320});
+  await page.goto(`file:${examplePath}`);
+
+  await shotBroPlaywright(page, {
+    shotStreamCode: 'my-form',
+    metadata: {shotVersionTags: ['desktop', 'light']},
+  });
+});
+
+playwrightTest('desktop dark', async ({page}) => {
+  const examplePath = path.join(__dirname, "example.html");
+  await page.setViewportSize({width: 1024, height: 320});
+  await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
+  await page.goto(`file:${examplePath}`);
+
+  await shotBroPlaywright(page, {
+    shotStreamCode: 'my-form',
+    metadata: {shotVersionTags: ['desktop', 'dark']},
+  });
 });
