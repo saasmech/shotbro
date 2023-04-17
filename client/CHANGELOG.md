@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/saasmech/shotbro/compare/v1.16.0...v1.16.1) (2023-04-17)
+
+
+### Bug Fixes
+
+* changelog path ([81c70ed](https://github.com/saasmech/shotbro/commit/81c70ed2b265193f9826f6a39382942caacc1c2a))
+
 ## [1.16.0](https://github.com/saasmech/shotbro/compare/v1.15.0...v1.16.0) (2023-04-11)
 
 
