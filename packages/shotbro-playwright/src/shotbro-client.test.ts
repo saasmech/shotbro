@@ -3,7 +3,7 @@ import * as path from "path";
 import {playwrightPrepareSystemInfo} from "./index";
 import {CliLog} from "./util/log";
 
-describe('ShotBro Client', () => {
+describe('ShotBro Playwright Client', () => {
 
     let browser: Browser;
     let page: Page;

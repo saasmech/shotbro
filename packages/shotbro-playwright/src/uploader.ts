@@ -1,12 +1,20 @@
-import {ShotBroInput, ShotBroMetadata, ShotBroOutput, ShotBroUploadConfig} from "./shotbro-types";
+import {
+  ShotBroCaptureConfig,
+  ShotBroOutput,
+  ShotBroSystemInfo,
+  ShotBroUploadConfig
+} from "./shotbro-types";
 
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from "fs";
 import {CliLog} from "./util/log";
 
-export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: ShotBroInput, elPosJsonPath: string, pngPath: string,
-                                  systemInfo: ShotBroMetadata, log: CliLog): Promise<ShotBroOutput> {
+export async function uploadToApi(
+  uploadConfig: ShotBroUploadConfig, input: ShotBroCaptureConfig, elPosJsonPath: string, pngPath: string,
+  systemInfo: ShotBroSystemInfo, log: CliLog): Promise<ShotBroOutput> {
+  const clientUserAgent = `shotbro-client-uploader-v1.0.0`;  // todo use package number
+  const userAgent = `ShotBro-Client/1.0.0 NodeJS/${process.version}`;  // todo use package number
   if (!uploadConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
   if (!uploadConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
@@ -16,9 +24,8 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
   const createIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
   const createIncomingShotRes = await postToApi(createIncomingShotUrl, uploadConfig?.appApiKey, JSON.stringify({
-    clientUserAgent: 'shotbro-client-uploader-v1.0.0',
-    shotDetails: input, systemInfo
-  }))
+    clientUserAgent, shotDetails: input, systemInfo: systemInfo
+  }), userAgent)
 
   if (createIncomingShotRes.output.error) {
     output.error = createIncomingShotRes.output.error;
@@ -27,16 +34,16 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
     && createIncomingShotRes?.output?.incomingShotRn) {
 
     log.debug(`Uploading JSON to ${createIncomingShotRes.output.jsonUploadUrl}`)
-    await postFileToUrl(elPosJsonPath, createIncomingShotRes.output.jsonUploadUrl);
+    await postFileToUrl(elPosJsonPath, createIncomingShotRes.output.jsonUploadUrl, userAgent);
 
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
-    await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl);
+    await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl, userAgent);
 
     const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
     const startIncomingShotRes = await postToApi(startIncomingShotUrl, uploadConfig.appApiKey, JSON.stringify({
-      incomingShotRn: createIncomingShotRes.output.incomingShotRn,
-    }))
+      nodeUserAgent: createIncomingShotRes.output.incomingShotRn,
+    }), clientUserAgent)
 
     log.info('Uploaded shot.')
     log.info('')
@@ -57,7 +64,7 @@ export async function uploadToApi(uploadConfig: ShotBroUploadConfig, input: Shot
   return output
 }
 
-export async function postFileToUrl(filePath: string, uploadUrl: string): Promise<string> {
+export async function postFileToUrl(filePath: string, uploadUrl: string, userAgent: string): Promise<string> {
   return new Promise(function (resolve, reject) {
     let url = new URL(uploadUrl);
     const opts: https.RequestOptions = {
@@ -67,7 +74,7 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
       method: 'PUT',
       headers: {
         'Content-length': fs.statSync(filePath).size,
-        'User-Agent': `ShotBro-Client/1.0.0 NodeJS/${process.version}`,
+        'User-Agent': userAgent,
       },
     }
     const handleIncomingMessage = (res: http.IncomingMessage) => {
@@ -105,7 +112,7 @@ export async function postFileToUrl(filePath: string, uploadUrl: string): Promis
   });
 }
 
-export async function postToApi(apiUrl: string, authToken: string, jsonStr: string): Promise<any> {
+export async function postToApi(apiUrl: string, authToken: string, jsonStr: string, userAgent: string): Promise<any> {
   return new Promise(function (resolve, reject) {
     let url = new URL(apiUrl);
     const opts = {
@@ -117,7 +124,7 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
         Authorization: `Bearer ${authToken}`,
         'Content-Type': 'application/json',
         'Content-Length': jsonStr.length,
-        'User-Agent': `ShotBro-Client/1.0.0 NodeJS/${process.version}`,
+        'User-Agent': userAgent,
       }
     }
     const handleIncomingMessage = (res: http.IncomingMessage) => {

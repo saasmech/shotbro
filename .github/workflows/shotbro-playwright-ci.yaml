@@ -1,0 +1,41 @@
+name: ShotBro Playwright CI
+
+on:
+  push:
+    branches-ignore: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache-dependency-path: |
+            packages/shotbro-playwright/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/shotbro-playwright
+        run: npm ci
+
+      - name: Build
+        working-directory: packages/shotbro-playwright
+        run: npm run build
+
+      - name: Test
+        working-directory: packages/shotbro-playwright
+        run: npm run test
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          retention-days: 2
+          name: playwright-tests-compare-to
+          path: |
+            packages/shotbro-playwright/**/__snapshots__/compare

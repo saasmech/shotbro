@@ -1,4 +1,5 @@
 import type {Page} from '@playwright/test';
+
 import type {
   ShotBroOutput,
   ShotBroSystemInfo,
@@ -28,7 +29,7 @@ function prepareUploadConfig(uploadConfig: ShotBroUploadConfig): ShotBroUploadCo
 
 }
 
-function prepareConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureConfig {
+function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureConfig {
   let input: ShotBroCaptureConfig;
   try {
     // make a copy of the original, so we don't screw it up in any way
@@ -109,15 +110,19 @@ function prepareOutDir(outDir: string) {
 /**
  *
  * @param page Playwright page that you want to screenshot
- * @param shotBroCaptureConfig
+ * @param inputCaptureConfig
+ * @param uploadConfig false=disable upload, or a ShotBroUploadConfig
  */
-export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBroCaptureConfig): Promise<ShotBroOutput> {
-  const log = new CliLog(shotBroCaptureConfig.out?.logLevel || 'info');
-  const input = prepareConfig(shotBroCaptureConfig);
+export async function shotBroPlaywright(
+  page: Page, inputCaptureConfig: ShotBroCaptureConfig,
+  uploadConfig?: ShotBroUploadConfig|false): Promise<ShotBroOutput> {
+
+  const log = new CliLog(inputCaptureConfig.out?.logLevel || 'info');
+  const captureConfig = prepareCaptureConfig(inputCaptureConfig);
   const uploadGroupUlid = ulid();
   const systemInfo = await playwrightPrepareSystemInfo(page, log, uploadGroupUlid);
 
-  let outDir = input.out!.workingDirectory!;
+  let outDir = captureConfig.out!.workingDirectory!;
   let output: ShotBroOutput = {
     shotAdded: false,
   };
@@ -134,8 +139,9 @@ export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBr
     log.debug(`  JSON be saved locally to ${elPosJsonPath}`)
     await generateMainScreenshot(page, elPosJsonPath, mainPngPath);
     fs.writeFileSync(path.join(outDir, `${systemInfo.inputUlid}.json`), JSON.stringify({
-      shotBroInput: input, systemInfo
-    }), 'utf-8')
+      captureConfig, systemInfo
+    }), 'utf-8');
+
     const lineObj: IndexLineObj = {inputUlid: systemInfo.inputUlid!}
     if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
     fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj), 'utf-8');
@@ -144,7 +150,7 @@ export async function shotBroPlaywright(page: Page, shotBroCaptureConfig: ShotBr
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
     output.error = String(e)
-    log.warn(`Could not capture ${input.shotStreamCode}: ${e}`)
+    log.warn(`Could not capture ${captureConfig.shotStreamCode}: ${e}`)
   }
   return output
 }
@@ -153,6 +159,7 @@ type IndexLineObj = {
   inputUlid: string
 }
 
+// TODO: is this needed anymore?
 // noinspection JSUnusedGlobalSymbols
 export async function shotBroUpload(uploadConfig: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
   const log = new CliLog(uploadConfig.logLevel || 'info');
@@ -171,7 +178,13 @@ export async function shotBroUpload(uploadConfig: ShotBroUploadConfig): Promise<
     const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${lineObj.inputUlid}.json`)).toString('utf-8'))
     let mainPngPath = path.join(outDir, `${lineObj.inputUlid}.png`);
     let elPosJsonPath = path.join(outDir, `${lineObj.inputUlid}.json`);
-    const output = await uploadToApi(preparedUploadConfig, mainJson.shotBroInput, elPosJsonPath, mainPngPath, mainJson.systemInfo, log);
+    let systemInfo: ShotBroSystemInfo = mainJson.systemInfo as ShotBroSystemInfo;
+    let captureConfig: ShotBroCaptureConfig = mainJson.captureConfig as ShotBroCaptureConfig;
+    if (!captureConfig.metadata) captureConfig.metadata = {};
+    captureConfig.metadata.appVersion = ISO_DATE_AT_START;
+    systemInfo.capturePlatformType = preparedUploadConfig.capturePlatformType;
+    systemInfo.capturePlatformVersion = preparedUploadConfig.capturePlatformVersion;
+    const output = await uploadToApi(preparedUploadConfig, captureConfig, elPosJsonPath, mainPngPath, systemInfo, log);
     outputs.push(output);
   }
   return outputs;
@@ -193,5 +206,5 @@ export type {
   ShotBroUploadConfig,
   ShotBroLogLevel,
   ShotBroOutputConfig,
-  ShotBroMetadata
+  ShotBroMetadata,
 } from './shotbro-types';

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npx playwright install-deps chromium",
-    "test": "npx playwright test --reporter=list"
+    "test": "npx playwright test"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "shotbro": "file:../../client"
+    "shotbro-playwright": "file:../../packages/shotbro-playwright"
   }
 }

@@ -204,6 +204,9 @@ export type ShotBroUploadConfig = {
    * Default: "https://showbro.io"
    */
   baseUrl?: string
+
+  capturePlatformType?: 'playwright'
+  capturePlatformVersion?: string
 }
 
 /**
@@ -344,6 +347,9 @@ export type ShotBroSystemInfo = {
    * Example: "dark", "light", "system", "compact", "minimal"
    */
   browserPrefersColorScheme?: string
+
+  capturePlatformType?: 'playwright'
+  capturePlatformVersion?: string
 };
 
 

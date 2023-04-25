@@ -18,7 +18,7 @@ describe('Uploader', () => {
     fs.writeFileSync(tmpFile, 'Hello');
     let ex = null
     try {
-      await postFileToUrl(tmpFile, 'http://nock.nock/file');
+      await postFileToUrl(tmpFile, 'http://nock.nock/file', 'test');
     } catch (e) {
       ex = e;
     }
@@ -32,14 +32,15 @@ describe('Uploader', () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sbtest'));
     const tmpFile = path.join(tmpDir, 'tmp.txt')
     fs.writeFileSync(tmpFile, 'Hello');
-    await postFileToUrl(tmpFile, 'http://nock.nock/file');
+    await postFileToUrl(tmpFile, 'http://nock.nock/file', 'test');
   });
 
   test('api good', async () => {
     nock('http://nock.nock')
       .post('/post', '{}')
       .reply(200, {someResponseField: 12345})
-    const box = await postToApi('http://nock.nock/post', 'x', JSON.stringify({}));
+    const box = await postToApi('http://nock.nock/post',
+      'x', JSON.stringify({}), 'test');
     expect(box).toMatchObject({someResponseField: 12345});
   })
 
@@ -49,7 +50,7 @@ describe('Uploader', () => {
       .reply(500, {someResponseField: 12345})
     let ex: null | any = null
     try {
-      await postToApi('http://nock.nock/post', 'x', JSON.stringify({}));
+      await postToApi('http://nock.nock/post', 'x', JSON.stringify({}), 'test');
     } catch (e) {
       ex = e;
     }
@@ -58,7 +59,8 @@ describe('Uploader', () => {
 
   test.skip('localhost post api', async () => {
     //let res = await postToApi('https://httpbin.org/post', 'sdsds', JSON.stringify({hello: 1234}));
-    let res = await postToApi('http://127.0.0.1:5002/api/client/get-upload-urls-v1', 'rk:1:unit-test-org-token', JSON.stringify({}));
+    let res = await postToApi('http://127.0.0.1:5002/api/client/get-upload-urls-v1',
+      'rk:1:unit-test-org-token', JSON.stringify({}), 'test');
     expect(res?.output?.htmlUploadId).toHaveLength(26);
     expect(res?.output?.htmlUploadUrl).toContain('https://');
     expect(res?.output?.pngUploadId).toHaveLength(26);
@@ -68,7 +70,7 @@ describe('Uploader', () => {
   test.skip('my post file', async () => {
     fs.writeFileSync('tmp.tmp', 'hello', 'utf-8');
     await postFileToUrl('tmp.tmp',
-      'https://signed-url');
+      'https://signed-url', 'test');
   });
 
 });
