@@ -5,16 +5,6 @@ updates:
   # an exact version of playwright
 
   - package-ecosystem: "npm"
-    directory: "./client"
-    open-pull-requests-limit: 2
-    versioning-strategy: increase
-    schedule:
-      interval: weekly
-      day: monday
-      time: "07:00"
-      timezone: "Pacific/Auckland"
-
-  - package-ecosystem: "npm"
     directory: "./packages/shotbro-playwright"
     open-pull-requests-limit: 2
     versioning-strategy: increase
