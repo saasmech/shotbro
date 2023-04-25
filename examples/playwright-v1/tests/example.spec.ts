@@ -1,16 +1,9 @@
 import {test as playwrightTest} from '@playwright/test';
 import * as path from 'path';
 import * as dotenv from 'dotenv'
-import {shotBroPlaywright, shotBroUpload} from "shotbro";
+import {shotBroPlaywright} from "shotbro";
 
 dotenv.config()
-
-playwrightTest.afterAll(async ({}, testInfo) => {
-  if (testInfo.status === 'passed') {
-    // SHOTBRO_APP_API_KEY;
-    await shotBroUpload({});
-  }
-});
 
 playwrightTest('mobile light', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
@@ -19,8 +12,8 @@ playwrightTest('mobile light', async ({page}) => {
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
-    shotStreamCode: 'my-form',
-    metadata: {shotVersionTags: ['mobile', 'light']},
+    shotStreamCode: 'com.app.settings.my-form',
+    //metadata: {shotVersionTags: ['platform:mobile', 'theme:light']},
   })
 });
 
@@ -31,8 +24,8 @@ playwrightTest('mobile dark', async ({page}) => {
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
-    shotStreamCode: 'my-form',
-    metadata: {shotVersionTags: ['mobile', 'dark']}
+    shotStreamCode: 'com.app.settings.my-form',
+    //metadata: {shotVersionTags: ['platform:mobile', 'theme:dark']}
   });
 });
 
@@ -42,8 +35,8 @@ playwrightTest('desktop light', async ({page}) => {
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
-    shotStreamCode: 'my-form',
-    metadata: {shotVersionTags: ['desktop', 'light']},
+    shotStreamCode: 'com.app.settings.my-form',
+    //metadata: {shotVersionTags: ['platform:desktop', 'theme:light']},
   });
 });
 
@@ -54,7 +47,7 @@ playwrightTest('desktop dark', async ({page}) => {
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
-    shotStreamCode: 'my-form',
-    metadata: {shotVersionTags: ['desktop', 'dark']},
+    shotStreamCode: 'com.app.settings.my-form',
+    //metadata: {shotVersionTags: ['platform:desktop', 'theme:dark']},
   });
 });

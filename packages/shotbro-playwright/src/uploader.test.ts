@@ -39,7 +39,8 @@ describe('Uploader', () => {
     nock('http://nock.nock')
       .post('/post', '{}')
       .reply(200, {someResponseField: 12345})
-    const box = await postToApi('http://nock.nock/post', 'x', JSON.stringify({}), 'test');
+    const box = await postToApi('http://nock.nock/post',
+      'x', JSON.stringify({}), 'test');
     expect(box).toMatchObject({someResponseField: 12345});
   })
 
@@ -58,7 +59,8 @@ describe('Uploader', () => {
 
   test.skip('localhost post api', async () => {
     //let res = await postToApi('https://httpbin.org/post', 'sdsds', JSON.stringify({hello: 1234}));
-    let res = await postToApi('http://127.0.0.1:5002/api/client/get-upload-urls-v1', 'rk:1:unit-test-org-token', JSON.stringify({}), 'test');
+    let res = await postToApi('http://127.0.0.1:5002/api/client/get-upload-urls-v1',
+      'rk:1:unit-test-org-token', JSON.stringify({}), 'test');
     expect(res?.output?.htmlUploadId).toHaveLength(26);
     expect(res?.output?.htmlUploadUrl).toContain('https://');
     expect(res?.output?.pngUploadId).toHaveLength(26);
@@ -67,7 +69,8 @@ describe('Uploader', () => {
 
   test.skip('my post file', async () => {
     fs.writeFileSync('tmp.tmp', 'hello', 'utf-8');
-    await postFileToUrl('tmp.tmp','https://signed-url', 'test');
+    await postFileToUrl('tmp.tmp',
+      'https://signed-url', 'test');
   });
 
 });
