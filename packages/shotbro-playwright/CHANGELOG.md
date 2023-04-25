@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/saasmech/shotbro/compare/v1.16.1...v1.17.0) (2023-04-25)
+
+
+### Features
+
+* playwright specific pkg ([#120](https://github.com/saasmech/shotbro/issues/120)) ([a0810f8](https://github.com/saasmech/shotbro/commit/a0810f8e87f37b338e640fb29126bdfd7b37d6c1))
+
 ## [1.16.1](https://github.com/saasmech/shotbro/compare/v1.16.0...v1.16.1) (2023-04-17)
 
 
