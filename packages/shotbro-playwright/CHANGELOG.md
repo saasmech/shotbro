@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/saasmech/shotbro/compare/v1.17.0...v1.18.0) (2023-04-26)
+
+
+### Features
+
+* separate package ([#123](https://github.com/saasmech/shotbro/issues/123)) ([79b5b1b](https://github.com/saasmech/shotbro/commit/79b5b1b1e047cc4169420406e24a8bc508d0c411))
+
 ## [1.17.0](https://github.com/saasmech/shotbro/compare/v1.16.1...v1.17.0) (2023-04-25)
 
 
