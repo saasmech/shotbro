@@ -1,4 +1,5 @@
-import type {Page} from '@playwright/test';
+import type {Page, TestInfo} from '@playwright/test';
+import type {FullConfig, FullResult, Reporter, Suite, TestCase, TestResult} from '@playwright/test/reporter';
 
 import type {
   ShotBroOutput,
@@ -7,7 +8,6 @@ import type {
 } from './shotbro-types';
 
 import * as fs from 'fs';
-import * as readline from 'readline';
 import * as os from 'os';
 import * as path from 'path';
 import {uploadToApi} from './uploader';
@@ -15,12 +15,14 @@ import {generateMainScreenshot} from './main-shot/main-screenshotter';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 import {ShotBroCaptureConfig} from "./shotbro-types";
+import * as readline from "readline";
 
 // use date at start, so it will be the same for all invocations while node is running
 const ISO_DATE_AT_START = new Date().toISOString();
+const PW_TEST_INFO_ANNOTATION_KEY = 'shotbro-input-ulid';
 
 function prepareUploadConfig(uploadConfig: ShotBroUploadConfig): ShotBroUploadConfig {
-  if (!uploadConfig) uploadConfig = {}
+  if (!uploadConfig) uploadConfig = {testRunUlid: ulid()}
   if (!uploadConfig.appApiKey) uploadConfig.appApiKey = process.env.SHOTBRO_APP_API_KEY;
   if (!uploadConfig.baseUrl) uploadConfig.baseUrl = process.env.SHOTBRO_BASE_URL;
   if (!uploadConfig.baseUrl) uploadConfig.baseUrl = 'https://shotbro.io';
@@ -110,29 +112,36 @@ function prepareOutDir(outDir: string) {
 /**
  *
  * @param page Playwright page that you want to screenshot
+ * @param testInfo Playwright testInfo
  * @param inputCaptureConfig
  * @param uploadConfig false=disable upload, or a ShotBroUploadConfig
  */
 export async function shotBroPlaywright(
-  page: Page, inputCaptureConfig: ShotBroCaptureConfig,
-  uploadConfig?: ShotBroUploadConfig|false): Promise<ShotBroOutput> {
+  page: Page, testInfo: TestInfo, inputCaptureConfig: ShotBroCaptureConfig,
+  uploadConfig?: ShotBroUploadConfig | false,
+): Promise<ShotBroOutput> {
 
+  const uploadGroupUlid = ulid();
   const log = new CliLog(inputCaptureConfig.out?.logLevel || 'info');
   const captureConfig = prepareCaptureConfig(inputCaptureConfig);
-  const uploadGroupUlid = ulid();
   const systemInfo = await playwrightPrepareSystemInfo(page, log, uploadGroupUlid);
+
+  if (testInfo?.annotations?.push) {
+    testInfo.annotations.push({type: PW_TEST_INFO_ANNOTATION_KEY, description: systemInfo.inputUlid});
+  } else {
+    log.warn('Unable to store inputUlid in testInfo annotations.');
+  }
 
   let outDir = captureConfig.out!.workingDirectory!;
   let output: ShotBroOutput = {
     shotAdded: false,
   };
-  let cleanOutDir = true;
+  let cleanOutDir = false;
   try {
     if (cleanOutDir) cleanupOutDir(outDir)
 
     log.debug(`Prepare output dir ${outDir}`)
     outDir = prepareOutDir(outDir);
-    let indexJsonLPath = path.join(outDir, 'index.jsonl');
     let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
     let elPosJsonPath = path.join(outDir, `${systemInfo.inputUlid}.json`);
     log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
@@ -142,10 +151,6 @@ export async function shotBroPlaywright(
       captureConfig, systemInfo
     }), 'utf-8');
 
-    const lineObj: IndexLineObj = {inputUlid: systemInfo.inputUlid!}
-    if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
-    fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj), 'utf-8');
-    fs.appendFileSync(indexJsonLPath, '\n', 'utf-8');
 
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
@@ -159,25 +164,36 @@ type IndexLineObj = {
   inputUlid: string
 }
 
-// TODO: is this needed anymore?
-// noinspection JSUnusedGlobalSymbols
-export async function shotBroUpload(uploadConfig: ShotBroUploadConfig): Promise<ShotBroOutput[]> {
-  const log = new CliLog(uploadConfig.logLevel || 'info');
-  const preparedUploadConfig = prepareUploadConfig(uploadConfig)
-  let outDir = preparedUploadConfig!.workingDirectory!;
+function recordInJsonL(outDir: string, inputUlid: string) {
+  let indexJsonLPath = path.join(outDir, 'index.jsonl');
+  const lineObj: IndexLineObj = {inputUlid: inputUlid}
+  if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
+  fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj), 'utf-8');
+  fs.appendFileSync(indexJsonLPath, '\n', 'utf-8');
+}
+
+function readFromJsonL(outDir: string) : readline.Interface {
   let indexJsonLPath = path.join(outDir, 'index.jsonl');
   const fileStream = fs.createReadStream(indexJsonLPath);
-
-  const rl = readline.createInterface({
+  return readline.createInterface({
     input: fileStream,
     crlfDelay: Infinity    // recognize all instances of CR LF ('\r\n') in input.txt as a single line break
   });
+}
+
+// TODO: is this needed anymore?
+// noinspection JSUnusedGlobalSymbols
+export async function shotBroUpload(uploadConfig: ShotBroUploadConfig, inputUlids: string[]): Promise<ShotBroOutput[]> {
+  const log = new CliLog(uploadConfig.logLevel || 'info');
+  const preparedUploadConfig = prepareUploadConfig(uploadConfig)
+  let outDir = preparedUploadConfig!.workingDirectory!;
+
   const outputs = [];
-  for await (const line of rl) {
-    const lineObj = JSON.parse(line) as IndexLineObj;
-    const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${lineObj.inputUlid}.json`)).toString('utf-8'))
-    let mainPngPath = path.join(outDir, `${lineObj.inputUlid}.png`);
-    let elPosJsonPath = path.join(outDir, `${lineObj.inputUlid}.json`);
+  for await (const inputUlid of inputUlids) {
+    //const lineObj = JSON.parse(line) as IndexLineObj;
+    const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${inputUlid}.json`)).toString('utf-8'))
+    let mainPngPath = path.join(outDir, `${inputUlid}.png`);
+    let elPosJsonPath = path.join(outDir, `${inputUlid}.json`);
     let systemInfo: ShotBroSystemInfo = mainJson.systemInfo as ShotBroSystemInfo;
     let captureConfig: ShotBroCaptureConfig = mainJson.captureConfig as ShotBroCaptureConfig;
     if (!captureConfig.metadata) captureConfig.metadata = {};
@@ -198,7 +214,50 @@ function cleanupOutDir(outDir: string) {
   }
 }
 
-// types
+
+class ShotBroPlaywrightReporter implements Reporter {
+  private playwrightVersion?: string;
+  private testRunUlid?: string;
+  private inputUlids: string[] = [];
+
+  onBegin(config: FullConfig, suite: Suite) {
+    console.log(`ShotBro: begin`);
+    this.playwrightVersion = config.version;
+    this.testRunUlid = ulid();
+  }
+
+  onTestBegin(test: TestCase, result: TestResult) {
+
+  }
+
+  onTestEnd(test: TestCase, result: TestResult) {
+    result.attachments;
+    test.annotations.forEach((a) => {
+      if (a.type === PW_TEST_INFO_ANNOTATION_KEY) {
+        console.log('ShotBro: add shot', a.description);
+        this.inputUlids.push(a.description as string);
+      }
+    });
+  }
+
+  async onEnd(result: FullResult): Promise<void> {
+    console.log(`ShotBro: Test run finished with status: ${result.status}`);
+    console.log(this.inputUlids);
+    if (result.status === 'passed') {
+      console.log(`ShotBro: Starting uploads`);
+      await shotBroUpload({
+        capturePlatformType: 'playwright',
+        capturePlatformVersion: this.playwrightVersion ?? 'unknown',
+        testRunUlid: this.testRunUlid!,
+      }, this.inputUlids);
+    }
+  }
+}
+
+// noinspection JSUnusedGlobalSymbols
+export default ShotBroPlaywrightReporter;
+
+
 export type {
   ShotBroCaptureConfig,
   ShotBroOutput,

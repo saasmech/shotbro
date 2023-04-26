@@ -1,11 +1,11 @@
-import {test as playwrightTest} from '@playwright/test';
+import {test} from '@playwright/test';
 import * as path from 'path';
 import * as dotenv from 'dotenv'
-import {shotBroPlaywright} from "shotbro";
+import {shotBroPlaywright} from "shotbro-playwright";
 
-dotenv.config()
+dotenv.config();
 
-playwrightTest('mobile light', async ({page}) => {
+test('mobile light', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
   await page.setViewportSize({width: 320, height: 320});
   await page.emulateMedia({media: 'screen', colorScheme: 'light'});
@@ -13,11 +13,10 @@ playwrightTest('mobile light', async ({page}) => {
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'com.app.settings.my-form',
-    //metadata: {shotVersionTags: ['platform:mobile', 'theme:light']},
   })
 });
 
-playwrightTest('mobile dark', async ({page}) => {
+test('mobile dark', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
   await page.setViewportSize({width: 320, height: 320});
   await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
@@ -25,22 +24,20 @@ playwrightTest('mobile dark', async ({page}) => {
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'com.app.settings.my-form',
-    //metadata: {shotVersionTags: ['platform:mobile', 'theme:dark']}
   });
 });
 
-playwrightTest('desktop light', async ({page}) => {
+test('desktop light', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
   await page.setViewportSize({width: 1024, height: 320});
   await page.goto(`file:${examplePath}`);
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'com.app.settings.my-form',
-    //metadata: {shotVersionTags: ['platform:desktop', 'theme:light']},
   });
 });
 
-playwrightTest('desktop dark', async ({page}) => {
+test('desktop dark', async ({page}) => {
   const examplePath = path.join(__dirname, "example.html");
   await page.setViewportSize({width: 1024, height: 320});
   await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
@@ -48,6 +45,5 @@ playwrightTest('desktop dark', async ({page}) => {
 
   await shotBroPlaywright(page, {
     shotStreamCode: 'com.app.settings.my-form',
-    //metadata: {shotVersionTags: ['platform:desktop', 'theme:dark']},
   });
 });

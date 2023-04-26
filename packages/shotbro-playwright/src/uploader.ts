@@ -42,8 +42,8 @@ export async function uploadToApi(
     const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
     const startIncomingShotRes = await postToApi(startIncomingShotUrl, uploadConfig.appApiKey, JSON.stringify({
-      nodeUserAgent: createIncomingShotRes.output.incomingShotRn,
-    }), clientUserAgent)
+      incomingShotRn: createIncomingShotRes.output.incomingShotRn,
+    }), userAgent)
 
     log.info('Uploaded shot.')
     log.info('')
