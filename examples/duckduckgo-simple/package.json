@@ -1,0 +1,21 @@
+{
+  "name": "shotbro-test-playwright-v1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "npx playwright install-deps chromium",
+    "test": "npx playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.32.3",
+    "dotenv": "^16.0.3",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "shotbro-playwright": "file:../../packages/shotbro-playwright"
+  }
+}

@@ -180,6 +180,9 @@ export type ShotBroOutputConfig = {
 }
 
 export type ShotBroUploadConfig = {
+
+  testRunUlid: string
+
   /**
    * The directory to save work files into
    * Default: `<current-directory>/.shotbro/out`
@@ -207,6 +210,7 @@ export type ShotBroUploadConfig = {
 
   capturePlatformType?: 'playwright'
   capturePlatformVersion?: string
+
 }
 
 /**

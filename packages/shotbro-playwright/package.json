@@ -20,14 +20,8 @@
   "homepage": "https://github.com/saasmech/shotbro#readme",
   "license": "MIT",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "type": "module",
-  "exports": {
-    "default": "./dist/index.cjs",
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.js",
-    "node": "./dist/index.cjs"
-  },
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "README.md",
     "dist"
@@ -39,7 +33,7 @@
     "pretest": "npx playwright install",
     "test": "jest",
     "test:update-snapshots": "jest --updateSnapshot",
-    "build": "tsup ./src/index.ts --format iife,cjs,esm --dts --sourcemap"
+    "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
   },
   "peerDependencies": {
     "@playwright/test": ">= 1"

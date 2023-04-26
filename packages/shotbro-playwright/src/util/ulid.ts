@@ -32,6 +32,37 @@ const TIME_MAX = Math.pow(2, 48) - 1
 const TIME_LEN = 10
 const RANDOM_LEN = 16
 
+export function replaceCharAt(str: string, index: number, char: string) {
+  if (index > str.length - 1) {
+    return str
+  }
+  return str.substr(0, index) + char + str.substr(index + 1)
+}
+
+export function incrementBase32(str: string): string {
+  let done: string|undefined = undefined
+  let index = str.length
+  let char
+  let charIndex
+  const maxCharIndex = ENCODING_LEN - 1
+  while (!done && index-- >= 0) {
+    char = str[index]
+    charIndex = ENCODING.indexOf(char)
+    if (charIndex === -1) {
+      throw createError("incorrectly encoded string")
+    }
+    if (charIndex === maxCharIndex) {
+      str = replaceCharAt(str, index, ENCODING[0])
+      continue
+    }
+    done = replaceCharAt(str, index, ENCODING[charIndex + 1])
+  }
+  if (typeof done === "string") {
+    return done
+  }
+  throw createError("cannot increment this string")
+}
+
 export function randomChar(prng: PRNG): string {
   let rand = Math.floor(prng() * ENCODING_LEN)
   if (rand === ENCODING_LEN) {
@@ -71,7 +102,7 @@ export function encodeRandom(len: number, prng: PRNG): string {
   return str
 }
 
-export function detectPrng(allowInsecure: boolean = false, root?: any): PRNG {
+export function detectPrng(allowInsecure: boolean = true, root?: any): PRNG {
   if (!root) {
     root = typeof window !== "undefined" ? window : null
   }
@@ -88,15 +119,13 @@ export function detectPrng(allowInsecure: boolean = false, root?: any): PRNG {
     try {
       const nodeCrypto = require("crypto")
       return () => nodeCrypto.randomBytes(1).readUInt8() / 0xff
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   if (allowInsecure) {
-    try {
-      console.error("secure crypto unusable, falling back to insecure Math.random()!")
-    } catch (e) {
-    }
+    // try {
+    //   console.error("secure crypto unusable, falling back to insecure Math.random()!")
+    // } catch (e) {}
     return () => Math.random()
   }
 
@@ -108,11 +137,30 @@ export function factory(currPrng?: PRNG): ULID {
     currPrng = detectPrng()
   }
   return function ulid(seedTime?: number): string {
-    if (!seedTime || isNaN(seedTime)) {
+    if (isNaN(seedTime ?? NaN)) {
       seedTime = Date.now()
     }
-    if (!currPrng) throw new Error('could not detect prng');
-    return encodeTime(seedTime, TIME_LEN) + encodeRandom(RANDOM_LEN, currPrng)
+    return encodeTime(seedTime!, TIME_LEN) + encodeRandom(RANDOM_LEN, currPrng!)
+  }
+}
+
+export function monotonicFactory(currPrng?: PRNG): ULID {
+  if (!currPrng) {
+    currPrng = detectPrng()
+  }
+  let lastTime: number = 0
+  let lastRandom: string
+  return function ulid(seedTime?: number): string {
+    if (isNaN(seedTime ?? NaN)) {
+      seedTime = Date.now()
+    }
+    if (seedTime! <= lastTime) {
+      const incrementedRandom = (lastRandom = incrementBase32(lastRandom))
+      return encodeTime(lastTime, TIME_LEN) + incrementedRandom
+    }
+    lastTime = seedTime!
+    const newRandom = (lastRandom = encodeRandom(RANDOM_LEN, currPrng!))
+    return encodeTime(seedTime!, TIME_LEN) + newRandom
   }
 }
 
