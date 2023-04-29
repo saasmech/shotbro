@@ -16,7 +16,9 @@ export async function generateMainScreenshot(page: Page, jsonElPositionsPath: st
       x: rootBb.x, y: rootBb.y,
       width: rootBb.width > MAIN_CAPTURE_WIDTH_LIMIT ? MAIN_CAPTURE_WIDTH_LIMIT : rootBb.width,
       height: rootBb.height > MAIN_CAPTURE_HEIGHT_LIMIT ? MAIN_CAPTURE_HEIGHT_LIMIT : rootBb.height,
-    }
+    },
+    type: 'png',
+    scale: 'device' // we want to get the best quality possible
   });
 
   type ElPos = {
