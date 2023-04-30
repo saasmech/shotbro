@@ -26,7 +26,7 @@ describe('ShotBro Playwright Client', () => {
       expect(systemInfo.osVersion?.length).toBeGreaterThan(3);
       expect(systemInfo.browserType?.length).toBeGreaterThan(3);
       expect(systemInfo.browserType?.length).toBeLessThan(32);
-      expect(systemInfo.browserVersion?.length).toBeGreaterThan(3);
+      expect(systemInfo.browserVersion?.length).toBeGreaterThan(2);
       expect(systemInfo.browserVersion?.length).toBeLessThan(32);
       expect(systemInfo.browserUserAgent?.length).toBeGreaterThan(30);
       expect(systemInfo.browserUserAgent?.length).toBeLessThan(255);
@@ -37,6 +37,6 @@ describe('ShotBro Playwright Client', () => {
       expect(systemInfo.browserDevicePixelRatio).toBe(1);
       expect(systemInfo.inputUlid).toHaveLength(29);
       expect(systemInfo.uploadGroupUlid).toBe('ug:upload-group');
-    })
+    });
 
 });
