@@ -11,16 +11,16 @@ export class CliLog {
     this.logLevel = logLevel;
   }
 
-  debug(msg: string) {
-    if (['debug'].includes(this.logLevel)) console.debug(msg)
+  debug(...args: any[]) {
+    if (['debug'].includes(this.logLevel)) console.debug(...args)
   }
 
-  info(msg: string) {
-    if (['info', 'debug'].includes(this.logLevel)) console.info(msg)
+  info(...args: any[]) {
+    if (['info', 'debug'].includes(this.logLevel)) console.info(...args)
   }
 
-  warn(msg: string) {
-    if (['warn', 'info', 'debug'].includes(this.logLevel)) console.warn(msg);
+  warn(...args: any[]) {
+    if (['warn', 'info', 'debug'].includes(this.logLevel)) console.warn(...args);
   }
 
   // not sure if we need error.  We don't want to fail ever as it could block a users test pipeline.
