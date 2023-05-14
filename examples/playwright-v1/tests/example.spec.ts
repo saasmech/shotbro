@@ -25,6 +25,11 @@ test('mobile dark', async ({page}, testInfo) => {
   await shotBroPlaywright(page, testInfo, {
     shotStreamCode: 'com.app.settings.my-form',
   });
+
+  // make a duplicate so we test incoming
+  await shotBroPlaywright(page, testInfo, {
+    shotStreamCode: 'com.app.settings.my-form',
+  });
 });
 
 test('desktop light', async ({page}, testInfo) => {
