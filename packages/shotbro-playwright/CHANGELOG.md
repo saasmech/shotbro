@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/saasmech/shotbro/compare/v1.18.0...v1.19.0) (2023-05-14)
+
+
+### Features
+
+* cleanup old working code and types ([#128](https://github.com/saasmech/shotbro/issues/128)) ([62575c1](https://github.com/saasmech/shotbro/commit/62575c1ef707c0bf703d685500a14ef392a0e323))
+
 ## [1.18.0](https://github.com/saasmech/shotbro/compare/v1.17.0...v1.18.0) (2023-04-26)
 
 
