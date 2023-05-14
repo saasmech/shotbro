@@ -2,7 +2,7 @@ import {
   ShotBroCaptureConfig,
   ShotBroOutput,
   ShotBroSystemInfo,
-  ShotBroUploadConfig
+  ShotBroReporterConfig
 } from "./shotbro-types";
 
 import * as https from 'https';
@@ -11,19 +11,19 @@ import * as fs from "fs";
 import {CliLog} from "./util/log";
 
 export async function uploadToApi(
-  uploadConfig: ShotBroUploadConfig, input: ShotBroCaptureConfig, elPosJsonPath: string, pngPath: string,
+  reporterConfig: ShotBroReporterConfig, input: ShotBroCaptureConfig, elPosJsonPath: string, pngPath: string,
   systemInfo: ShotBroSystemInfo, log: CliLog): Promise<ShotBroOutput> {
   const clientUserAgent = `shotbro-client-uploader-v1.0.0`;  // todo use package number
   const userAgent = `ShotBro-Client/1.0.0 NodeJS/${process.version}`;  // todo use package number
-  if (!uploadConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
-  if (!uploadConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
+  if (!reporterConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
+  if (!reporterConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
 
   const output: ShotBroOutput = {
     shotAdded: false
   }
-  const createIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
+  const createIncomingShotUrl = `${reporterConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
-  const createIncomingShotRes = await postToApi(createIncomingShotUrl, uploadConfig?.appApiKey, JSON.stringify({
+  const createIncomingShotRes = await postToApi(createIncomingShotUrl, reporterConfig?.appApiKey, JSON.stringify({
     clientUserAgent, shotDetails: input, systemInfo: systemInfo
   }), userAgent)
 
@@ -39,14 +39,13 @@ export async function uploadToApi(
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl, userAgent);
 
-    const startIncomingShotUrl = `${uploadConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
+    const startIncomingShotUrl = `${reporterConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
-    const startIncomingShotRes = await postToApi(startIncomingShotUrl, uploadConfig.appApiKey, JSON.stringify({
+    const startIncomingShotRes = await postToApi(startIncomingShotUrl, reporterConfig.appApiKey, JSON.stringify({
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
     }), userAgent)
 
-    log.info('Uploaded shot.')
-    log.info('')
+    log.debug('Uploaded shot', createIncomingShotRes.output.incomingShotRn);
 
     // if (startIncomingShotRes?.output?.embedHtml) {
     //   log.info('Embed in HTML with:')

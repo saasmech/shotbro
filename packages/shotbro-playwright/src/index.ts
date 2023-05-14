@@ -4,7 +4,7 @@ import type {FullConfig, FullResult, Reporter, Suite, TestCase, TestResult} from
 import type {
   ShotBroOutput,
   ShotBroSystemInfo,
-  ShotBroUploadConfig
+  ShotBroReporterConfig, ShotBroLogLevel
 } from './shotbro-types';
 
 import * as fs from 'fs';
@@ -15,20 +15,21 @@ import {generateMainScreenshot} from './main-shot/main-screenshotter';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 import {ShotBroCaptureConfig} from "./shotbro-types";
-import * as readline from "readline";
 
 // use date at start, so it will be the same for all invocations while node is running
 const ISO_DATE_AT_START = new Date().toISOString();
 const PW_TEST_INFO_ANNOTATION_KEY = 'shotbro-input-ulid';
+const PW_TEST_INFO_WORKING_DIR_KEY = 'shotbro-working-dir';
+const PW_TEST_INFO_LOG_LEVEL_KEY = 'shotbro-log-level';
 
-function prepareUploadConfig(uploadConfig: ShotBroUploadConfig): ShotBroUploadConfig {
-  if (!uploadConfig) uploadConfig = {testRunUlid: ulid()}
-  if (!uploadConfig.appApiKey) uploadConfig.appApiKey = process.env.SHOTBRO_APP_API_KEY;
-  if (!uploadConfig.baseUrl) uploadConfig.baseUrl = process.env.SHOTBRO_BASE_URL;
-  if (!uploadConfig.baseUrl) uploadConfig.baseUrl = 'https://shotbro.io';
-  if (!uploadConfig.workingDirectory) uploadConfig.workingDirectory = '.shotbro/out';
-  return uploadConfig;
-
+function prepareReporterConfig(config: ShotBroReporterConfig): ShotBroReporterConfig {
+  if (!config) config = {}
+  if (!config.appApiKey) config.appApiKey = process.env.SHOTBRO_APP_API_KEY;
+  if (!config.baseUrl) config.baseUrl = process.env.SHOTBRO_BASE_URL;
+  if (!config.baseUrl) config.baseUrl = 'https://shotbro.io';
+  if (!config.workingDirectory) config.workingDirectory = '.shotbro/out';
+  if (!config.logLevel) config.logLevel = 'info';
+  return config;
 }
 
 function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureConfig {
@@ -47,8 +48,6 @@ function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureCon
   if (input.shotStreamCode.length > 120) {
     throw new Error('shotName must be less than 120 characters')
   }
-  if (!input.out) input.out = {}
-  if (!input.out.workingDirectory) input.out.workingDirectory = '.shotbro/out';
   return input;
 }
 
@@ -93,6 +92,8 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog, uploa
     browserViewportHeight: browserInfo.infoViewportHeight,
     browserPrefersColorScheme: browserInfo.infoColorScheme,
     browserDevicePixelRatio: browserInfo.infoDevicePixelRatio,
+    capturePlatformType: 'playwright',
+    capturePlatformVersion: '0.0.0', // overwritten later by uploader and reporter
   };
   log.debug(`systemInfo ${JSON.stringify(systemInfo)}`)
   return systemInfo;
@@ -114,15 +115,21 @@ function prepareOutDir(outDir: string) {
  * @param page Playwright page that you want to screenshot
  * @param testInfo Playwright testInfo
  * @param inputCaptureConfig
- * @param uploadConfig false=disable upload, or a ShotBroUploadConfig
  */
 export async function shotBroPlaywright(
-  page: Page, testInfo: TestInfo, inputCaptureConfig: ShotBroCaptureConfig,
-  uploadConfig?: ShotBroUploadConfig | false,
+  page: Page, testInfo: TestInfo, inputCaptureConfig: ShotBroCaptureConfig
 ): Promise<ShotBroOutput> {
 
+  let outDir = '.shotbro/out';
+  let logLevel : ShotBroLogLevel = 'info';
+  testInfo.annotations.forEach((a) => {
+    if (a.type === PW_TEST_INFO_WORKING_DIR_KEY) outDir = a.description as string;
+    if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
+  });
+
+
   const uploadGroupUlid = ulid();
-  const log = new CliLog(inputCaptureConfig.out?.logLevel || 'info');
+  const log = new CliLog(logLevel);
   const captureConfig = prepareCaptureConfig(inputCaptureConfig);
   const systemInfo = await playwrightPrepareSystemInfo(page, log, uploadGroupUlid);
 
@@ -132,7 +139,6 @@ export async function shotBroPlaywright(
     log.warn('Unable to store inputUlid in testInfo annotations.');
   }
 
-  let outDir = captureConfig.out!.workingDirectory!;
   let output: ShotBroOutput = {
     shotAdded: false,
   };
@@ -160,46 +166,23 @@ export async function shotBroPlaywright(
   return output
 }
 
-type IndexLineObj = {
-  inputUlid: string
-}
-
-function recordInJsonL(outDir: string, inputUlid: string) {
-  let indexJsonLPath = path.join(outDir, 'index.jsonl');
-  const lineObj: IndexLineObj = {inputUlid: inputUlid}
-  if (!fs.existsSync(indexJsonLPath)) fs.writeFileSync(indexJsonLPath, '', 'utf-8')
-  fs.appendFileSync(indexJsonLPath, JSON.stringify(lineObj), 'utf-8');
-  fs.appendFileSync(indexJsonLPath, '\n', 'utf-8');
-}
-
-function readFromJsonL(outDir: string) : readline.Interface {
-  let indexJsonLPath = path.join(outDir, 'index.jsonl');
-  const fileStream = fs.createReadStream(indexJsonLPath);
-  return readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity    // recognize all instances of CR LF ('\r\n') in input.txt as a single line break
-  });
-}
-
-// TODO: is this needed anymore?
 // noinspection JSUnusedGlobalSymbols
-export async function shotBroUpload(uploadConfig: ShotBroUploadConfig, inputUlids: string[]): Promise<ShotBroOutput[]> {
-  const log = new CliLog(uploadConfig.logLevel || 'info');
-  const preparedUploadConfig = prepareUploadConfig(uploadConfig)
+async function shotBroUpload(uploadConfig: ShotBroReporterConfig, inputUlids: string[], log: CliLog,
+                             capturePlatformVersion: string): Promise<ShotBroOutput[]> {
+  const preparedUploadConfig = prepareReporterConfig(uploadConfig)
   let outDir = preparedUploadConfig!.workingDirectory!;
 
   const outputs = [];
   for await (const inputUlid of inputUlids) {
-    //const lineObj = JSON.parse(line) as IndexLineObj;
+    log.debug(`ShotBro: Processing`, inputUlid);
     const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${inputUlid}.json`)).toString('utf-8'))
     let mainPngPath = path.join(outDir, `${inputUlid}.png`);
     let elPosJsonPath = path.join(outDir, `${inputUlid}.json`);
     let systemInfo: ShotBroSystemInfo = mainJson.systemInfo as ShotBroSystemInfo;
+    systemInfo.capturePlatformVersion = capturePlatformVersion;
     let captureConfig: ShotBroCaptureConfig = mainJson.captureConfig as ShotBroCaptureConfig;
     if (!captureConfig.metadata) captureConfig.metadata = {};
     captureConfig.metadata.appVersion = ISO_DATE_AT_START;
-    systemInfo.capturePlatformType = preparedUploadConfig.capturePlatformType;
-    systemInfo.capturePlatformVersion = preparedUploadConfig.capturePlatformVersion;
     const output = await uploadToApi(preparedUploadConfig, captureConfig, elPosJsonPath, mainPngPath, systemInfo, log);
     outputs.push(output);
   }
@@ -214,42 +197,52 @@ function cleanupOutDir(outDir: string) {
   }
 }
 
-
 class ShotBroPlaywrightReporter implements Reporter {
-  private playwrightVersion?: string;
+  private readonly options: ShotBroReporterConfig;
+  private readonly log: CliLog;
   private testRunUlid?: string;
   private inputUlids: string[] = [];
+  private capturePlatformVersion?: string
+
+  constructor(options: ShotBroReporterConfig) {
+    this.options = prepareReporterConfig(options);
+    this.log = new CliLog(this.options.logLevel || 'info');
+  }
 
   onBegin(config: FullConfig, suite: Suite) {
-    console.log(`ShotBro: begin`);
-    this.playwrightVersion = config.version;
+    this.capturePlatformVersion = config.version;
     this.testRunUlid = ulid();
+    this.log.info(`ShotBro: begin`, this.testRunUlid);
+    this.log.debug(`ShotBro: configured for`, {
+      baseUrl: this.options.baseUrl,
+      workingDirectory: this.options.workingDirectory,
+      logLevel: this.options.logLevel,
+    });
+
   }
 
   onTestBegin(test: TestCase, result: TestResult) {
-
+    test.annotations.push({type: PW_TEST_INFO_WORKING_DIR_KEY, description: this.options.workingDirectory!});
+    test.annotations.push({type: PW_TEST_INFO_LOG_LEVEL_KEY, description: this.options.logLevel!});
   }
 
   onTestEnd(test: TestCase, result: TestResult) {
     result.attachments;
     test.annotations.forEach((a) => {
       if (a.type === PW_TEST_INFO_ANNOTATION_KEY) {
-        console.log('ShotBro: add shot', a.description);
+        this.log.debug('ShotBro: add shot', a.description);
         this.inputUlids.push(a.description as string);
       }
     });
   }
 
   async onEnd(result: FullResult): Promise<void> {
-    console.log(`ShotBro: Test run finished with status: ${result.status}`);
-    console.log(this.inputUlids);
+    this.log.info(`ShotBro: Test run finished with status: ${result.status}`);
+    this.log.debug(`ShotBro: ulids for upload`, this.inputUlids);
     if (result.status === 'passed') {
-      console.log(`ShotBro: Starting uploads`);
-      await shotBroUpload({
-        capturePlatformType: 'playwright',
-        capturePlatformVersion: this.playwrightVersion ?? 'unknown',
-        testRunUlid: this.testRunUlid!,
-      }, this.inputUlids);
+      this.log.info(`ShotBro: Starting uploads`);
+      await shotBroUpload(this.options, this.inputUlids, this.log, this.capturePlatformVersion!);
+      this.log.info(`ShotBro: Completed`, this.testRunUlid);
     }
   }
 }
@@ -262,8 +255,7 @@ export type {
   ShotBroCaptureConfig,
   ShotBroOutput,
   ShotBroSystemInfo,
-  ShotBroUploadConfig,
+  ShotBroReporterConfig,
   ShotBroLogLevel,
-  ShotBroOutputConfig,
   ShotBroMetadata,
 } from './shotbro-types';
