@@ -1,8 +1,5 @@
 import {test} from '@playwright/test';
-import * as dotenv from 'dotenv'
 import {shotBroPlaywright} from "shotbro-playwright";
-
-dotenv.config()
 
 const locales = ['zh-cn', 'en-us', 'fr-fr'];
 const colorSchemes = ['light', 'dark'];
@@ -24,35 +21,35 @@ for (let l = 0; l < locales.length; l++) {
             await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
             await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
             await page.goto(`https://duckduckgo.com/`);
-            await shotBroPlaywright(page, testInfo, {shotStreamCode: 'com.duckduckgo.home'})
+            await shotBroPlaywright(page, testInfo, {streamCode: 'com.duckduckgo.home'})
           });
         test(`settings: colorScheme ${colorScheme} viewportSize ${viewportSize.width}x${viewportSize.height}`,
           async ({page}, testInfo) => {
             await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
             await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
             await page.goto(`https://duckduckgo.com/settings#general`);
-            await shotBroPlaywright(page, testInfo, {shotStreamCode: 'com.duckduckgo.settings.general'})
+            await shotBroPlaywright(page, testInfo, {streamCode: 'com.duckduckgo.settings.general'})
           });
         test(`privacy: colorScheme ${colorScheme} viewportSize ${viewportSize.width}x${viewportSize.height}`,
           async ({page}, testInfo) => {
             await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
             await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
             await page.goto(`https://duckduckgo.com/settings#privacy`);
-            await shotBroPlaywright(page, testInfo, {shotStreamCode: 'com.duckduckgo.settings.privacy'})
+            await shotBroPlaywright(page, testInfo, {streamCode: 'com.duckduckgo.settings.privacy'})
           });
         test(`appearance: colorScheme ${colorScheme} viewportSize ${viewportSize.width}x${viewportSize.height}`,
           async ({page}, testInfo) => {
             await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
             await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
             await page.goto(`https://duckduckgo.com/settings#appearance`);
-            await shotBroPlaywright(page, testInfo, {shotStreamCode: 'com.duckduckgo.settings.appearance'})
+            await shotBroPlaywright(page, testInfo, {streamCode: 'com.duckduckgo.settings.appearance'})
           });
         test(`results: colorScheme ${colorScheme} viewportSize ${viewportSize.width}x${viewportSize.height}`,
           async ({page}, testInfo) => {
             await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
             await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
             await page.goto(`https://duckduckgo.com/?q=hello`);
-            await shotBroPlaywright(page, testInfo, {shotStreamCode: 'com.duckduckgo.search.results'})
+            await shotBroPlaywright(page, testInfo, {streamCode: 'com.duckduckgo.search.results'})
           });
       });
     }

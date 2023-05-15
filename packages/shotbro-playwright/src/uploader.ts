@@ -11,12 +11,12 @@ import * as fs from "fs";
 import {CliLog} from "./util/log";
 
 export async function uploadToApi(
-  reporterConfig: ShotBroReporterConfig, input: ShotBroCaptureConfig, elPosJsonPath: string, pngPath: string,
+  reporterConfig: ShotBroReporterConfig, captureConfig: ShotBroCaptureConfig, elPosJsonPath: string, pngPath: string,
   systemInfo: ShotBroSystemInfo, log: CliLog): Promise<ShotBroOutput> {
   const clientUserAgent = `shotbro-client-uploader-v1.0.0`;  // todo use package number
   const userAgent = `ShotBro-Client/1.0.0 NodeJS/${process.version}`;  // todo use package number
-  if (!reporterConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in input.out.appApiKey');
-  if (!reporterConfig?.baseUrl) throw new Error('input.out.baseUrl was not set.  It should have defaulted.');
+  if (!reporterConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in appApiKey');
+  if (!reporterConfig?.baseUrl) throw new Error('baseUrl was not set.  It should have defaulted.');
 
   const output: ShotBroOutput = {
     shotAdded: false
@@ -24,7 +24,7 @@ export async function uploadToApi(
   const createIncomingShotUrl = `${reporterConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
   const createIncomingShotRes = await postToApi(createIncomingShotUrl, reporterConfig?.appApiKey, JSON.stringify({
-    clientUserAgent, shotDetails: input, systemInfo: systemInfo
+    clientUserAgent, captureConfig: captureConfig, systemInfo: systemInfo
   }), userAgent)
 
   if (createIncomingShotRes.output.error) {
