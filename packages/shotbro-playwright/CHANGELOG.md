@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/saasmech/shotbro/compare/v1.19.0...v1.20.0) (2023-05-15)
+
+
+### Features
+
+* changes to match api ([#130](https://github.com/saasmech/shotbro/issues/130)) ([b3491ce](https://github.com/saasmech/shotbro/commit/b3491cee8a403fb641f0d7bf006a02aa394fd311))
+
 ## [1.19.0](https://github.com/saasmech/shotbro/compare/v1.18.0...v1.19.0) (2023-05-14)
 
 
