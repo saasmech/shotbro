@@ -16,15 +16,18 @@ import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 import {ShotBroCaptureConfig} from "./shotbro-types";
 
-// use date at start, so it will be the same for all invocations while node is running
-const ISO_DATE_AT_START = new Date().toISOString();
 const PW_TEST_INFO_ANNOTATION_KEY = 'shotbro-input-ulid';
+const PW_TEST_INFO_RUN_ULID = 'shotbro-test-run-ulid';
 const PW_TEST_INFO_WORKING_DIR_KEY = 'shotbro-working-dir';
 const PW_TEST_INFO_LOG_LEVEL_KEY = 'shotbro-log-level';
 
 function prepareReporterConfig(config: ShotBroReporterConfig): ShotBroReporterConfig {
   if (!config) config = {}
-  if (!config.appApiKey) config.appApiKey = process.env.SHOTBRO_APP_API_KEY;
+  if (!config.branchName) config.branchName = process.env.GITHUB_REF_NAME ?? undefined;
+  // branchName defaulted at server to 'main' if empty
+  if (!config.buildName) config.buildName = process.env.GITHUB_RUN_NUMBER ?? undefined;
+  // buildName defaulted at server to a run number if empty
+  if (!config.appApiKey) config.appApiKey = process.env.SHOTBRO_APP_API_KEY ?? undefined;
   if (!config.baseUrl) config.baseUrl = process.env.SHOTBRO_BASE_URL;
   if (!config.baseUrl) config.baseUrl = 'https://shotbro.io';
   if (!config.workingDirectory) config.workingDirectory = '.shotbro/out';
@@ -42,16 +45,16 @@ function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureCon
     console.error('Could not copy input', rawInput)
     throw e;
   }
-  if (!input.shotStreamCode || input.shotStreamCode.length < 3) {
+  if (!input.streamCode || input.streamCode.length < 3) {
     throw new Error('shotName must be at least 3 characters')
   }
-  if (input.shotStreamCode.length > 120) {
-    throw new Error('shotName must be less than 120 characters')
+  if (input.streamCode.length > 120) {
+    throw new Error('shotName must be less or equal to than 120 characters')
   }
   return input;
 }
 
-export async function playwrightPrepareSystemInfo(page: Page, log: CliLog, uploadGroupUlid: string): Promise<ShotBroSystemInfo> {
+export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
   const browserInfo = await page.evaluate(async () => {
     let scheme = undefined
     if (window.matchMedia('(prefers-color-scheme: light)').matches) scheme = 'light'
@@ -78,10 +81,6 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog, uploa
   log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
   const systemInfo: ShotBroSystemInfo = {
     inputUlid: `iu:${ulid()}`,
-    uploadGroupUlid: `ug:${uploadGroupUlid}`,
-    appVersion: ISO_DATE_AT_START,
-    // if running on GitHub actions use something sensible.  If undefined the server can decide.
-    appBranch: process.env.GITHUB_HEAD_REF,
     osPlatform: browserInfo.infoPlatform || os.platform(),
     osVersion: os.release(),
     browserType: browserInfo.infoBrand || page.context().browser()?.browserType()?.name(),
@@ -127,11 +126,9 @@ export async function shotBroPlaywright(
     if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
   });
 
-
-  const uploadGroupUlid = ulid();
   const log = new CliLog(logLevel);
   const captureConfig = prepareCaptureConfig(inputCaptureConfig);
-  const systemInfo = await playwrightPrepareSystemInfo(page, log, uploadGroupUlid);
+  const systemInfo = await playwrightPrepareSystemInfo(page, log);
 
   if (testInfo?.annotations?.push) {
     testInfo.annotations.push({type: PW_TEST_INFO_ANNOTATION_KEY, description: systemInfo.inputUlid});
@@ -161,29 +158,29 @@ export async function shotBroPlaywright(
     // TODO: generate markdown doc of screenshots appended to for each test run
   } catch (e) {
     output.error = String(e)
-    log.warn(`Could not capture ${captureConfig.shotStreamCode}: ${e}`)
+    log.warn(`Could not capture ${captureConfig.streamCode}: ${e}`)
   }
   return output
 }
 
 // noinspection JSUnusedGlobalSymbols
-async function shotBroUpload(uploadConfig: ShotBroReporterConfig, inputUlids: string[], log: CliLog,
-                             capturePlatformVersion: string): Promise<ShotBroOutput[]> {
-  const preparedUploadConfig = prepareReporterConfig(uploadConfig)
-  let outDir = preparedUploadConfig!.workingDirectory!;
+async function shotBroUpload(reporterConfig: ShotBroReporterConfig, inputUlids: string[], log: CliLog,
+                             capturePlatformVersion: string, testRunUlid: string): Promise<ShotBroOutput[]> {
+  let outDir = reporterConfig!.workingDirectory!;
 
   const outputs = [];
   for await (const inputUlid of inputUlids) {
-    log.debug(`ShotBro: Processing`, inputUlid);
+    log.info(`ShotBro: uploading`, inputUlid);
     const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${inputUlid}.json`)).toString('utf-8'))
     let mainPngPath = path.join(outDir, `${inputUlid}.png`);
     let elPosJsonPath = path.join(outDir, `${inputUlid}.json`);
     let systemInfo: ShotBroSystemInfo = mainJson.systemInfo as ShotBroSystemInfo;
+    systemInfo.uploadGroupUlid = testRunUlid;
     systemInfo.capturePlatformVersion = capturePlatformVersion;
+    systemInfo.branchName = reporterConfig.branchName;
+    systemInfo.buildName = reporterConfig.buildName;
     let captureConfig: ShotBroCaptureConfig = mainJson.captureConfig as ShotBroCaptureConfig;
-    if (!captureConfig.metadata) captureConfig.metadata = {};
-    captureConfig.metadata.appVersion = ISO_DATE_AT_START;
-    const output = await uploadToApi(preparedUploadConfig, captureConfig, elPosJsonPath, mainPngPath, systemInfo, log);
+    const output = await uploadToApi(reporterConfig, captureConfig, elPosJsonPath, mainPngPath, systemInfo, log);
     outputs.push(output);
   }
   return outputs;
@@ -200,18 +197,18 @@ function cleanupOutDir(outDir: string) {
 class ShotBroPlaywrightReporter implements Reporter {
   private readonly options: ShotBroReporterConfig;
   private readonly log: CliLog;
-  private testRunUlid?: string;
+  private readonly testRunUlid: string;
   private inputUlids: string[] = [];
   private capturePlatformVersion?: string
 
   constructor(options: ShotBroReporterConfig) {
     this.options = prepareReporterConfig(options);
     this.log = new CliLog(this.options.logLevel || 'info');
+    this.testRunUlid = `ug:${ulid()}`;
   }
 
   onBegin(config: FullConfig, suite: Suite) {
     this.capturePlatformVersion = config.version;
-    this.testRunUlid = ulid();
     this.log.info(`ShotBro: begin`, this.testRunUlid);
     this.log.debug(`ShotBro: configured for`, {
       baseUrl: this.options.baseUrl,
@@ -222,6 +219,7 @@ class ShotBroPlaywrightReporter implements Reporter {
   }
 
   onTestBegin(test: TestCase, result: TestResult) {
+    test.annotations.push({type: PW_TEST_INFO_RUN_ULID, description: this.testRunUlid});
     test.annotations.push({type: PW_TEST_INFO_WORKING_DIR_KEY, description: this.options.workingDirectory!});
     test.annotations.push({type: PW_TEST_INFO_LOG_LEVEL_KEY, description: this.options.logLevel!});
   }
@@ -241,7 +239,8 @@ class ShotBroPlaywrightReporter implements Reporter {
     this.log.debug(`ShotBro: ulids for upload`, this.inputUlids);
     if (result.status === 'passed') {
       this.log.info(`ShotBro: Starting uploads`);
-      await shotBroUpload(this.options, this.inputUlids, this.log, this.capturePlatformVersion!);
+      await shotBroUpload(this.options, this.inputUlids, this.log, this.capturePlatformVersion!,
+        this.testRunUlid);
       this.log.info(`ShotBro: Completed`, this.testRunUlid);
     }
   }

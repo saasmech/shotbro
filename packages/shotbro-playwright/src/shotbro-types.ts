@@ -192,6 +192,20 @@ export type ShotBroReporterConfig = {
    * Default: "https://showbro.io"
    */
   baseUrl?: string
+
+  /**
+   * Branch name for the test run.
+   * If not set will default to `process.env.GITHUB_REF_NAME` or 'main'.
+   * Default: "main"
+   */
+  branchName?: string,
+
+  /**
+   * Name of the build the test run is for.
+   * If not set will default to `process.env.GITHUB_RUN_NUMBER` or a sequential number.
+   * Default: a sequential number
+   */
+  buildName?: string,
 }
 
 /**
@@ -271,20 +285,6 @@ export type ShotBroSystemInfo = {
   uploadGroupUlid?: string
 
   /**
-   * The version of the app when the screenshot was taken.
-   * Default: ISO date at the time the test run was started (eg, 2022-09-11T07:26:43.590Z)
-   * Example: "1.2.3_beta123", "v1", "2022-09-11T07:26:43.590Z"
-   */
-  appVersion?: string
-
-  /**
-   * Name of the branch (or channel) the screenshot is for
-   * Default: stable
-   * Example: "beta", "alpha", "stable", "feature/add-customer-fields"
-   */
-  appBranch?: string
-
-  /**
    * The name of the platform (operating system) the screenshot was taken on.  Use Node's Platform naming
    * https://nodejs.org/api/os.html#osplatform
    * Default: value returned by `os.platform()`
@@ -332,19 +332,23 @@ export type ShotBroSystemInfo = {
    */
   browserPrefersColorScheme?: string
 
+  // same for whole test run
   capturePlatformType?: 'playwright'
   capturePlatformVersion?: string
+  branchName?: string
+  buildName?: string
 };
 
 export type ShotBroCaptureConfig = {
   /**
-   * Make sure this is unique within your app (3-120 characters long).  Use kebab-case (eg, cars-n-stuff).
-   * Mandatory
+   * The code for the stream you want this shot to be part of. (3-120 characters long).
+   * Suggest using Use dot separated kebab-case (eg, main.user-account.settings.server).
+   * Mandatory.
    */
-  shotStreamCode: string
+  streamCode: string
 
   /**
    * Metadata about the shot and your app
    */
-  metadata?: ShotBroMetadata
+  //metadata?: ShotBroMetadata
 }
