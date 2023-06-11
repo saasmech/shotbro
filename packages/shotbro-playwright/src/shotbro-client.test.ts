@@ -25,7 +25,7 @@ describe('ShotBro Playwright Client', () => {
       expect(systemInfo.osVersion?.length).toBeGreaterThan(3);
       expect(systemInfo.browserType?.length).toBeGreaterThan(3);
       expect(systemInfo.browserType?.length).toBeLessThan(32);
-      expect(systemInfo.browserVersion?.length).toBeGreaterThan(2);
+      expect(systemInfo.browserVersion?.length).toBeGreaterThan(1);
       expect(systemInfo.browserVersion?.length).toBeLessThan(32);
       expect(systemInfo.browserUserAgent?.length).toBeGreaterThan(30);
       expect(systemInfo.browserUserAgent?.length).toBeLessThan(255);

@@ -3,6 +3,9 @@
 
 A simple example of how ShotBro can be used with playwright.
 
+```shell
+npx playwright install
+```
 
 # During development
 
