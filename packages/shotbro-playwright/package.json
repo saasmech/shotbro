@@ -39,7 +39,7 @@
     "@playwright/test": ">= 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.33.0",
+    "@playwright/test": "^1.35.0",
     "@types/jest": "^29.5.2",
     "@types/pixelmatch": "^5.2.4",
     "@types/pngjs": "^6.0.1",
