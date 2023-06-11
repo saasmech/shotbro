@@ -19,10 +19,17 @@ Add to your gitignore:
 ```
 
 Visit https://shotbro.io 
- - sign up
- - create a project 
- - got to project settings and add an API key
- - add it to your local `.env` file
+ - Sign Up
+ - Create a project 
+ - Go to project settings
+ - Add an API key
+ - Add the key to:
+   - the `SHOTBRO_APP_API_KEY` environment variable in your terminal
+   - or use [dotenv](https://github.com/motdotla/dotenv) and add it to your local `.env` file as `SHOTBRO_APP_API_KEY`
+ - See [examples/playwright-v1/playwright.config.ts](https://github.com/saasmech/shotbro/blob/main/examples/playwright-v1/playwright.config.ts) for how to add 
+   the `shotbro-playwright` reporter to your playwright config 
+ - Add calls to `shotBroPlaywright` in your tests, see [examples/playwright-v1/tests/example.spec.ts](https://github.com/saasmech/shotbro/blob/main/examples/playwright-v1/tests/example.spec.ts).
+
 
 ```bash
 SHOTBRO_API_KEY=keyGoesHere
