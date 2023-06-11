@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/saasmech/shotbro/compare/v1.20.0...v1.21.0) (2023-06-11)
+
+
+### Features
+
+* Improve help text ([#145](https://github.com/saasmech/shotbro/issues/145)) ([dddbd9a](https://github.com/saasmech/shotbro/commit/dddbd9ada8b6b109babbee93c104423717cc2405))
+
 ## [1.20.0](https://github.com/saasmech/shotbro/compare/v1.19.0...v1.20.0) (2023-05-15)
 
 
