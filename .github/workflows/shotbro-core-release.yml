@@ -34,15 +34,16 @@ jobs:
 
       - uses: google-github-actions/release-please-action@v3
         id: release
-        name: Release ShotBro
+        name: Release
         with:
+          monorepo-tags: true
           path: packages/shotbro
           changelog-path: CHANGELOG.md
           release-type: node
           package-name: 'shotbro'
 
       - if: ${{ steps.release.outputs.releases_created }}
-        name: Publish ShotBro Core
+        name: Publish
         working-directory: packages/shotbro
         run: npm publish
         env:

@@ -34,15 +34,16 @@ jobs:
 
       - uses: google-github-actions/release-please-action@v3
         id: release
-        name: Release ShotBro Playwright
+        name: Release
         with:
+          monorepo-tags: true
           path: packages/shotbro-playwright
           changelog-path: CHANGELOG.md
           release-type: node
           package-name: 'shotbro-playwright'
 
       - if: ${{ steps.release.outputs.releases_created }}
-        name: Publish ShotBro Playwright
+        name: Publish
         working-directory: packages/shotbro-playwright
         run: npm publish
         env:
