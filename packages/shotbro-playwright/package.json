@@ -1,6 +1,6 @@
 {
   "name": "shotbro-playwright",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "description": "Screenshot annotation and hosting for PlayWright",
   "publishConfig": {
     "access": "public"
