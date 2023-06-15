@@ -30,9 +30,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "pretest": "npx playwright install",
     "test": "jest",
-    "test:update-snapshots": "jest --updateSnapshot",
     "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
   },
   "peerDependencies": {
