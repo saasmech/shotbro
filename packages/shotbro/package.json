@@ -1,6 +1,6 @@
 {
   "name": "shotbro",
-  "version": "1.22.0",
+  "version": "1.30.0",
   "description": "Screenshot annotation and hosting",
   "publishConfig": {
     "access": "public"
@@ -32,9 +32,6 @@
   "scripts": {
     "test": "jest",
     "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
-  },
-  "peerDependencies": {
-    "@playwright/test": ">= 1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",
