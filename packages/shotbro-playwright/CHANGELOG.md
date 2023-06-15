@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.23.0](https://github.com/saasmech/shotbro/compare/shotbro-playwright-v1.22.0...shotbro-playwright-v1.23.0) (2023-06-15)
+
+
+### Features
+
+* Add separate shotbro core package ([#147](https://github.com/saasmech/shotbro/issues/147)) ([245c3b3](https://github.com/saasmech/shotbro/commit/245c3b36e897affe478e4169d6f5f282c20d620f))
+* changes to match api ([#130](https://github.com/saasmech/shotbro/issues/130)) ([b3491ce](https://github.com/saasmech/shotbro/commit/b3491cee8a403fb641f0d7bf006a02aa394fd311))
+* cleanup old working code and types ([#128](https://github.com/saasmech/shotbro/issues/128)) ([62575c1](https://github.com/saasmech/shotbro/commit/62575c1ef707c0bf703d685500a14ef392a0e323))
+* Improve help text ([#145](https://github.com/saasmech/shotbro/issues/145)) ([dddbd9a](https://github.com/saasmech/shotbro/commit/dddbd9ada8b6b109babbee93c104423717cc2405))
+* playwright specific pkg ([#120](https://github.com/saasmech/shotbro/issues/120)) ([a0810f8](https://github.com/saasmech/shotbro/commit/a0810f8e87f37b338e640fb29126bdfd7b37d6c1))
+* separate package ([#123](https://github.com/saasmech/shotbro/issues/123)) ([79b5b1b](https://github.com/saasmech/shotbro/commit/79b5b1b1e047cc4169420406e24a8bc508d0c411))
+
 ## [1.22.0](https://github.com/saasmech/shotbro/compare/v1.21.0...v1.22.0) (2023-06-15)
 
 
