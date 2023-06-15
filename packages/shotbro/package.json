@@ -1,7 +1,7 @@
 {
-  "name": "shotbro-playwright",
+  "name": "shotbro",
   "version": "1.21.0",
-  "description": "Screenshot annotation and hosting for PlayWright",
+  "description": "Screenshot annotation and hosting",
   "publishConfig": {
     "access": "public"
   },
@@ -11,8 +11,7 @@
   },
   "keywords": [
     "shotbro",
-    "screenshot",
-    "playwright"
+    "screenshot"
   ],
   "author": "SaaS Mech Ltd",
   "bugs": {
@@ -31,24 +30,15 @@
     "node": ">=14"
   },
   "scripts": {
-    "pretest": "npx playwright install",
     "test": "jest",
-    "test:update-snapshots": "jest --updateSnapshot",
     "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
   },
   "peerDependencies": {
     "@playwright/test": ">= 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.35.0",
     "@types/jest": "^29.5.2",
-    "@types/pixelmatch": "^5.2.4",
-    "@types/pngjs": "^6.0.1",
     "jest": "^29.5.0",
-    "modern-normalize": "^2.0.0",
-    "nock": "^13.3.1",
-    "pixelmatch": "^5.3.0",
-    "pngjs": "^7.0.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
