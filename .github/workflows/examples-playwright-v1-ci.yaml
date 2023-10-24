@@ -19,8 +19,7 @@ jobs:
         with:
           node-version: 18.x
           cache: 'npm'
-          cache-dependency-path: |
-            examples/playwright-v1/package-lock.json
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Prepare shotbro-playwright
         working-directory: packages/shotbro-playwright
