@@ -12,14 +12,14 @@ jobs:
     name: Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache-dependency-path: |
-            examples/duckduckgo-simple/package-lock.json
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Prepare shotbro-playwright
         working-directory: packages/shotbro-playwright
@@ -29,8 +29,13 @@ jobs:
 
       - name: Install dependencies
         working-directory: examples/duckduckgo-simple
-        run: npm ci
+        run: |
+          npm ci
+          npx playwright install --with-deps
 
       - name: Test
         working-directory: examples/duckduckgo-simple
+        env:
+          SHOTBRO_BASE_URL: https://noop.shotbro.io
+          SHOTBRO_APP_API_KEY: no-op
         run: npm run test

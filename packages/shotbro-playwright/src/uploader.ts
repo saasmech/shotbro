@@ -18,6 +18,12 @@ export async function uploadToApi(
   if (!reporterConfig?.appApiKey) throw new Error('Please set env var SHOTBRO_APP_API_KEY or pass in appApiKey');
   if (!reporterConfig?.baseUrl) throw new Error('baseUrl was not set.  It should have defaulted.');
 
+  if (reporterConfig.baseUrl === 'https://noop.shotbro.io') {
+    return { // self test mode, pretend we uploaded ok
+      shotAdded: true,
+      shotUrl: 'https://noop.shotbro.io/ok'
+    }
+  }
   const output: ShotBroOutput = {
     shotAdded: false
   }
@@ -158,7 +164,7 @@ export async function postToApi(apiUrl: string, authToken: string, jsonStr: stri
       postReq = http.request(opts, handleIncomingMessage);
     }
     postReq.on('error', (e) => {
-      reject(new Error(`Error when POST to ${apiUrl}: ${e.message}`));
+      reject(new Error(`Error when POST to ${apiUrl}: ${e}`));
     });
     postReq.write(jsonStr, 'utf-8');
     postReq.end();

@@ -13,14 +13,14 @@ jobs:
     name: Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache-dependency-path: |
-            packages/shotbro-playwright/package-lock.json
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
         working-directory: packages/shotbro-playwright
