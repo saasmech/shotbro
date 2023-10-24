@@ -1,0 +1,31 @@
+name: Examples DuckDuckGo Simple CI
+
+on:
+  push:
+    branches-ignore: [ main ]
+    paths:
+      - 'examples/duckduckgo-simple/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache-dependency-path: |
+            examples/duckduckgo-simple/package-lock.json
+
+      - name: Install dependencies
+        working-directory: examples/duckduckgo-simple
+        run: npm ci
+
+      - name: Test
+        working-directory: examples/duckduckgo-simple
+        run: npm run test
