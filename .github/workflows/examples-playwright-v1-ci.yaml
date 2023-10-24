@@ -37,4 +37,5 @@ jobs:
         working-directory: examples/playwright-v1
         env:
           SHOTBRO_BASE_URL: https://noop.shotbro.io
+          SHOTBRO_APP_API_KEY: no-op
         run: npm run test
