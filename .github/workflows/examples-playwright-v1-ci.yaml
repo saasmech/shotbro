@@ -2,7 +2,6 @@ name: Examples Playwright V1 CI
 
 on:
   push:
-    branches-ignore: [ main ]
     paths:
       - 'examples/playwright-v1/**'
   workflow_dispatch:

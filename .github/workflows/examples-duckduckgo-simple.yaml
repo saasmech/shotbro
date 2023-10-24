@@ -2,7 +2,6 @@ name: Examples DuckDuckGo Simple CI
 
 on:
   push:
-    branches-ignore: [ main ]
     paths:
       - 'examples/duckduckgo-simple/**'
   workflow_dispatch:
