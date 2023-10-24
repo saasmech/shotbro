@@ -12,12 +12,13 @@ jobs:
     name: Build
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+          cache: 'npm'
           cache-dependency-path: |
             examples/duckduckgo-simple/package-lock.json
 
