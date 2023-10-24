@@ -33,4 +33,6 @@ jobs:
 
       - name: Test
         working-directory: examples/duckduckgo-simple
+        env:
+          SHOTBRO_BASE_URL: https://noop.shotbro.io
         run: npm run test
