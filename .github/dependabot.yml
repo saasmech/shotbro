@@ -1,19 +1,31 @@
 version: 2
 
 updates:
-  # note, we do not update examples/playwright as this is a specific test for
-  # an exact version of playwright
+
+  - package-ecosystem: "npm"
+    directory: "./packages/shotbro"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    schedule:
+      interval: monthly
 
   - package-ecosystem: "npm"
     directory: "./packages/shotbro-playwright"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 10
     versioning-strategy: increase
     schedule:
       interval: monthly
 
   - package-ecosystem: "npm"
     directory: "examples/playwright-v1"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    schedule:
+      interval: monthly
+
+  - package-ecosystem: "npm"
+    directory: "examples/duckduckgo-simple"
+    open-pull-requests-limit: 10
     versioning-strategy: increase
     schedule:
       interval: monthly
