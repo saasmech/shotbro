@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         working-directory: examples/duckduckgo-simple
         run: |
-          npx playwright install
           npm ci
+          npx playwright install --with-deps
 
       - name: Test
         working-directory: examples/duckduckgo-simple

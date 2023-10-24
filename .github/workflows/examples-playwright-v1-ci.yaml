@@ -30,8 +30,8 @@ jobs:
       - name: Install dependencies
         working-directory: examples/playwright-v1
         run: |
-          npx playwright install
           npm ci
+          npx playwright install --with-deps
 
       - name: Test
         working-directory: examples/playwright-v1
