@@ -3,6 +3,8 @@ name: ShotBro Core CI
 on:
   push:
     branches-ignore: [ main ]
+    paths:
+      - 'packages/shotbro/**'
   workflow_dispatch:
 
 jobs:

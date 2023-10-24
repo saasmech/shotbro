@@ -3,6 +3,8 @@ name: ShotBro Playwright CI
 on:
   push:
     branches-ignore: [ main ]
+    paths:
+      - 'packages/shotbro-playwright/**'
   workflow_dispatch:
 
 jobs:
