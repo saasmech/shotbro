@@ -42,11 +42,7 @@ jobs:
         id: release
         name: Release
         with:
-          monorepo-tags: true
           path: packages/shotbro
-          changelog-path: CHANGELOG.md
-          release-type: node
-          package-name: 'shotbro'
 
       - if: ${{ steps.release.outputs.releases_created }}
         name: Publish

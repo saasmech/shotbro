@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    "packages/shotbro-playwright": {
+      "package-name": "shotbro-playwright",
+      "release-type": "node",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": true
+    },
+    "packages/shotbro": {
+      "package-name": "shotbro",
+      "release-type": "node",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": true
+    }
+  }
+}
