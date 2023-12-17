@@ -52,20 +52,24 @@ export async function uploadToApi(
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
     }), userAgent)
 
-    log.debug('Uploaded shot', createIncomingShotRes.output.incomingShotRn);
-
-    // if (startIncomingShotRes?.output?.embedHtml) {
-    //   log.info('Embed in HTML with:')
-    //   log.info(startIncomingShotRes.output.embedHtml)
-    //   log.info('')
-    // }
-    // if (startIncomingShotRes?.output?.embedMarkdown) {
-    //   log.info('Embed in Markdown with:')
-    //   log.info(`${startIncomingShotRes.output.embedMarkdown}`)
-    //   log.info('')
-    // }
-    output.shotUrl = startIncomingShotRes.output.shotUrl
-    output.shotAdded = true
+    if (startIncomingShotRes?.output?.shotUrl) {
+      log.debug('Uploaded shot', createIncomingShotRes.output.incomingShotRn);
+      // if (startIncomingShotRes?.output?.embedHtml) {
+      //   log.info('Embed in HTML with:')
+      //   log.info(startIncomingShotRes.output.embedHtml)
+      //   log.info('')
+      // }
+      // if (startIncomingShotRes?.output?.embedMarkdown) {
+      //   log.info('Embed in Markdown with:')
+      //   log.info(`${startIncomingShotRes.output.embedMarkdown}`)
+      //   log.info('')
+      // }
+      output.shotUrl = startIncomingShotRes.output.shotUrl
+      output.shotAdded = true
+    } else {
+      output.error = "Got invalid output from cmd_start_incoming_shot_v1";
+      log.debug(`Got invalid output ${JSON.stringify(startIncomingShotRes)}`);
+    }
   } else {
       output.error = "Got invalid output from cmd_create_incoming_shot_v1";
       log.debug(`Got invalid output ${JSON.stringify(createIncomingShotRes)}`);
