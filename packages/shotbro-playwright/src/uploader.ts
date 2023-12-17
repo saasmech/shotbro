@@ -27,7 +27,7 @@ export async function uploadToApi(
   const output: ShotBroOutput = {
     shotAdded: false
   }
-  const createIncomingShotUrl = `${reporterConfig.baseUrl}/api/client/CmdCreateIncomingShotV1`;
+  const createIncomingShotUrl = `${reporterConfig.baseUrl}/api2/client/cmd_create_incoming_shot_v1`;
   log.debug(`Getting upload urls from ${createIncomingShotUrl}`)
   const createIncomingShotRes = await postToApi(createIncomingShotUrl, reporterConfig?.appApiKey, JSON.stringify({
     clientUserAgent, captureConfig: captureConfig, systemInfo: systemInfo
@@ -35,8 +35,9 @@ export async function uploadToApi(
 
   if (createIncomingShotRes.output.error) {
     output.error = createIncomingShotRes.output.error;
-  }
-  if (createIncomingShotRes?.output?.jsonUploadUrl && createIncomingShotRes?.output?.pngUploadUrl
+    log.debug(`Got error ${output.error}`);
+
+  } else if (createIncomingShotRes?.output?.jsonUploadUrl && createIncomingShotRes?.output?.pngUploadUrl
     && createIncomingShotRes?.output?.incomingShotRn) {
 
     log.debug(`Uploading JSON to ${createIncomingShotRes.output.jsonUploadUrl}`)
@@ -45,7 +46,7 @@ export async function uploadToApi(
     log.debug(`Uploading PNG to ${createIncomingShotRes.output.pngUploadUrl}`)
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl, userAgent);
 
-    const startIncomingShotUrl = `${reporterConfig.baseUrl}/api/client/CmdStartIncomingShotV1`;
+    const startIncomingShotUrl = `${reporterConfig.baseUrl}/api2/client/cmd_start_incoming_shot_v1`;
     log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
     const startIncomingShotRes = await postToApi(startIncomingShotUrl, reporterConfig.appApiKey, JSON.stringify({
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
@@ -65,7 +66,10 @@ export async function uploadToApi(
     // }
     output.shotUrl = startIncomingShotRes.output.shotUrl
     output.shotAdded = true
-  }
+  } else {
+      output.error = "Got invalid output from cmd_create_incoming_shot_v1";
+      log.debug(`Got invalid output ${JSON.stringify(createIncomingShotRes)}`);
+    }
   return output
 }
 

@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npx playwright install-deps chromium",
+    "dev-uninstall": "playwright uninstall --all",
+    "postinstall": "npx playwright install chromium",
     "test": "npx playwright test"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@playwright/test": "^1.39.0",
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.4",
     "dotenv": "^16.3.1",
     "typescript": "^5.2.2"
   },
