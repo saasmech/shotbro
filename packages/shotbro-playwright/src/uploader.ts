@@ -47,13 +47,13 @@ export async function uploadToApi(
     await postFileToUrl(pngPath, createIncomingShotRes.output.pngUploadUrl, userAgent);
 
     const startIncomingShotUrl = `${reporterConfig.baseUrl}/api2/client/cmd_start_incoming_shot_v1`;
-    log.debug(`Posting Shot metadata to ${startIncomingShotUrl}`)
+    log.debug(`Posting to ${startIncomingShotUrl}`)
     const startIncomingShotRes = await postToApi(startIncomingShotUrl, reporterConfig.appApiKey, JSON.stringify({
       incomingShotRn: createIncomingShotRes.output.incomingShotRn,
     }), userAgent)
 
     if (startIncomingShotRes?.output?.shotUrl) {
-      log.debug('Uploaded shot', createIncomingShotRes.output.incomingShotRn);
+      log.debug('Started processing for shot', createIncomingShotRes.output.incomingShotRn);
       // if (startIncomingShotRes?.output?.embedHtml) {
       //   log.info('Embed in HTML with:')
       //   log.info(startIncomingShotRes.output.embedHtml)
