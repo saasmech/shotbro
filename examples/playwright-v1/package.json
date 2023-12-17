@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npx playwright install-deps chromium",
+    "postinstall": "npx playwright install chromium",
     "test": "npx playwright test"
   },
   "keywords": [],
@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.39.0",
+    "@types/node": "^20.10.4",
     "dotenv": "^16.3.1",
     "typescript": "^5.2.2"
   },
