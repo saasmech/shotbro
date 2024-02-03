@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/saasmech/shotbro/compare/shotbro-playwright-v1.25.0...shotbro-playwright-v1.26.0) (2024-02-03)
+
+
+### Features
+
+* Dependencies upgrade ([#220](https://github.com/saasmech/shotbro/issues/220)) ([4cfac22](https://github.com/saasmech/shotbro/commit/4cfac22ac16f3446ac28c835d63a740445577683))
+
 ## [1.25.0](https://github.com/saasmech/shotbro/compare/shotbro-playwright-v1.24.0...shotbro-playwright-v1.25.0) (2023-12-17)
 
 
