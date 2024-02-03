@@ -1,6 +1,6 @@
 {
   "name": "shotbro",
-  "version": "1.25.1",
+  "version": "1.26.0",
   "description": "Screenshot annotation and hosting",
   "publishConfig": {
     "access": "public"
