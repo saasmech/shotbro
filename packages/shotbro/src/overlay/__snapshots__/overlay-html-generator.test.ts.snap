@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shapes HTML Generator Simple test: shapes-simple 1`] = `
+"
+      <html>
+      <head>
+        <title>Overlay</title>
+        <link href="https://cdn.jsdelivr.net/npm/modern-normalize@1.1.0/modern-normalize.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.12/500.css" rel="stylesheet"/>
+        <style>
+          body, h1 {
+            font-size: 80px;
+            font-family: Inter, sans-serif;
+            background-color: transparent;
+          }
+        </style>
+      </head>
+      <body style="width:100px;height:100px;overflow:hidden;">
+        <div style="position:fixed;top:3px;left:2px;width:40px;height:50px;border-width:4px;border-style:solid;border-color:deeppink;border-radius:20px / 25px;box-shadow:2px 2px 2px 0px rgba(0,0,0,0.13);"></div>
+      </body>
+      </html>
+    "
+`;
+
+exports[`Shapes HTML Generator Style kitchen sink: shapes-style 1`] = `
+"
+      <html>
+      <head>
+        <title>Overlay</title>
+        <link href="https://cdn.jsdelivr.net/npm/modern-normalize@1.1.0/modern-normalize.css" rel="stylesheet"/>
+        <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@4.5.12/500.css" rel="stylesheet"/>
+        <style>
+          body, h1 {
+            font-size: 80px;
+            font-family: Inter, sans-serif;
+            background-color: transparent;
+          }
+        </style>
+      </head>
+      <body style="width:320px;height:500px;overflow:hidden;">
+        <div style="position:fixed;top:98px;left:18px;width:100px;height:100px;border-width:4px;border-style:solid;border-color:deeppink;border-radius:50px / 50px;box-shadow:2px 2px 2px 0px rgba(0,0,0,0.13);"></div><div style="position:fixed;top:98px;left:198px;width:100px;height:50px;border-width:4px;border-style:solid;border-color:deeppink;border-radius:50px / 25px;box-shadow:2px 2px 2px 0px rgba(0,0,0,0.13);"></div><div style="position:fixed;top:298px;left:18px;width:108px;height:108px;border-width:4px;border-style:solid;border-color:deeppink;border-radius:4px;box-shadow:2px 2px 2px 0px rgba(0,0,0,0.13);"></div><div style="position:fixed;top:298px;left:198px;width:108px;height:58px;border-width:4px;border-style:solid;border-color:deeppink;border-radius:4px;box-shadow:2px 2px 2px 0px rgba(0,0,0,0.13);"></div><div style="position:fixed;top:500px;left:20px;width:100px;height:100px;font-size:32px;color:deeppink;text-shadow:2px 2px rgba(0,0,0,0.13);">Text1</div><div style="position:fixed;top:500px;left:200px;width:100px;height:50px;font-size:32px;color:deeppink;text-shadow:2px 2px rgba(0,0,0,0.13);">Text2</div>
+      </body>
+      </html>
+    "
+`;
