@@ -1,5 +1,5 @@
 
-import {doesSbBbMatch, parseSbBb, stringifySbBb} from "../box-utils";
+import {doesSbBbMatch, parseSbBb, stringifySbBb} from "./box-utils";
 
 describe('sb-bb-converter', () => {
 
