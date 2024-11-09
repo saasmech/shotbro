@@ -11,6 +11,6 @@ test.describe('Shape Text', () => {
     }
     const elPos: ShotBroBox = {x: 1, y: 2, w: 3, h: 4}
     const html = await renderText('shape0', elPos, shape);
-    test.expect(html).toMatchSnapshot('text-simple');
+    test.expect(html).toMatchSnapshot('text-simple.html');
   })
 });

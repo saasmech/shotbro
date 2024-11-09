@@ -19,7 +19,7 @@ test.describe('Shapes HTML Generator', () => {
             shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
         };
         const html = await generateHtmlForOverlayString('main.png', input, positions);
-        test.expect(html).toMatchSnapshot('shapes-simple');
+        test.expect(html).toMatchSnapshot('shapes-simple.html');
     })
 
     test('Style kitchen sink', async () => {
@@ -53,7 +53,7 @@ test.describe('Shapes HTML Generator', () => {
         const html = await generateHtmlForOverlayString(null, input, positions);
         let htmlFile = testResultsPath(__dirname, 'kitchen-sink.html');
         fs.writeFileSync(htmlFile, html, 'utf-8')
-        test.expect(html).toMatchSnapshot('shapes-style');
+        test.expect(html).toMatchSnapshot('shapes-style.html');
     })
 
 });
