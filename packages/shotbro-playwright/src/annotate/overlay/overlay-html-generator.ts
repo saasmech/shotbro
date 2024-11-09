@@ -11,13 +11,14 @@ export async function generateHtmlForOverlayString(mainPng: string|null, input: 
   if (input.shapes) {
     for (let i = 0; i < input.shapes.length; i++) {
       let shape = input.shapes[i];
+      let shapeUniqId = 'shape' + i;
       let shapePos = inputPositions.shapePositions[i];
       if (shape && shapePos) {
         let html: string = '';
-        if (shape.arrow) html = await renderArrow(shapePos, shape.arrow);
-        if (shape.box) html = await renderBox(shapePos, shape.box);
-        if (shape.circle) html = await renderCircle(shapePos, shape.circle);
-        if (shape.text) html = await renderText(shapePos, shape.text);
+        if (shape.arrow) html = await renderArrow(shapeUniqId, shapePos, shape.arrow);
+        if (shape.box) html = await renderBox(shapeUniqId, shapePos, shape.box);
+        if (shape.circle) html = await renderCircle(shapeUniqId, shapePos, shape.circle);
+        if (shape.text) html = await renderText(shapeUniqId, shapePos, shape.text);
         shapesHtml.push(html);
       }
     }

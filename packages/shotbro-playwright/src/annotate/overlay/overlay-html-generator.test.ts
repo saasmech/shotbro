@@ -3,8 +3,7 @@ import type {ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 import {test} from "@playwright/test";
 import * as fs from "node:fs";
-import * as path from "node:path";
-import {SNAPSHOTS_DIR_NAME} from "../../test/test-utils";
+import {testResultsPath} from "../../test/test-utils";
 
 test.describe('Shapes HTML Generator', () => {
 
@@ -52,7 +51,8 @@ test.describe('Shapes HTML Generator', () => {
             ]
         };
         const html = await generateHtmlForOverlayString(null, input, positions);
-        fs.writeFileSync(path.join(__dirname, SNAPSHOTS_DIR_NAME, 'kitchen-sink.html'), html, 'utf-8')
+        let htmlFile = testResultsPath(__dirname, 'kitchen-sink.html');
+        fs.writeFileSync(htmlFile, html, 'utf-8')
         test.expect(html).toMatchSnapshot('shapes-style');
     })
 

@@ -1,6 +1,5 @@
 import type {TextShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate-types";
-import {ulid} from "../../util/ulid";
 
 const defaultProps: TextShape = {
     fontSize: 32,
@@ -11,16 +10,15 @@ const defaultProps: TextShape = {
     translateY: 0,
 }
 
-export async function renderText(elPos: ShotBroBox, rawShape: TextShape): Promise<string> {
+export async function renderText(scope: string, elPos: ShotBroBox, rawShape: TextShape): Promise<string> {
     const shape = Object.assign({}, defaultProps, rawShape);
-    const scope = 'text-' + ulid();
     const id = rawShape.id || scope;
     const translateX = shape.translateX ?? shape.translate ?? 0
     const translateY = shape.translateY ?? shape.translate ?? 0
     const shadowOffset = (shape?.fontSize || 0) / 16;
     return `
         <style>
-            .text.${scope} {
+            .${scope}.text {
                 position: fixed;
                 top: ${elPos.y + translateX}px;
                 left: ${elPos.x + translateY}px;
@@ -32,5 +30,5 @@ export async function renderText(elPos: ShotBroBox, rawShape: TextShape): Promis
                 text-shadow: ${shadowOffset}px ${shadowOffset}px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="${id}" class="text ${scope}">${shape?.value || ''}</div>`;
+        <div id="${id}" class="${scope} text">${shape?.value || ''}</div>`;
 }

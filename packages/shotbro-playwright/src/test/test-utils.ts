@@ -1,3 +1,5 @@
+import * as os from "node:os";
+
 const pixelmatch = require('../third_party/pixelmatch.js');
 import * as fs from 'node:fs';
 import {test} from '@playwright/test';
@@ -7,6 +9,11 @@ import * as path from "node:path";
 
 export function currentRunImgPath(folder: string, fileName: string) {
   return path.join(folder, '__snapshots__', COMPARE_DIR_NAME, fileName);
+}
+
+export function testResultsPath(folder: string, fileName: string) {
+  fs.mkdirSync(path.join(folder, 'test-results'), {recursive: true});
+  return path.join(folder, 'test-results', fileName);
 }
 
 export async function expectImageToMatchBaseline(outFile: string) {

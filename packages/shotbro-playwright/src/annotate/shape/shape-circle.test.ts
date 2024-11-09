@@ -10,7 +10,7 @@ test.describe('Shape Circle', () => {
             //thickness: 'Hello World'
         }
         const elPos: ShotBroBox = {x: 1, y: 2, w: 40, h: 50}
-        const html = await renderCircle(elPos, shape);
+        const html = await renderCircle('shape0', elPos, shape);
         test.expect(html).toMatchSnapshot('circle-simple');
     })
 });

@@ -1,6 +1,5 @@
 import type {ArrowShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate-types";
-import {ulid} from "../../util/ulid";
 
 const defaultProps: ArrowShape = {
     thickness: 10,
@@ -13,9 +12,8 @@ const defaultProps: ArrowShape = {
     rotate: 30,
 }
 
-export async function renderArrow(elPos: ShotBroBox, rawShape: ArrowShape): Promise<string> {
+export async function renderArrow(scope: string, elPos: ShotBroBox, rawShape: ArrowShape): Promise<string> {
     const shape: ArrowShape = Object.assign({}, defaultProps, rawShape);
-    const scope = 'arrow-' + ulid();
     const id = rawShape.id || scope;
     const translateX = shape.translateX ?? shape.translate ?? 0
     const translateY = shape.translateY ?? shape.translate ?? 0
@@ -24,7 +22,7 @@ export async function renderArrow(elPos: ShotBroBox, rawShape: ArrowShape): Prom
     const length = shape.length || 0;
     return `
         <style>
-        .arrow.${scope} {
+        .${scope}.arrow {
             position: fixed;
             top: ${elPos.y + translateY - (thickness / 2)}px;
             left: ${elPos.x + translateX - (thickness / 2)}px;
@@ -33,7 +31,7 @@ export async function renderArrow(elPos: ShotBroBox, rawShape: ArrowShape): Prom
             rotate: ${rotate}deg;
         }
         
-        .arrow.${scope} .line {
+        .${scope}.arrow .line {
             margin-top: ${thickness * 1.5}px;
             width: ${(length - thickness * 2)}px;
             background: ${shape.color};
@@ -41,7 +39,7 @@ export async function renderArrow(elPos: ShotBroBox, rawShape: ArrowShape): Prom
             float: left;
         }
         
-        .arrow.${scope} .point {
+        .${scope}.arrow .point {
             width: 0;
             height: 0;
             border-top: ${thickness * 2}px solid transparent;
@@ -50,7 +48,7 @@ export async function renderArrow(elPos: ShotBroBox, rawShape: ArrowShape): Prom
             float: right;
         }
         </style>
-        <div id="${id}" class="arrow ${scope}">
+        <div id="${id}" class="${scope} arrow">
             <div class="line"></div>
             <div class="point"></div>
         </div>`;

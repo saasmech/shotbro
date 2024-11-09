@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Shape Text Simple test: text-simple 1`] = `"<div style="position:fixed;top:2px;left:1px;width:3px;height:4px;font-size:32px;color:deeppink;text-shadow:2px 2px rgba(0,0,0,0.13);">Hello World</div>"`;
