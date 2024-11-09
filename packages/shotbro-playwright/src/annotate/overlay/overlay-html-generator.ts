@@ -5,12 +5,13 @@ import {ShotBroInput} from "../annotate-types";
 import {toStyleAttr} from "../shape/css-util";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 
-export async function generateHtmlForOverlayString(input: ShotBroInput, inputPositions: InputPositions) {
+export async function generateHtmlForOverlayString(mainPng: string, input: ShotBroInput, inputPositions: InputPositions) {
   console.log('generate html for overlay');
   const bodyStyle = {
     width: `${inputPositions.focusBoxPosition!.w}px`,
     height: `${inputPositions.focusBoxPosition!.h}px`,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    'background-image': `url('${mainPng}')`,
   }
 
   const shapesHtml = [];

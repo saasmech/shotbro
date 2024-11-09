@@ -1,4 +1,4 @@
-import {chromium, Browser, Page, test} from '@playwright/test';
+import {chromium, Browser, Page, test, PlaywrightTestConfig} from '@playwright/test';
 import * as path from "path";
 import * as fs from "fs";
 import {findPositions, generateMainScreenshot, shotBroPlaywrightAnnotate} from "./main-screenshotter";
@@ -48,14 +48,17 @@ test.describe('Main screenshotter', () => {
     });
 
     test('render a circle', async () => {
+      const bgFile = '../src/test/test-pattern-color.png';
+      fs.mkdirSync(path.join(__dirname, '..', '..', 'out'), {recursive: true});
+      const htmlPath = path.join(__dirname, '..', '..', 'out', 'main-screenshotter-test1.html');
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
       let ctx = await browser.newContext();
-      await shotBroPlaywrightAnnotate(ctx, {
+      await shotBroPlaywrightAnnotate(ctx, bgFile, htmlPath, {
         shotName: 'test-name',
         shapes: [{circle: {at:'#box1'}}],
         focus: {at:'body'},
       }, {
-        focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
+        focusBoxPosition: {x: 0, y: 0, w: 400, h: 400},
         shapePositions: [{x: 0, y: 0, w: 100, h: 100}]
       }, pngPath);
 
@@ -80,7 +83,7 @@ test.describe('Main screenshotter', () => {
       //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.json');
       await generateMainScreenshot(page, pngPath);
 
-      expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
+      test.expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
       await expectImageToMatchBaseline(pngPath);
     })
 

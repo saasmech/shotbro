@@ -4,6 +4,7 @@ import {ShapePosition} from "../annotate/shape/shape-types";
 import {atToLocatorStr} from "../annotate/shape/shape-locator";
 import {stringifySbBb} from "../annotate/box-utils";
 import {generateHtmlForOverlayString} from "../annotate/overlay/overlay-html-generator";
+import fs from "fs";
 
 const MAIN_CAPTURE_HEIGHT_LIMIT = 4000;
 const MAIN_CAPTURE_WIDTH_LIMIT = 4000;
@@ -48,9 +49,12 @@ export async function findPositions(page: Page, input: ShotBroInput): Promise<In
     /**
      * Calculate the position of the box the user selected.  With no padding or other modifiers.
      */
-    async function calculateFocusBox(page: Page, focusBox: ShotBroFocus): Promise<ShotBroBox> {
+    async function calculateFocusBox(page: Page, focusBox?: ShotBroFocus): Promise<ShotBroBox> {
         let atBox;
-        if (focusBox?.atPos) {
+        if (!atBox) {
+            console.log('unable to calculate focus box, using default')
+            atBox = {w: 1024, h: 768, x: 0, y: 0};
+        } else if (focusBox?.atPos) {
             atBox = focusBox?.atPos;
         } else {
             let locatorStr = atToLocatorStr(focusBox);
@@ -66,20 +70,14 @@ export async function findPositions(page: Page, input: ShotBroInput): Promise<In
             } else {
                 console.log('Unable to find a locator node main screenshot')
             }
-            if (!atBox) {
-                console.log('unable to calculate focus box, using default')
-                atBox = {w: 1024, h: 768, x: 0, y: 0};
-            }
+
         }
         console.log(`calculated focusBox ${stringifySbBb(atBox)}`)
         return atBox;
     }
 
-    let focusBoxPosition: ShotBroBox | undefined = undefined;
+    let focusBoxPosition = await calculateFocusBox(page, input.focus);
     let shapePositions: ShotBroBox[] = [];
-    if (input.focus && input.focus.at) {
-        focusBoxPosition = await calculateFocusBox(page, input.focus);
-    }
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
@@ -106,11 +104,28 @@ export async function findPositions(page: Page, input: ShotBroInput): Promise<In
     };
 }
 
-export async function shotBroPlaywrightAnnotate(context: BrowserContext, input: ShotBroInput, inputPositions: InputPositions, focusPngPath: string) {
-    let html = await generateHtmlForOverlayString(input, inputPositions);
+export async function shotBroPlaywrightAnnotate(
+    context: BrowserContext,
+    mainPngPath: string,
+    htmlPath: string,
+    input: ShotBroInput, inputPositions: InputPositions, focusPngPath: string) {
+    let html = await generateHtmlForOverlayString(mainPngPath, input, inputPositions);
+    fs.writeFileSync(htmlPath, html);
+
     let page = await context.newPage();
-    await page.goto('data:text/html,' + html);
+    await page.goto('file://' + htmlPath);
     await page.waitForTimeout(1000);
-    await page.screenshot({path: focusPngPath});
+    let focus = inputPositions.focusBoxPosition;
+    let clip = undefined;
+    if (focus) {
+        clip = {x: focus.x, y: focus.y, width: focus.w, height: focus.h};
+    }
+    await page.screenshot({
+        path: focusPngPath,
+        fullPage: true,
+        type: 'png',
+        scale: 'device',
+        clip: clip
+    });
     await page.close();
 }

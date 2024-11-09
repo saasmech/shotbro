@@ -7,7 +7,6 @@ import {ShotBroCaptureConfig} from "./shotbro-types";
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import {uploadToApi} from './uploader';
 import {
     generateMainScreenshot,
     shotBroPlaywrightAnnotate,
@@ -122,7 +121,7 @@ export async function shotBroPlaywright(
 ): Promise<ShotBroOutput> {
 
     let outDir = '.shotbro/out';
-    let logLevel: ShotBroLogLevel = 'info';
+    let logLevel: ShotBroLogLevel = 'debug';
     testInfo.annotations.forEach((a) => {
         if (a.type === PW_TEST_INFO_WORKING_DIR_KEY) outDir = a.description as string;
         if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
@@ -153,9 +152,11 @@ export async function shotBroPlaywright(
 
         if (input) {
             let inputPositions = await findPositions(page, input);
+            let htmlPath = path.join(outDir, `${systemInfo.inputUlid}-focus.html`);
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
-            log.debug(`  focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(page.context(), input, inputPositions, focusPngPath);
+            let mainPngName = path.basename(mainPngPath);
+            log.debug(`Focus png be saved locally to ${focusPngPath}`);
+            await shotBroPlaywrightAnnotate(page.context(), mainPngName, htmlPath, input, inputPositions, focusPngPath);
         }
 
         // TODO: generate markdown doc of screenshots appended to for each test run
@@ -164,29 +165,6 @@ export async function shotBroPlaywright(
         log.warn(`Could not capture ${captureConfig.streamCode}: ${e}`)
     }
     return output
-}
-
-// noinspection JSUnusedGlobalSymbols
-async function shotBroUpload(reporterConfig: ShotBroReporterConfig, inputUlids: string[], log: CliLog,
-                             capturePlatformVersion: string, testRunUlid: string): Promise<ShotBroOutput[]> {
-    let outDir = reporterConfig!.workingDirectory!;
-
-    const outputs = [];
-    for await (const inputUlid of inputUlids) {
-        log.info(`ShotBro: uploading`, inputUlid);
-        const mainJson = JSON.parse(fs.readFileSync(path.join(outDir, `${inputUlid}.json`)).toString('utf-8'))
-        let mainPngPath = path.join(outDir, `${inputUlid}.png`);
-        let elPosJsonPath = path.join(outDir, `${inputUlid}.json`);
-        let systemInfo: ShotBroSystemInfo = mainJson.systemInfo as ShotBroSystemInfo;
-        systemInfo.uploadGroupUlid = testRunUlid;
-        systemInfo.capturePlatformVersion = capturePlatformVersion;
-        systemInfo.branchName = reporterConfig.branchName;
-        systemInfo.buildName = reporterConfig.buildName;
-        let captureConfig: ShotBroCaptureConfig = mainJson.captureConfig as ShotBroCaptureConfig;
-        const output = await uploadToApi(reporterConfig, captureConfig, elPosJsonPath, mainPngPath, systemInfo, log);
-        outputs.push(output);
-    }
-    return outputs;
 }
 
 function cleanupOutDir(outDir: string) {
@@ -241,9 +219,9 @@ class ShotBroPlaywrightReporter implements Reporter {
         this.log.info(`ShotBro: Test run finished with status: ${result.status}`);
         this.log.debug(`ShotBro: ulids for upload`, this.inputUlids);
         if (result.status === 'passed') {
-            this.log.info(`ShotBro: Starting uploads`);
-            await shotBroUpload(this.options, this.inputUlids, this.log, this.capturePlatformVersion!,
-                this.testRunUlid);
+            // this.log.info(`ShotBro: Starting uploads`);
+            // await shotBroUpload(this.options, this.inputUlids, this.log, this.capturePlatformVersion!,
+            //     this.testRunUlid);
             this.log.info(`ShotBro: Completed`, this.testRunUlid);
         }
     }
