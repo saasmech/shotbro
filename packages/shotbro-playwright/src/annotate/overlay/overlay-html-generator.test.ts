@@ -1,5 +1,6 @@
 import {generateHtmlForOverlayString} from "./overlay-html-generator";
 import type {ShotBroInput} from "../annotate-types";
+import {InputPositions} from "../../main-shot/main-screenshotter";
 
 describe('Shapes HTML Generator', () => {
 
@@ -9,13 +10,12 @@ describe('Shapes HTML Generator', () => {
             shapes: [
                 {circle: {id: 'circle1'}}
             ]
-        }
-
-        const html = await generateHtmlForOverlayString(input,
-            {
-                focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
-                shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
-            });
+        };
+        const positions: InputPositions = {
+            focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
+            shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
+        };
+        const html = await generateHtmlForOverlayString('main.png', input, positions);
         expect(html).toMatchSnapshot('shapes-simple');
     })
 
@@ -28,8 +28,7 @@ describe('Shapes HTML Generator', () => {
                 {text: {id: 'text1', value: 'Text1'}}, {text: {id: 'text2', value: 'Text2'}},
             ]
         }
-
-        const html = await generateHtmlForOverlayString(input, {
+        const positions: InputPositions = {
             focusBoxPosition: {x: 0, y: 0, w: 400, h: 400},
             shapePositions: [
                 {x: 20, y: 100, w: 100, h: 100},
@@ -39,7 +38,8 @@ describe('Shapes HTML Generator', () => {
                 {x: 20, y: 500, w: 100, h: 100},
                 {x: 200, y: 500, w: 100, h: 50},
             ]
-        });
+        };
+        const html = await generateHtmlForOverlayString('main.png', input, positions);
         //fs.writeFileSync(path.join(__dirname, SNAPSHOTS_DIR_NAME, 'style.html'), html, 'utf-8')
         expect(html).toMatchSnapshot('shapes-style');
     })

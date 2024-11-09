@@ -80,7 +80,7 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Prom
     });
     log.debug(`browserInfo ${JSON.stringify(browserInfo)}`)
     const systemInfo: ShotBroSystemInfo = {
-        inputUlid: `iu:${ulid()}`,
+        inputUlid: `iu-${ulid()}`,
         osPlatform: browserInfo.infoPlatform || os.platform(),
         osVersion: os.release(),
         browserType: browserInfo.infoBrand || page.context().browser()?.browserType()?.name(),

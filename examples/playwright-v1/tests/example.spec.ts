@@ -37,7 +37,7 @@ test('desktop light', async ({page}, testInfo) => {
   await shotBroPlaywright(page, testInfo, {
     streamCode: 'com.app.settings.my-form',
   }, {
-    shapes: [{arrow: {at: '#name-field'}}],
+    shapes: [{circle: {at: '#name-field'}}],
     shotName: 'Name field'
   });
 });

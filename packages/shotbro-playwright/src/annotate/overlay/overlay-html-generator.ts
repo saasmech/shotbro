@@ -12,8 +12,8 @@ export async function generateHtmlForOverlayString(mainPng: string, input: ShotB
     height: `${inputPositions.focusBoxPosition!.h}px`,
     overflow: 'hidden',
     'background-image': `url('${mainPng}')`,
+    'background-repeat': `no-repeat`,
   }
-
   const shapesHtml = [];
   if (input.shapes) {
     for (let i = 0; i < input.shapes.length; i++) {
