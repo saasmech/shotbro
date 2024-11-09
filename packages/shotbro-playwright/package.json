@@ -40,14 +40,13 @@
     "@playwright/test": ">= 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
+    "@playwright/test": "^1.48.2",
     "@types/jest": "^29.5.12",
     "@types/pixelmatch": "^5.2.6",
-    "@types/pngjs": "^6.0.4",
+    "@types/pngjs": "^6.0.5",
     "jest": "^29.7.0",
     "modern-normalize": "^2.0.0",
     "nock": "^13.5.4",
-    "pixelmatch": "^5.3.0",
     "pngjs": "^7.0.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

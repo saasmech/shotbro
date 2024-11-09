@@ -1,5 +1,5 @@
 import {renderArrow} from "./shape-arrow";
-import {currentRunImgPath} from "../test/test-utils";
+import {currentRunImgPath} from "../../test/test-utils";
 import * as fs from "fs";
 
 describe('Shape Arrow', () => {

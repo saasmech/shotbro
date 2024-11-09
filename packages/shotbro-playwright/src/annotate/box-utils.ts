@@ -1,4 +1,4 @@
-import type {ShotBroBox} from "./shape/shape-types";
+import type {ShotBroBox} from "./annotate-types";
 
 /**
  * data-sb-bb = ShotBro Bounding Box / in css style key:value;...

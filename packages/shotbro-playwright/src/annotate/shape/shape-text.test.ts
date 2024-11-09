@@ -1,5 +1,6 @@
 import {renderText} from "./shape-text";
-import type {ShotBroBox, TextShape} from "./shape-types";
+import type {TextShape} from "./shape-types";
+import type {ShotBroBox} from "../annotate-types";
 
 describe('Shape Text', () => {
 

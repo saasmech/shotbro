@@ -1,60 +1,84 @@
-import {chromium, Browser, Page} from '@playwright/test';
+import {chromium, Browser, Page, test} from '@playwright/test';
 import * as path from "path";
 import * as fs from "fs";
-import {generateMainScreenshot} from "./main-screenshotter";
+import {findPositions, generateMainScreenshot, shotBroPlaywrightAnnotate} from "./main-screenshotter";
 import {COMPARE_DIR_NAME, expectImageToMatchBaseline, SNAPSHOTS_DIR_NAME} from "../test/test-utils";
 import {PNG} from 'pngjs';
 
-describe('Main screenshotter', () => {
-  describe('Box', () => {
+
+test.describe('Main screenshotter', () => {
+  test.describe('Box', () => {
 
     let browser: Browser;
     let page: Page;
 
-    beforeAll(async () => browser = await chromium.launch());
-    afterAll(async () => await browser.close());
-    beforeEach(async () => {
+    test.beforeAll(async () => browser = await chromium.launch());
+    test.afterAll(async () => await browser.close());
+    test.beforeEach(async () => {
       page = await browser.newPage();
       await page.setViewportSize({width: 320, height: 320});
       await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes.html')}`);
     });
-    afterEach(async () => await page.close());
+    test.afterEach(async () => await page.close());
 
     test('when default used, box should match whole page html', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
-      const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
-      await generateMainScreenshot(page, jsonPath, pngPath);
-      const outJson = fs.readFileSync(jsonPath, 'utf-8');
-      expect(outJson).toContain('{\"positions\":[{\"tagName\":\"HTML\",\"x\":0,\"y\":0,\"w\":320,\"h\":630,\"id\":\"\",\"className\":\"\"},');
+      // const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
+      await generateMainScreenshot(page, pngPath);
+      //const outJson = fs.readFileSync(jsonPath, 'utf-8');
+      //expect(outJson).toContain('{\"positions\":[{\"tagName\":\"HTML\",\"x\":0,\"y\":0,\"w\":320,\"h\":630,\"id\":\"\",\"className\":\"\"},');
     })
 
     test('when default used, box should match whole page png', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
-      const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
-      await generateMainScreenshot(page, jsonPath, pngPath);
+      //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
+      await generateMainScreenshot(page, pngPath);
       await expectImageToMatchBaseline(pngPath);
-    })
+    });
+
+    test('draw a circle', async () => {
+      //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
+      const positions = await findPositions(page, {
+        shotName: 'test-name',
+        shapes: [{circle: {at:'#box1'}}],
+        focus: {at:'body'},
+      });
+      test.expect(positions.focusBoxPosition.w).toBe(320);
+      test.expect(positions.shapePositions[0].x).toBe(10);
+    });
+
+    test('render a circle', async () => {
+      const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
+      let ctx = await browser.newContext();
+      await shotBroPlaywrightAnnotate(ctx, {
+        shotName: 'test-name',
+        shapes: [{circle: {at:'#box1'}}],
+        focus: {at:'body'},
+      }, {
+        focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
+        shapePositions: [{x: 0, y: 0, w: 100, h: 100}]
+      }, pngPath);
+
+    });
 
   });
 
-  describe('Box extra long', () => {
-
+  test.describe('Box extra long', () => {
     let browser: Browser;
     let page: Page;
-
-    beforeAll(async () => browser = await chromium.launch());
-    afterAll(async () => await browser.close());
-    beforeEach(async () => {
+    test.beforeAll(async () => browser = await chromium.launch());
+    test.afterAll(async () => await browser.close());
+    test.beforeEach(async () => {
       page = await browser.newPage();
       await page.setViewportSize({width: 320, height: 320});
       await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes-extra-long.html')}`);
     });
-    afterEach(async () => await page.close());
+    test.afterEach(async () => await page.close());
 
     test('when page extra long capture should be limited', async () => {
       const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.png');
-      const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.json');
-      await generateMainScreenshot(page, jsonPath, pngPath);
+      //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.json');
+      await generateMainScreenshot(page, pngPath);
 
       expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
       await expectImageToMatchBaseline(pngPath);
