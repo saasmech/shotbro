@@ -1,6 +1,6 @@
 import {Browser, chromium, Page, test} from '@playwright/test';
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import {shotBroPlaywrightAnnotate} from "./annotate";
 import {COMPARE_DIR_NAME, SNAPSHOTS_DIR_NAME} from "../test/test-utils";
 
@@ -16,19 +16,16 @@ test.describe('Annotate', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes.html')}`);
+            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes.html')}`);
         });
         test.afterEach(async () => await page.close());
-
-
 
         test('render a circle', async () => {
             const bgFile = '../src/test/test-pattern-color.png';
             fs.mkdirSync(path.join(__dirname, '..', '..', 'out'), {recursive: true});
             const htmlPath = path.join(__dirname, '..', '..', 'out', 'main-screenshotter-test1.html');
             const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
-            let ctx = await browser.newContext();
-            await shotBroPlaywrightAnnotate(ctx, bgFile, htmlPath, {
+            await shotBroPlaywrightAnnotate(page, bgFile, htmlPath, {
                 shotName: 'test-name',
                 shapes: [{circle: {at: '#box1'}}],
                 focus: {at: 'body'},

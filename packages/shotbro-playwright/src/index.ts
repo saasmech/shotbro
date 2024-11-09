@@ -4,17 +4,17 @@ import type {FullConfig, FullResult, Reporter, Suite, TestCase, TestResult} from
 import type {ShotBroLogLevel, ShotBroOutput, ShotBroReporterConfig, ShotBroSystemInfo} from './shotbro-types';
 import {ShotBroCaptureConfig} from "./shotbro-types";
 
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as os from 'node:os';
+import * as path from 'node:path';
 import {
     generateMainScreenshot,
-    shotBroPlaywrightAnnotate,
     findPositions
 } from './main-shot/main-screenshotter';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 import {ShotBroInput} from "./annotate/annotate-types";
+import {shotBroPlaywrightAnnotate} from "./annotate/annotate";
 
 const PW_TEST_INFO_ANNOTATION_KEY = 'shotbro-input-ulid';
 const PW_TEST_INFO_RUN_ULID = 'shotbro-test-run-ulid';
@@ -156,7 +156,7 @@ export async function shotBroPlaywright(
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
             let mainPngName = path.basename(mainPngPath);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(page.context(), mainPngName, htmlPath, input, inputPositions, focusPngPath);
+            await shotBroPlaywrightAnnotate(page, mainPngName, htmlPath, input, inputPositions, focusPngPath);
         }
 
         // TODO: generate markdown doc of screenshots appended to for each test run

@@ -1,11 +1,11 @@
-import type {BrowserContext} from "@playwright/test";
+import type {Page} from "@playwright/test";
 import {ShotBroInput} from "./annotate-types";
 import {generateHtmlForOverlayString} from "./overlay/overlay-html-generator";
-import * as fs from "fs";
+import * as fs from "node:fs";
 import {InputPositions} from "../main-shot/main-screenshotter";
 
 export async function shotBroPlaywrightAnnotate(
-    context: BrowserContext,
+    origPage: Page,
     mainPngPath: string,
     htmlPath: string,
     input: ShotBroInput,
@@ -15,7 +15,9 @@ export async function shotBroPlaywrightAnnotate(
     let html = await generateHtmlForOverlayString(mainPngPath, input, inputPositions);
     fs.writeFileSync(htmlPath, html);
 
-    let page = await context.newPage();
+    let browser = origPage.context().browser();
+    let ctx = await browser!.newContext();
+    let page = await ctx.newPage();
     await page.goto('file://' + htmlPath);
     await page.waitForTimeout(1000);
     let focus = inputPositions.focusBoxPosition;

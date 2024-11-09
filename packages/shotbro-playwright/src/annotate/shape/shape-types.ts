@@ -26,7 +26,7 @@ export type ShapePosition = {
   atPos?: ShotBroBox
 
   /**
-   * The value for a `data-testid` attribute (eg, specifying X will translate to CSS selector: `[data-testid=X]`)
+   * The value for a `data-testid` attribute (syntactic sugar for CSS selector: `[data-testid=X]`)
    */
   atTestId?: string
 
@@ -84,6 +84,7 @@ export type CircleShape = {
 export type ArrowShape = {
   thickness?: number
   length?: number
+  rotate?: number
   alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
 } & ShapeCommon & ShapePosition & ShapeTransform
 

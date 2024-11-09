@@ -1,8 +1,9 @@
 import {renderArrow} from "./shape-arrow";
 import {currentRunImgPath} from "../../test/test-utils";
-import * as fs from "fs";
+import * as fs from "node:fs";
+import {test} from "@playwright/test";
 
-describe('Shape Arrow', () => {
+test.describe('Shape Arrow', () => {
 
   test('Simple test', async () => {
     const shapesHtml = [

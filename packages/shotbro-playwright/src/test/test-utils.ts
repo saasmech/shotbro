@@ -1,9 +1,9 @@
 const pixelmatch = require('../third_party/pixelmatch.js');
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import {test} from '@playwright/test';
 import {PNG} from 'pngjs';
 // import {PNG} from 'pngjs/browser';
-import * as path from "path";
+import * as path from "node:path";
 
 export function currentRunImgPath(folder: string, fileName: string) {
   return path.join(folder, '__snapshots__', COMPARE_DIR_NAME, fileName);

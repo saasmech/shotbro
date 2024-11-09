@@ -1,21 +1,22 @@
 import {atToLocatorStr, ensureShapesHaveId} from "./shape-locator";
 import {ShotBroInput} from "../annotate-types";
+import {test} from "@playwright/test";
 
-describe('Shape Locator', () => {
+test.describe('Shape Locator', () => {
 
   test('Simple Text', async () => {
     const locatorStr = atToLocatorStr({atText: 'Hello World'});
-    expect(locatorStr).toBe('text="Hello World"');
+    test.expect(locatorStr).toBe('text="Hello World"');
   });
 
   test('Simple ID', async () => {
     const locatorStr = atToLocatorStr({at: '#abc123'});
-    expect(locatorStr).toBe('#abc123');
+    test.expect(locatorStr).toBe('#abc123');
   });
 
   test('Simple test id', async () => {
     const locatorStr = atToLocatorStr({atTestId: 'abc123'});
-    expect(locatorStr).toBe('[data-testid="abc123"]');
+    test.expect(locatorStr).toBe('[data-testid="abc123"]');
   });
 
   // test('Simple test id', async () => {
@@ -39,7 +40,7 @@ describe('Shape Locator', () => {
       shotName: 'test', shapes: [{circle: {}}]
     }
     ensureShapesHaveId(input);
-    expect(input.shapes).toMatchObject([{circle: {id: '_shape0'}}]);
+    test.expect(input.shapes).toMatchObject([{circle: {id: '_shape0'}}]);
   });
 
   test('Ensure ids are not overwritten', async () => {
@@ -47,7 +48,7 @@ describe('Shape Locator', () => {
       shotName: 'test', shapes: [{circle: {id: 's1'}}]
     }
     ensureShapesHaveId(input);
-    expect(input.shapes).toMatchObject([{circle: {id: 's1'}}]);
+    test.expect(input.shapes).toMatchObject([{circle: {id: 's1'}}]);
   });
 
 });

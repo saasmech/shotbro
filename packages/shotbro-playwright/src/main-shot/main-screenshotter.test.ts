@@ -1,6 +1,6 @@
 import {chromium, Browser, Page, test} from '@playwright/test';
-import * as path from "path";
-import * as fs from "fs";
+import * as path from "node:path";
+import * as fs from "node:fs";
 import {findPositions, generateMainScreenshot} from "./main-screenshotter";
 import {COMPARE_DIR_NAME, expectImageToMatchBaseline, SNAPSHOTS_DIR_NAME} from "../test/test-utils";
 import {PNG} from 'pngjs';
@@ -17,7 +17,7 @@ test.describe('Main screenshotter', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes.html')}`);
+            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes.html')}`);
         });
         test.afterEach(async () => await page.close());
 
@@ -57,7 +57,7 @@ test.describe('Main screenshotter', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'boxes-extra-long.html')}`);
+            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes-extra-long.html')}`);
         });
         test.afterEach(async () => await page.close());
 
@@ -68,7 +68,7 @@ test.describe('Main screenshotter', () => {
 
             test.expect(PNG.sync.read(fs.readFileSync(pngPath)).height).toBe(4000);
             await expectImageToMatchBaseline(pngPath);
-        })
+        });
 
 
     });

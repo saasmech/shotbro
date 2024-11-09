@@ -1,8 +1,9 @@
 import {renderBox} from "./shape-box";
 import type {BoxShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate-types";
+import {test} from "@playwright/test";
 
-describe('Shape Box', () => {
+test.describe('Shape Box', () => {
 
     test('Simple test', async () => {
         const shape: BoxShape = {
@@ -10,6 +11,6 @@ describe('Shape Box', () => {
         }
         const elPos: ShotBroBox = {x: 1, y: 2, w: 40, h: 50}
         const html = await renderBox(elPos, shape);
-        expect(html).toMatchSnapshot('box-simple');
+        test.expect(html).toMatchSnapshot('box-simple');
     })
 });

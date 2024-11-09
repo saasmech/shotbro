@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- we need to ensure there are minimal cross OS differences or else matching basline images won't work -->
+    <link href="../../node_modules/modern-normalize/modern-normalize.css" rel="stylesheet"/>
+
+    <!-- use a standard font -->
+    <link href="../../node_modules/@fontsource/open-sans/500.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding: 10px;
+            font-family: Inter, sans-serif;
+            background-color: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+
+<p>This is before the form</p>
+<form id="myform">
+    <div>This is a sentence. This is a sentence. This is a sentence. This is a sentence. This is a sentence. This is a
+        sentence. This is a sentence.
+    </div>
+    <div>
+        <label for="name-field">Name</label>
+        <input id="name-field" name="name" placeholder="name"/>
+    </div>
+    <div>
+        <label for="phone-field">Phone</label>
+        <input id="phone-field" name="phone" placeholder="phone"/>
+    </div>
+    <div>
+        <input type="submit"/>
+    </div>
+</form>
+<p>This is after the form</p>
+
+</body>
+</html>
