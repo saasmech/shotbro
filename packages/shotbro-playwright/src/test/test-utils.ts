@@ -1,10 +1,7 @@
-import * as os from "node:os";
 
-const pixelmatch = require('../third_party/pixelmatch.js');
 import * as fs from 'node:fs';
 import {test} from '@playwright/test';
 import {PNG} from 'pngjs';
-// import {PNG} from 'pngjs/browser';
 import * as path from "node:path";
 
 export function currentRunImgPath(folder: string, fileName: string) {
@@ -20,9 +17,17 @@ export async function expectImageToMatchBaseline(outFile: string) {
   const fileName = path.basename(outFile);
   const parentDir = path.resolve(path.dirname(outFile), '..');
   const baselineFilePath = path.join(parentDir, fileName);
+  const updateSnapshots = process.env.UPDATE_SNAPSHOTS === 'true';
+  if (updateSnapshots) {
+    console.log(`Updating baseline snapshot for ${fileName}`);
+    fs.copyFileSync(outFile, baselineFilePath);
+    // continue anyway to verify pixelmatch is working
+  }
   const baseline = PNG.sync.read(fs.readFileSync(baselineFilePath));
   const compareTo = PNG.sync.read(fs.readFileSync(outFile));
   const diff = new PNG({width: baseline.width, height: baseline.height});
+  const pixelmatchImport = await import('pixelmatch');
+  let pixelmatch = pixelmatchImport.default;
   const numDiffPixels = pixelmatch(baseline.data, compareTo.data, diff.data, baseline.width, baseline.height, {threshold: 0.01});
   const buf = PNG.sync.write(diff);
   fs.writeFileSync(path.join(path.dirname(outFile), `diff-${fileName}`), buf);
