@@ -12,7 +12,7 @@ export async function shotBroPlaywrightAnnotate(
     inputPositions: InputPositions,
     focusPngPath: string
 ) {
-    let html = await generateHtmlForOverlayString(mainPngPath, input, inputPositions);
+    let html = await generateHtmlForOverlayString(mainPngPath, input, inputPositions, false);
     fs.writeFileSync(htmlPath, html);
 
     let browser = origPage.context().browser();

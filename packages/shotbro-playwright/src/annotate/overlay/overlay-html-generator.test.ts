@@ -18,7 +18,7 @@ test.describe('Shapes HTML Generator', () => {
             focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
             shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
         };
-        const html = await generateHtmlForOverlayString('main.png', input, positions);
+        const html = await generateHtmlForOverlayString('main.png', input, positions, true);
         test.expect(html).toMatchSnapshot('shapes-simple.html');
     })
 
@@ -26,8 +26,10 @@ test.describe('Shapes HTML Generator', () => {
         const input: ShotBroInput = {
             shotName: 'test',
             shapes: [
-                {arrow: {id: 'arrow1'}},
-                {arrow: {id: 'arrow2', alignTipTo: 'right'}},
+                {arrow: {id: 'arrow1', alignTipTo: 'top'}},
+                {arrow: {id: 'arrow2' }}, // right
+                {arrow: {id: 'arrow3', alignTipTo: 'bottom'}},
+                {arrow: {id: 'arrow4', alignTipTo: 'left'}},
                 {box: {id: 'box1'}},
                 {box: {id: 'box2'}},
                 {circle: {id: 'circle1'}},
@@ -41,7 +43,9 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 0, y: 0, w: 400, h: 1000},
             shapePositions: [
                 {x: 20, y: 50, w: 100, h: 100},
-                {x: 200, y: 50, w: 100, h: 50},
+                {x: 150, y: 50, w: 100, h: 50},
+                {x: 300, y: 50, w: 100, h: 100},
+                {x: 450, y: 50, w: 100, h: 50},
                 {x: 20, y: 250, w: 100, h: 100},
                 {x: 200, y: 250, w: 100, h: 50},
                 {x: 20, y: 450, w: 100, h: 100},
@@ -50,7 +54,7 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 200, y: 650, w: 100, h: 50},
             ]
         };
-        const html = await generateHtmlForOverlayString(null, input, positions);
+        const html = await generateHtmlForOverlayString(null, input, positions, true);
         let htmlFile = testResultsPath(__dirname, 'kitchen-sink.html');
         fs.writeFileSync(htmlFile, html, 'utf-8')
         test.expect(html).toMatchSnapshot('shapes-style.html');

@@ -85,6 +85,7 @@ export type ArrowShape = {
   thickness?: number
   length?: number
   rotate?: number
+  /** Default: right */
   alignTipTo?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left'
 } & ShapeCommon & ShapePosition & ShapeTransform
 

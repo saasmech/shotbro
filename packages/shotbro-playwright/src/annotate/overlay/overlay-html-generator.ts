@@ -1,32 +1,36 @@
 import {renderText} from "../shape/shape-text";
 import {renderBox} from "../shape/shape-box";
 import {renderCircle} from "../shape/shape-circle";
-import {ShotBroInput} from "../annotate-types";
+import {type ShotBroBox, ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 import {renderArrow} from "../shape/shape-arrow";
 
-export async function generateHtmlForOverlayString(mainPng: string|null, input: ShotBroInput, inputPositions: InputPositions) {
-  console.log('generate html for overlay');
-  const shapesHtml = [];
-  if (input.shapes) {
-    for (let i = 0; i < input.shapes.length; i++) {
-      let shape = input.shapes[i];
-      let shapeUniqId = 'shape' + i;
-      let shapePos = inputPositions.shapePositions[i];
-      if (shape && shapePos) {
-        let html: string = '';
-        if (shape.arrow) html = await renderArrow(shapeUniqId, shapePos, shape.arrow);
-        if (shape.box) html = await renderBox(shapeUniqId, shapePos, shape.box);
-        if (shape.circle) html = await renderCircle(shapeUniqId, shapePos, shape.circle);
-        if (shape.text) html = await renderText(shapeUniqId, shapePos, shape.text);
-        shapesHtml.push(html);
-      }
+export async function generateHtmlForOverlayString(mainPng: string | null, input: ShotBroInput, inputPositions: InputPositions, debug: boolean | undefined) {
+    console.log('generate html for overlay');
+    const shapesHtml = [];
+    if (input.shapes) {
+        for (let i = 0; i < input.shapes.length; i++) {
+            let shape = input.shapes[i];
+            let shapeUniqId = 'shape' + i;
+            let shapePos = inputPositions.shapePositions[i];
+            if (shape && shapePos) {
+                let html: string = '';
+                if (shape.arrow) html = await renderArrow(shapeUniqId, shapePos, shape.arrow);
+                if (shape.box) html = await renderBox(shapeUniqId, shapePos, shape.box);
+                if (shape.circle) html = await renderCircle(shapeUniqId, shapePos, shape.circle);
+                if (shape.text) html = await renderText(shapeUniqId, shapePos, shape.text);
+                shapesHtml.push(html);
+                if (debug) {
+                    let posHelper = debug ? renderHelperBox(shapeUniqId, shapePos) : '';
+                    shapesHtml.push(posHelper);
+                }
+            }
+        }
     }
-  }
-  /**
-   * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
-   */
-  const template = `
+    /**
+     * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
+     */
+    const template = `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -49,7 +53,20 @@ export async function generateHtmlForOverlayString(mainPng: string|null, input: 
       </body>
       </html>
     `
-  return template;
+    return template;
 }
 
-
+function renderHelperBox(scope: string, elPos: ShotBroBox): string {
+    return `
+        <style>
+        .${scope}.helper {
+            position: fixed;
+            top: ${elPos.y}px;
+            left: ${elPos.x}px;
+            width: ${elPos.w}px;
+            height: ${elPos.h}px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-${scope}" class="${scope} helper"></div>`;
+}
