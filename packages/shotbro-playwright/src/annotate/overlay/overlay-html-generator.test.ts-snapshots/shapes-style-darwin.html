@@ -21,11 +21,12 @@
         <style>
         .shape0.arrow {
             position: fixed;
-            top: 45px;
-            left: 15px;
+            top: 0px;
+            left: 53.333333333333336px;
             width: 100px;
             height: 30px;
-            rotate: 30deg;
+            rotate: 105deg;
+            transform: none;
         }
         
         .shape0.arrow .line {
@@ -52,13 +53,27 @@
 
 
         <style>
+        .shape0.helper {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape0" class="shape0 helper"></div>
+
+
+        <style>
         .shape1.arrow {
             position: fixed;
-            top: 45px;
-            left: 195px;
+            top: 62.5px;
+            left: 250px;
             width: 100px;
             height: 30px;
-            rotate: 30deg;
+            rotate: 15deg;
+            transform: scaleX(-1);
         }
         
         .shape1.arrow .line {
@@ -85,7 +100,114 @@
 
 
         <style>
-            .shape2.box {
+        .shape1.helper {
+            position: fixed;
+            top: 50px;
+            left: 150px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape1" class="shape1 helper"></div>
+
+
+        <style>
+        .shape2.arrow {
+            position: fixed;
+            top: 175px;
+            left: 275px;
+            width: 100px;
+            height: 30px;
+            rotate: -75deg;
+            transform: none;
+        }
+        
+        .shape2.arrow .line {
+            margin-top: 15px;
+            width: 80px;
+            background: deeppink;
+            height: 10px;
+            float: left;
+        }
+        
+        .shape2.arrow .point {
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid deeppink;
+            float: right;
+        }
+        </style>
+        <div id="arrow3" class="shape2 arrow">
+            <div class="line"></div>
+            <div class="point"></div>
+        </div>
+
+
+        <style>
+        .shape2.helper {
+            position: fixed;
+            top: 50px;
+            left: 300px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape2" class="shape2 helper"></div>
+
+
+        <style>
+        .shape3.arrow {
+            position: fixed;
+            top: 37.5px;
+            left: 350px;
+            width: 100px;
+            height: 30px;
+            rotate: 15deg;
+            transform: none;
+        }
+        
+        .shape3.arrow .line {
+            margin-top: 15px;
+            width: 80px;
+            background: deeppink;
+            height: 10px;
+            float: left;
+        }
+        
+        .shape3.arrow .point {
+            width: 0;
+            height: 0;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid deeppink;
+            float: right;
+        }
+        </style>
+        <div id="arrow4" class="shape3 arrow">
+            <div class="line"></div>
+            <div class="point"></div>
+        </div>
+
+
+        <style>
+        .shape3.helper {
+            position: fixed;
+            top: 50px;
+            left: 450px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape3" class="shape3 helper"></div>
+
+
+        <style>
+            .shape4.box {
                 position: fixed;
                 top: 248px;
                 left: 18px;
@@ -99,11 +221,24 @@
                 box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="box1" class="shape2 box"></div>
+        <div id="box1" class="shape4 box"></div>
 
 
         <style>
-            .shape3.box {
+        .shape4.helper {
+            position: fixed;
+            top: 250px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape4" class="shape4 helper"></div>
+
+
+        <style>
+            .shape5.box {
                 position: fixed;
                 top: 248px;
                 left: 198px;
@@ -117,11 +252,24 @@
                 box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="box2" class="shape3 box"></div>
+        <div id="box2" class="shape5 box"></div>
 
 
         <style>
-            .shape4.circle {
+        .shape5.helper {
+            position: fixed;
+            top: 250px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape5" class="shape5 helper"></div>
+
+
+        <style>
+            .shape6.circle {
                 position: fixed;
                 top: 448px;
                 left: 18px;
@@ -135,11 +283,24 @@
                 box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="circle1" class="shape4 circle"></div>
+        <div id="circle1" class="shape6 circle"></div>
 
 
         <style>
-            .shape5.circle {
+        .shape6.helper {
+            position: fixed;
+            top: 450px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape6" class="shape6 helper"></div>
+
+
+        <style>
+            .shape7.circle {
                 position: fixed;
                 top: 448px;
                 left: 198px;
@@ -153,11 +314,24 @@
                 box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="circle2" class="shape5 circle"></div>
+        <div id="circle2" class="shape7 circle"></div>
 
 
         <style>
-            .shape6.text {
+        .shape7.helper {
+            position: fixed;
+            top: 450px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape7" class="shape7 helper"></div>
+
+
+        <style>
+            .shape8.text {
                 position: fixed;
                 top: 650px;
                 left: 20px;
@@ -169,11 +343,24 @@
                 text-shadow: 2px 2px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="text1" class="shape6 text">Text1</div>
+        <div id="text1" class="shape8 text">Text1</div>
 
 
         <style>
-            .shape7.text {
+        .shape8.helper {
+            position: fixed;
+            top: 650px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape8" class="shape8 helper"></div>
+
+
+        <style>
+            .shape9.text {
                 position: fixed;
                 top: 650px;
                 left: 200px;
@@ -185,7 +372,20 @@
                 text-shadow: 2px 2px rgba(0,0,0,0.13);
             }
         </style>
-        <div id="text2" class="shape7 text">Text2</div>
+        <div id="text2" class="shape9 text">Text2</div>
+
+
+        <style>
+        .shape9.helper {
+            position: fixed;
+            top: 650px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape9" class="shape9 helper"></div>
       </body>
       </html>
     
