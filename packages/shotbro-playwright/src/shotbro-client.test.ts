@@ -1,24 +1,18 @@
-import {chromium, Browser, Page, test} from '@playwright/test';
+import {test} from '@playwright/test';
 import * as path from "node:path";
-import {playwrightPrepareSystemInfo} from "./index";
+import {playwrightPrepareSystemInfo, shotBroPlaywright} from "./index";
 import {CliLog} from "./util/log";
 
 test.describe('ShotBro Playwright Client', () => {
 
-    let browser: Browser;
-    let page: Page;
+    const log = new CliLog('debug');
 
-    test.beforeAll(async () => browser = await chromium.launch());
-    test.afterAll(async () => await browser.close());
-    test.beforeEach(async () => {
-        page = await browser.newPage();
+    test.beforeEach(async ({page}) => {
         await page.setViewportSize({width: 320, height: 640});
         await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
     });
-    test.afterEach(async () => await page.close());
 
-    test('system info looks pretty good', async () => {
-        const log = new CliLog('debug');
+    test('system info looks pretty good', async ({page}) => {
         const systemInfo = await playwrightPrepareSystemInfo(page, log)
         console.log(systemInfo)
         test.expect(systemInfo.osPlatform?.length).toBeGreaterThan(3);
@@ -35,6 +29,18 @@ test.describe('ShotBro Playwright Client', () => {
         test.expect(systemInfo.browserPrefersColorScheme).toBe('light');
         test.expect(systemInfo.browserDevicePixelRatio).toBe(1);
         test.expect(systemInfo.inputUlid).toHaveLength(29);
+    });
+
+    test('box1 circle', async ({page}, testInfo) => {
+        testInfo.annotations.push({ type: 'shotbro-working-dir', description: 'out'});
+        testInfo.annotations.push({ type: 'shotbro-log-level', description: 'debug'});
+        await shotBroPlaywright(page, testInfo, {
+            streamCode: 'test'
+        }, {
+            shotName: 'test',
+            focus: {at: 'body'},
+            shapes: [{circle: {at: '#box1'}}]
+        });
     });
 
 });

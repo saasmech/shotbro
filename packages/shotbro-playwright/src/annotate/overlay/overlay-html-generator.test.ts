@@ -3,9 +3,11 @@ import type {ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 import {test} from "@playwright/test";
 import * as fs from "node:fs";
-import {testResultsPath} from "../../test/test-utils";
+import {CliLog} from "../../util/log";
 
 test.describe('Shapes HTML Generator', () => {
+
+    const log = new CliLog('debug');
 
     test('Simple test', async () => {
         const input: ShotBroInput = {
@@ -18,7 +20,7 @@ test.describe('Shapes HTML Generator', () => {
             focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
             shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
         };
-        const html = await generateHtmlForOverlayString('main.png', input, positions, true, '');
+        const html = await generateHtmlForOverlayString(log, 'main.png', input, positions, true, '');
         test.expect(html).toMatchSnapshot('shapes-simple.html');
     })
 
@@ -54,7 +56,7 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 200, y: 650, w: 100, h: 50},
             ]
         };
-        const html = await generateHtmlForOverlayString(null, input, positions, true, '../../../');
+        const html = await generateHtmlForOverlayString(log, null, input, positions, true, '../../../');
         let htmlFile = 'src/annotate/overlay/test-results/kitchen-sink.html';
         fs.writeFileSync(htmlFile, html, 'utf-8');
         test.expect(html).toMatchSnapshot('shapes-style.html');

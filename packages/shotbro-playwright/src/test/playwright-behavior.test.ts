@@ -1,32 +1,20 @@
-import {Browser, chromium, Page, test} from '@playwright/test';
+import {test} from '@playwright/test';
 import * as path from "node:path";
 import {expectImageToMatchBaseline} from "./test-utils";
 
 test.describe('Playwright Behavior', () => {
 
-    let browser: Browser;
-    let page: Page;
-    test.beforeAll(async () => {
-        browser = await chromium.launch();
-    });
-    test.afterAll(async () => {
-        await browser.close();
-    });
-    test.beforeEach(async () => {
-        page = await browser.newPage();
+    test.beforeEach(async ({page}) => {
         await page.setViewportSize({width: 320, height: 320});
-    });
-    test.afterEach(async () => {
-        await page.close();
     });
 
     test.describe('Boxes', () => {
 
-        test.beforeEach(async () => {
+        test.beforeEach(async ({page}) => {
             await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
         });
 
-        test('playwright scroll the viewport', async () => {
+        test('playwright scroll the viewport', async ({page}) => {
             const outPath = 'src/test/__snapshots__/compare/playwright-boxes-scroll.png';
             await page.screenshot({
                 path: outPath,
@@ -36,7 +24,7 @@ test.describe('Playwright Behavior', () => {
             await expectImageToMatchBaseline(outPath);
         })
 
-        test('playwright bounding box for the body', async () => {
+        test('playwright bounding box for the body', async ({page}) => {
             const box = await page.locator('body').boundingBox();
             // height should be bigger than the viewport specified
             test.expect(page.viewportSize()).toMatchObject({width: 320, height: 320});

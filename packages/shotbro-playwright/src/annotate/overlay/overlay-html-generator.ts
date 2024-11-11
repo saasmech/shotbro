@@ -4,9 +4,18 @@ import {renderCircle} from "../shape/shape-circle";
 import {type ShotBroBox, ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 import {renderArrow} from "../shape/shape-arrow";
+import {CliLog} from "../../util/log";
 
-export async function generateHtmlForOverlayString(mainPng: string | null, input: ShotBroInput, inputPositions: InputPositions, debug: boolean | undefined, bundledPathPrefix: string|undefined) {
+export async function generateHtmlForOverlayString(
+    log: CliLog,
+    mainPng: string | null,
+    input: ShotBroInput,
+    inputPositions: InputPositions,
+    debug: boolean | undefined,
+    bundledPathPrefix: string | undefined
+) {
     const shapesHtml = [];
+    log.debug("generateHtmlForOverlayString: ", input, inputPositions, debug, bundledPathPrefix);
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
@@ -29,6 +38,7 @@ export async function generateHtmlForOverlayString(mainPng: string | null, input
     const bundledPath = bundledPathPrefix ? bundledPathPrefix : '';
     const modernNormalizePath = bundledPath + "bundled/modern-normalize/modern-normalize.css";
     const openSansPath = bundledPath + "bundled/@fontsource/open-sans/500.css";
+    const mainPngCss = mainPng ? "url('" + mainPng + "')" : 'none';
 
     /**
      * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
@@ -46,7 +56,7 @@ export async function generateHtmlForOverlayString(mainPng: string | null, input
             width: ${inputPositions.focusBoxPosition!.w}px;
             height: ${inputPositions.focusBoxPosition!.h}px;
             overflow: hidden;
-            background-image: ${mainPng ? "url('${mainPng}')" : 'none'};
+            background-image: ${mainPngCss};
             background-repeat: no-repeat;
           }
         </style>
@@ -54,8 +64,7 @@ export async function generateHtmlForOverlayString(mainPng: string | null, input
       <body>
       ${shapesHtml.join('\n\n')}
       </body>
-      </html>
-    `
+      </html>`
     return template;
 }
 

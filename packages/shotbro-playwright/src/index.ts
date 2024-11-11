@@ -148,15 +148,16 @@ export async function shotBroPlaywright(
         outDir = prepareOutDir(outDir);
         let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
+
         await generateMainScreenshot(page, mainPngPath);
 
         if (input) {
-            let inputPositions = await findPositions(page, input);
+            let inputPositions = await findPositions(log, page, input);
             let htmlPath = path.join(outDir, `${systemInfo.inputUlid}-focus.html`);
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
             let mainPngName = path.basename(mainPngPath);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(page, mainPngName, htmlPath, input, inputPositions, focusPngPath);
+            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath);
         }
 
         // TODO: generate markdown doc of screenshots appended to for each test run

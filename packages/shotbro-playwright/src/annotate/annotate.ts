@@ -3,8 +3,10 @@ import {ShotBroInput} from "./annotate-types";
 import {generateHtmlForOverlayString} from "./overlay/overlay-html-generator";
 import * as fs from "node:fs";
 import {InputPositions} from "../main-shot/main-screenshotter";
+import {CliLog} from "../util/log";
 
 export async function shotBroPlaywrightAnnotate(
+    log: CliLog,
     origPage: Page,
     mainPngPath: string,
     htmlPath: string,
@@ -12,7 +14,7 @@ export async function shotBroPlaywrightAnnotate(
     inputPositions: InputPositions,
     focusPngPath: string
 ) {
-    let html = await generateHtmlForOverlayString(mainPngPath, input, inputPositions, false, '');
+    let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, false, '');
     fs.writeFileSync(htmlPath, html);
 
     let browser = origPage.context().browser();
