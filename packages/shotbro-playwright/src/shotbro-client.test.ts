@@ -13,7 +13,7 @@ test.describe('ShotBro Playwright Client', () => {
     test.beforeEach(async () => {
         page = await browser.newPage();
         await page.setViewportSize({width: 320, height: 640});
-        await page.goto(`file:${path.join(__dirname, 'test', 'test-boxes.html')}`);
+        await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
     });
     test.afterEach(async () => await page.close());
 

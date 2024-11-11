@@ -18,7 +18,7 @@ test.describe('Shapes HTML Generator', () => {
             focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
             shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
         };
-        const html = await generateHtmlForOverlayString('main.png', input, positions, true);
+        const html = await generateHtmlForOverlayString('main.png', input, positions, true, '');
         test.expect(html).toMatchSnapshot('shapes-simple.html');
     })
 
@@ -54,10 +54,10 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 200, y: 650, w: 100, h: 50},
             ]
         };
-        const html = await generateHtmlForOverlayString(null, input, positions, true);
-        let htmlFile = testResultsPath(__dirname, 'kitchen-sink.html');
-        fs.writeFileSync(htmlFile, html, 'utf-8')
+        const html = await generateHtmlForOverlayString(null, input, positions, true, '../../../');
+        let htmlFile = 'src/annotate/overlay/test-results/kitchen-sink.html';
+        fs.writeFileSync(htmlFile, html, 'utf-8');
         test.expect(html).toMatchSnapshot('shapes-style.html');
-    })
+    });
 
 });

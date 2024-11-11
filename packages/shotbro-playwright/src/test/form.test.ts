@@ -16,14 +16,14 @@ test.describe('Form test', () => {
     test.beforeEach(async () => {
         page = await browser.newPage();
         await page.setViewportSize({width: 320, height: 640});
-        await page.goto(`file:${path.join(__dirname, 'test-form.html')}`);
+        await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-form.html'))}`);
     });
     test.afterEach(async () => await page.close());
 
     test('form with some shapes', async () => {
         const log = new CliLog('debug');
         //const outDir = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
-        const outDir = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME);
+        const outDir = path.join('src', 'test', SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME);
         let input: ShotBroInput = {
             shotName: "Test",
             focus: {at: "#myform"},
@@ -33,7 +33,7 @@ test.describe('Form test', () => {
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
         await generateMainScreenshot(page, mainPngPath);
         let inputPositions = await findPositions(page, input);
-        let htmlPath = path.join(outDir, `focus.html`);
+        let htmlPath = path.resolve(path.join(outDir, `focus.html`));
         let focusPngPath = path.join(outDir, `focus.png`);
         let mainPngName = path.basename(mainPngPath);
         await shotBroPlaywrightAnnotate(page, mainPngName, htmlPath, input, inputPositions, focusPngPath);

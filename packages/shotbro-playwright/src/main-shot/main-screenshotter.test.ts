@@ -17,12 +17,12 @@ test.describe('Main screenshotter', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes.html')}`);
+            await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
         });
         test.afterEach(async () => await page.close());
 
         test('when default used, box should match whole page html', async () => {
-            const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
+            const pngPath = path.join('src', 'main-shot', SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
             // const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
             await generateMainScreenshot(page, pngPath);
             //const outJson = fs.readFileSync(jsonPath, 'utf-8');
@@ -30,7 +30,7 @@ test.describe('Main screenshotter', () => {
         })
 
         test('when default used, box should match whole page png', async () => {
-            const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
+            const pngPath = path.join('src', 'main-shot', SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.png');
             //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
             await generateMainScreenshot(page, pngPath);
             await expectImageToMatchBaseline(pngPath);
@@ -57,12 +57,12 @@ test.describe('Main screenshotter', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes-extra-long.html')}`);
+            await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes-extra-long.html'))}`);
         });
         test.afterEach(async () => await page.close());
 
         test('when page extra long capture should be limited', async () => {
-            const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.png');
+            const pngPath = path.join('src', 'main-shot', SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.png');
             //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-limited.json');
             await generateMainScreenshot(page, pngPath);
 

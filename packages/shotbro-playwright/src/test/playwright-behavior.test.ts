@@ -1,6 +1,6 @@
 import {Browser, chromium, Page, test} from '@playwright/test';
 import * as path from "node:path";
-import {expectImageToMatchBaseline, currentRunImgPath} from "./test-utils";
+import {expectImageToMatchBaseline} from "./test-utils";
 
 test.describe('Playwright Behavior', () => {
 
@@ -23,11 +23,11 @@ test.describe('Playwright Behavior', () => {
     test.describe('Boxes', () => {
 
         test.beforeEach(async () => {
-            await page.goto(`file:${path.join(__dirname, 'test-boxes.html')}`);
+            await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
         });
 
         test('playwright scroll the viewport', async () => {
-            const outPath = currentRunImgPath(__dirname, 'playwright-boxes-scroll.png')
+            const outPath = 'src/test/__snapshots__/compare/playwright-boxes-scroll.png';
             await page.screenshot({
                 path: outPath,
                 fullPage: true,

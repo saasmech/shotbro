@@ -30,10 +30,12 @@
   "engines": {
     "node": ">=14"
   },
+  "type": "module",
   "scripts": {
-    "pretest": "npx playwright install",
+    "pretest": "npx playwright install && node --loader ts-node/esm copy-bundled.ts",
     "test": "npx playwright test",
     "test:update-snapshots": "npx playwright test --update-snapshots",
+    "prebuild": "node --loader ts-node/esm copy-bundled.ts",
     "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
   },
   "peerDependencies": {

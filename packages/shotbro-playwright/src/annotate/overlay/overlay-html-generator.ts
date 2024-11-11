@@ -5,8 +5,7 @@ import {type ShotBroBox, ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
 import {renderArrow} from "../shape/shape-arrow";
 
-export async function generateHtmlForOverlayString(mainPng: string | null, input: ShotBroInput, inputPositions: InputPositions, debug: boolean | undefined) {
-    console.log('generate html for overlay');
+export async function generateHtmlForOverlayString(mainPng: string | null, input: ShotBroInput, inputPositions: InputPositions, debug: boolean | undefined, bundledPathPrefix: string|undefined) {
     const shapesHtml = [];
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
@@ -27,6 +26,10 @@ export async function generateHtmlForOverlayString(mainPng: string | null, input
             }
         }
     }
+    const bundledPath = bundledPathPrefix ? bundledPathPrefix : '';
+    const modernNormalizePath = bundledPath + "bundled/modern-normalize/modern-normalize.css";
+    const openSansPath = bundledPath + "bundled/@fontsource/open-sans/500.css";
+
     /**
      * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
      */
@@ -35,8 +38,8 @@ export async function generateHtmlForOverlayString(mainPng: string | null, input
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="https://cdn.jsdelivr.net/npm/modern-normalize@3.0.1/modern-normalize.css" rel="stylesheet"/>
-        <link href="https://cdn.jsdelivr.net/npm/@fontsource/open-sans@5.1.0/500.css" rel="stylesheet"/>
+        <link href="${modernNormalizePath}" rel="stylesheet"/>
+        <link href="${openSansPath}" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;

@@ -16,15 +16,15 @@ test.describe('Annotate', () => {
         test.beforeEach(async () => {
             page = await browser.newPage();
             await page.setViewportSize({width: 320, height: 320});
-            await page.goto(`file:${path.join(__dirname, '..', 'test', 'test-boxes.html')}`);
+            await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-boxes.html'))}`);
         });
         test.afterEach(async () => await page.close());
 
         test('render a circle', async () => {
-            const bgFile = '../src/test/test-pattern-color.png';
-            fs.mkdirSync(path.join(__dirname, '..', '..', 'out'), {recursive: true});
-            const htmlPath = path.join(__dirname, '..', '..', 'out', 'main-screenshotter-test1.html');
-            const pngPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
+            const bgFile = 'src/test/test-pattern-color.png';
+            fs.mkdirSync(path.join('out'), {recursive: true});
+            const htmlPath = path.resolve(path.join('out', 'main-screenshotter-test1.html'));
+            const pngPath = path.join('src', 'annotate', SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'thumb-default.png');
             await shotBroPlaywrightAnnotate(page, bgFile, htmlPath, {
                 shotName: 'test-name',
                 shapes: [{circle: {at: '#box1'}}],

@@ -4,11 +4,10 @@ import {test} from '@playwright/test';
 import {PNG} from 'pngjs';
 import * as path from "node:path";
 
-export function currentRunImgPath(folder: string, fileName: string) {
-  return path.join(folder, '__snapshots__', COMPARE_DIR_NAME, fileName);
-}
-
 export function testResultsPath(folder: string, fileName: string) {
+  if (folder == '') {
+    return path.join(folder, 'test-results', fileName);
+  }
   fs.mkdirSync(path.join(folder, 'test-results'), {recursive: true});
   return path.join(folder, 'test-results', fileName);
 }
