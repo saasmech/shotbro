@@ -143,7 +143,8 @@ export async function shotBroPlaywright(
 
         log.debug(`Prepare output dir ${outDir}`)
         outDir = await prepareOutDir(outDir);
-        let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
+        let mainPngName = `${systemInfo.inputUlid}.png`;
+        let mainPngPath = path.join(outDir, mainPngName);
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
 
         await generateMainScreenshot(page, mainPngPath);
@@ -152,7 +153,6 @@ export async function shotBroPlaywright(
             let inputPositions = await findPositions(log, page, input);
             let htmlPath = path.join(outDir, `${systemInfo.inputUlid}-focus.html`);
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
-            let mainPngName = path.basename(mainPngPath);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
             await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, 'bundled', false);
         }

@@ -76,6 +76,12 @@ export async function expectHtmlToMatchSnapshot(logLevel: ShotBroLogLevel, html:
 
 export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFolder: string, testName: string, shape: ShotBroShape) {
     const log = new CliLog(logLevel)
+    let outDir = `test-results/test-shapes/${testFolder}`;
+    await fs.mkdir(outDir, {recursive: true});
+    let mainPngName = `${testName}-main-bg.png`;
+    let mainPngPath = path.join(outDir, mainPngName);
+    let htmlPath = path.resolve(path.join(outDir, `${testName}.html`));
+    let focusPngPath = path.join(outDir, `${testName}.png`);
     let page = await pageRef.context()!.browser()!.newPage();
     await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-shapes-base.html'))}`);
     let input: ShotBroInput = {
@@ -83,12 +89,6 @@ export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFo
         shapes: [{at: '#test-div', ...shape}],
         shotName: `test-${testName}`
     };
-    let outDir = `test-results/test-shapes/${testFolder}`;
-    await fs.mkdir(outDir, {recursive: true});
-    let mainPngName = `${testName}-main-bg.png`;
-    let mainPngPath = path.join(outDir, mainPngName);
-    let htmlPath = path.resolve(path.join(outDir, `${testName}.html`));
-    let focusPngPath = path.join(outDir, `${testName}.png`);
     await generateMainScreenshot(page, mainPngPath);
     let inputPositions = await findPositions(log, page, input);
     await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', false);
