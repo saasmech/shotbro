@@ -6,6 +6,7 @@ import {expectHtmlToMatchSnapshot, expectPngToMatchSnapshot} from "./test-utils"
 import {findPositions, generateMainScreenshot} from "../main-shot/main-screenshot";
 import {shotBroPlaywrightAnnotate} from "../annotate/annotate";
 import {ShotBroInput} from "../annotate/annotate-types";
+import {box2dp} from "../shape/shape-utils";
 
 test.describe('Form test', () => {
 
@@ -26,6 +27,12 @@ test.describe('Form test', () => {
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
         await generateMainScreenshot(page, mainPngPath);
         let inputPositions = await findPositions(log, page, input);
+        test.expect(box2dp(inputPositions.focusBoxPosition)).toStrictEqual({
+            h: 1184.87, w: 668.80, x: 19, y: 234.66
+        });
+        test.expect(box2dp(inputPositions.shapePositions[0])).toStrictEqual({
+            h: 38, w: 296, x: 44, y: 332.66,
+        });
         let htmlPath = path.resolve(path.join(outDir, `some-shapes-with-shapes.html`));
         let focusPngPath = path.join(outDir, `some-shapes-with-shapes.png`);
         let mainPngName = path.basename(mainPngPath);
