@@ -1,16 +1,22 @@
 import {renderBox} from "./shape-box";
-import type {BoxShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate-types";
 import {test} from "@playwright/test";
+import {testShape} from "../../test/test-utils";
 
 test.describe('Shape Box', () => {
 
     test('Simple test', async () => {
-        const shape: BoxShape = {
-            //thickness: 'Hello World'
-        }
         const elPos: ShotBroBox = {x: 1, y: 2, w: 40, h: 50}
-        const html = await renderBox('shape0', elPos, shape);
+        const html = await renderBox('shape0', elPos, {box: {}});
         test.expect(html).toMatchSnapshot('box-simple.html');
-    })
+    });
+
+    test('Thickness', async ({page}) => {
+        let thicknesses = [1, 8, 32];
+        for (const thickness of thicknesses) {
+            await testShape('info', page, 'box', `thickness-${thickness}`, {
+                box: {thickness: thickness}
+            });
+        }
+    });
 });

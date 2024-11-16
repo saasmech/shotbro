@@ -157,10 +157,10 @@ export async function shotBroPlaywright(
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
             let mainPngName = path.basename(mainPngPath);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath);
+            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, 'bundled');
         }
 
-        // TODO: generate markdown doc of screenshots appended to for each test run
+        // MAYBE: generate markdown doc of screenshots appended to for each test run
     } catch (e) {
         output.error = String(e)
         log.warn(`Could not capture ${captureConfig.streamCode}: ${e}`)

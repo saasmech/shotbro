@@ -12,15 +12,16 @@ export async function shotBroPlaywrightAnnotate(
     htmlPath: string,
     input: ShotBroInput,
     inputPositions: InputPositions,
-    focusPngPath: string
+    focusPngPath: string,
+    bundledPath: string
 ) {
-    let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, false, '');
+    let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, false, bundledPath);
     fs.writeFileSync(htmlPath, html);
 
     let browser = origPage.context().browser();
     let ctx = await browser!.newContext();
     let page = await ctx.newPage();
-    await page.goto('file://' + htmlPath);
+    await page.goto(`file://${htmlPath}`);
     await page.waitForTimeout(1000);
     let focus = inputPositions.focusBoxPosition;
     let clip = undefined;

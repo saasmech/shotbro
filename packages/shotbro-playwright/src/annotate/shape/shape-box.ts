@@ -1,4 +1,4 @@
-import type {BoxShape} from "./shape-types";
+import type {BoxShape, ShotBroShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate-types";
 
 const defaultProps: BoxShape = {
@@ -10,9 +10,9 @@ const defaultProps: BoxShape = {
     translateY: 0,
 }
 
-export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: BoxShape): Promise<string> {
-    const shape: BoxShape = Object.assign({}, defaultProps, rawShape);
-    const id = rawShape.id || scope;
+export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: ShotBroShape): Promise<string> {
+    const shape: BoxShape = Object.assign({}, defaultProps, rawShape.box);
+    const id = shape.id || scope;
     const thickness = shape.thickness || 0;
     const translateX = shape.translateX ?? shape.translate ?? 0
     const translateY = shape.translateY ?? shape.translate ?? 0
@@ -20,16 +20,15 @@ export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: BoxS
         <style>
             .${scope}.box {
                 position: fixed;
-                top: ${elPos.y + translateY - (thickness / 2)}px;
-                left: ${elPos.x + translateX - (thickness / 2)}px;
-                width: ${(thickness * 2) + elPos.w}px;
-                height: ${(thickness * 2) + elPos.h}px;
+                top: ${elPos.y - (thickness / 2) + translateY}px;
+                left: ${elPos.x - (thickness / 2) + translateX}px;
+                width: ${elPos.w + thickness}px;
+                height: ${elPos.h + thickness}px;
                 
                 border-width: ${(shape.thickness || 0)}px;
                 border-style: solid;
                 border-color: ${shape.color};
                 border-radius: ${thickness}px;
-                box-shadow: ${thickness / 2}px ${thickness / 2}px 2px 0px rgba(0,0,0,0.13);
             }
         </style>
         <div id="${id}" class="${scope} box"></div>`;

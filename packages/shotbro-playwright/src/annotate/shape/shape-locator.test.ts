@@ -1,21 +1,24 @@
 import {atToLocatorStr, ensureShapesHaveId} from "./shape-locator";
 import {ShotBroInput} from "../annotate-types";
 import {test} from "@playwright/test";
+import {CliLog} from "../../util/log";
 
 test.describe('Shape Locator', () => {
 
+  const log = new CliLog('debug');
+
   test('Simple Text', async () => {
-    const locatorStr = atToLocatorStr({atText: 'Hello World'});
+    const locatorStr = atToLocatorStr(log, {atText: 'Hello World'});
     test.expect(locatorStr).toBe('text="Hello World"');
   });
 
   test('Simple ID', async () => {
-    const locatorStr = atToLocatorStr({at: '#abc123'});
+    const locatorStr = atToLocatorStr(log, {at: '#abc123'});
     test.expect(locatorStr).toBe('#abc123');
   });
 
   test('Simple test id', async () => {
-    const locatorStr = atToLocatorStr({atTestId: 'abc123'});
+    const locatorStr = atToLocatorStr(log, {atTestId: 'abc123'});
     test.expect(locatorStr).toBe('[data-testid="abc123"]');
   });
 

@@ -31,7 +31,7 @@ test.describe('ShotBro Playwright Client', () => {
         test.expect(systemInfo.inputUlid).toHaveLength(29);
     });
 
-    test('box1 circle', async ({page}, testInfo) => {
+    test('box1 shapes', async ({page}, testInfo) => {
         testInfo.annotations.push({ type: 'shotbro-working-dir', description: 'out'});
         testInfo.annotations.push({ type: 'shotbro-log-level', description: 'debug'});
         await shotBroPlaywright(page, testInfo, {
@@ -39,8 +39,12 @@ test.describe('ShotBro Playwright Client', () => {
         }, {
             shotName: 'test',
             focus: {at: 'body'},
-            shapes: [{circle: {at: '#box1'}}]
-        });
+            shapes: [
+                {at: '#box1', box: {}},
+                {at: '#box1', circle: {}},
+                {at: '#box1', icon: {}}
+            ]
+        })
     });
 
 });

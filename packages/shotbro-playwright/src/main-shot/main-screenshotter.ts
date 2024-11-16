@@ -14,7 +14,7 @@ export type InputPositions = {
 }
 
 export async function generateMainScreenshot(page: Page, screenshotPath: string) {
-    const rootEl = await page.locator('html');
+    const rootEl = page.locator('html');
     const rootBb = await rootEl.boundingBox()
     if (!rootBb) throw new Error('Could not get size of HTML element');
     await page.screenshot({
@@ -53,7 +53,7 @@ export async function findPositions(log: CliLog, page: Page, input: ShotBroInput
         if (focusBox?.atPos) {
             atBox = focusBox?.atPos;
         } else {
-            let locatorStr = atToLocatorStr(focusBox);
+            let locatorStr = atToLocatorStr(log, focusBox);
             const atLocator = page.locator(locatorStr);
             let sbBb;
             if (atLocator) {
@@ -82,19 +82,7 @@ export async function findPositions(log: CliLog, page: Page, input: ShotBroInput
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
-            let shapePos: ShotBroBox | undefined = undefined;
-            if (shape.arrow) {
-                shapePos = await calculateShapePosition(log, page, shape.arrow);
-            }
-            if (shape.box) {
-                shapePos = await calculateShapePosition(log, page, shape.box);
-            }
-            if (shape.circle) {
-                shapePos = await calculateShapePosition(log, page, shape.circle);
-            }
-            if (shape.text) {
-                shapePos = await calculateShapePosition(log, page, shape.text);
-            }
+            let shapePos: ShotBroBox | undefined = await calculateShapePosition(log, page, shape);
             if (shapePos != null) {
                 shapePositions[i] = shapePos;
             }

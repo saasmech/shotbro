@@ -3,52 +3,43 @@
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="../../../bundled/modern-normalize/modern-normalize.css" rel="stylesheet"/>
         <link href="../../../bundled/@fontsource/open-sans/500.css" rel="stylesheet"/>
+        <link href="../../../bundled/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <link href="../../../bundled/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;
             width: 400px;
             height: 1000px;
             overflow: hidden;
-            background-image: none;
+            background-image: url('main.png');
             background-repeat: no-repeat;
           }
         </style>
       </head>
       <body>
       
+        <!-- icon1
+            rawShape: {"icon":{"id":"icon1","name":"1-circle-fill","position":"top-left"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-        .shape0.arrow {
-            position: fixed;
-            top: 0px;
-            left: 53.333333333333336px;
-            width: 100px;
-            height: 30px;
-            rotate: 105deg;
-            transform: none;
-        }
-        
-        .shape0.arrow .line {
-            margin-top: 15px;
-            width: 80px;
-            background: deeppink;
-            height: 10px;
-            float: left;
-        }
-        
-        .shape0.arrow .point {
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 20px solid deeppink;
-            float: right;
-        }
+            .shape0.icon {
+                position: fixed;
+                top: 25px;
+                left: 125px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape0.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
+            }
         </style>
-        <div id="arrow1" class="shape0 arrow">
-            <div class="line"></div>
-            <div class="point"></div>
+        <div id="icon1" class="shape0 icon">
+            <i class="bi bi-1-circle-fill"></i>
         </div>
 
 
@@ -56,7 +47,7 @@
         .shape0.helper {
             position: fixed;
             top: 50px;
-            left: 20px;
+            left: 150px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -65,37 +56,27 @@
         <div id="helper-shape0" class="shape0 helper"></div>
 
 
+        <!-- icon2
+            rawShape: {"icon":{"id":"icon2","name":"1-circle-fill","position":"top"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-        .shape1.arrow {
-            position: fixed;
-            top: 62.5px;
-            left: 250px;
-            width: 100px;
-            height: 30px;
-            rotate: 15deg;
-            transform: scaleX(-1);
-        }
-        
-        .shape1.arrow .line {
-            margin-top: 15px;
-            width: 80px;
-            background: deeppink;
-            height: 10px;
-            float: left;
-        }
-        
-        .shape1.arrow .point {
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 20px solid deeppink;
-            float: right;
-        }
+            .shape1.icon {
+                position: fixed;
+                top: 25px;
+                left: 175px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape1.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
+            }
         </style>
-        <div id="arrow2" class="shape1 arrow">
-            <div class="line"></div>
-            <div class="point"></div>
+        <div id="icon2" class="shape1 icon">
+            <i class="bi bi-1-circle-fill"></i>
         </div>
 
 
@@ -105,44 +86,34 @@
             top: 50px;
             left: 150px;
             width: 100px;
-            height: 50px;
+            height: 100px;
             border: 1px solid red;
           }
          </style>
         <div id="helper-shape1" class="shape1 helper"></div>
 
 
+        <!-- icon3
+            rawShape: {"icon":{"id":"icon3","name":"1-circle-fill","position":"top-right"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-        .shape2.arrow {
-            position: fixed;
-            top: 175px;
-            left: 275px;
-            width: 100px;
-            height: 30px;
-            rotate: -75deg;
-            transform: none;
-        }
-        
-        .shape2.arrow .line {
-            margin-top: 15px;
-            width: 80px;
-            background: deeppink;
-            height: 10px;
-            float: left;
-        }
-        
-        .shape2.arrow .point {
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 20px solid deeppink;
-            float: right;
-        }
+            .shape2.icon {
+                position: fixed;
+                top: 25px;
+                left: 225px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape2.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
+            }
         </style>
-        <div id="arrow3" class="shape2 arrow">
-            <div class="line"></div>
-            <div class="point"></div>
+        <div id="icon3" class="shape2 icon">
+            <i class="bi bi-1-circle-fill"></i>
         </div>
 
 
@@ -150,7 +121,7 @@
         .shape2.helper {
             position: fixed;
             top: 50px;
-            left: 300px;
+            left: 150px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -159,37 +130,27 @@
         <div id="helper-shape2" class="shape2 helper"></div>
 
 
+        <!-- icon4
+            rawShape: {"icon":{"id":"icon4","name":"1-circle-fill","position":"right"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-        .shape3.arrow {
-            position: fixed;
-            top: 37.5px;
-            left: 350px;
-            width: 100px;
-            height: 30px;
-            rotate: 15deg;
-            transform: none;
-        }
-        
-        .shape3.arrow .line {
-            margin-top: 15px;
-            width: 80px;
-            background: deeppink;
-            height: 10px;
-            float: left;
-        }
-        
-        .shape3.arrow .point {
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 20px solid deeppink;
-            float: right;
-        }
+            .shape3.icon {
+                position: fixed;
+                top: 75px;
+                left: 225px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape3.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
+            }
         </style>
-        <div id="arrow4" class="shape3 arrow">
-            <div class="line"></div>
-            <div class="point"></div>
+        <div id="icon4" class="shape3 icon">
+            <i class="bi bi-1-circle-fill"></i>
         </div>
 
 
@@ -197,38 +158,44 @@
         .shape3.helper {
             position: fixed;
             top: 50px;
-            left: 450px;
+            left: 150px;
             width: 100px;
-            height: 50px;
+            height: 100px;
             border: 1px solid red;
           }
          </style>
         <div id="helper-shape3" class="shape3 helper"></div>
 
 
+        <!-- icon5
+            rawShape: {"icon":{"id":"icon5","name":"1-circle-fill","position":"bottom-right"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-            .shape4.box {
+            .shape4.icon {
                 position: fixed;
-                top: 248px;
-                left: 18px;
-                width: 108px;
-                height: 108px;
-                
-                border-width: 4px;
-                border-style: solid;
-                border-color: deeppink;
-                border-radius: 4px;
-                box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
+                top: 125px;
+                left: 225px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape4.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
             }
         </style>
-        <div id="box1" class="shape4 box"></div>
+        <div id="icon5" class="shape4 icon">
+            <i class="bi bi-1-circle-fill"></i>
+        </div>
 
 
         <style>
         .shape4.helper {
             position: fixed;
-            top: 250px;
-            left: 20px;
+            top: 50px;
+            left: 150px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -237,60 +204,72 @@
         <div id="helper-shape4" class="shape4 helper"></div>
 
 
+        <!-- icon6
+            rawShape: {"icon":{"id":"icon6","name":"1-circle-fill","position":"bottom"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-            .shape5.box {
+            .shape5.icon {
                 position: fixed;
-                top: 248px;
-                left: 198px;
-                width: 108px;
-                height: 58px;
-                
-                border-width: 4px;
-                border-style: solid;
-                border-color: deeppink;
-                border-radius: 4px;
-                box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
+                top: 125px;
+                left: 175px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape5.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
             }
         </style>
-        <div id="box2" class="shape5 box"></div>
+        <div id="icon6" class="shape5 icon">
+            <i class="bi bi-1-circle-fill"></i>
+        </div>
 
 
         <style>
         .shape5.helper {
             position: fixed;
-            top: 250px;
-            left: 200px;
+            top: 50px;
+            left: 150px;
             width: 100px;
-            height: 50px;
+            height: 100px;
             border: 1px solid red;
           }
          </style>
         <div id="helper-shape5" class="shape5 helper"></div>
 
 
+        <!-- icon7
+            rawShape: {"icon":{"id":"icon7","name":"1-circle-fill","position":"bottom-left"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-            .shape6.circle {
+            .shape6.icon {
                 position: fixed;
-                top: 448px;
-                left: 18px;
-                width: 100px;
-                height: 100px;
-                
-                border-width: 4px;
-                border-style: solid;
-                border-color: deeppink;
-                border-radius: 50px / 50px;
-                box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
+                top: 125px;
+                left: 125px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape6.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
             }
         </style>
-        <div id="circle1" class="shape6 circle"></div>
+        <div id="icon7" class="shape6 icon">
+            <i class="bi bi-1-circle-fill"></i>
+        </div>
 
 
         <style>
         .shape6.helper {
             position: fixed;
-            top: 450px;
-            left: 20px;
+            top: 50px;
+            left: 150px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -299,58 +278,72 @@
         <div id="helper-shape6" class="shape6 helper"></div>
 
 
+        <!-- icon8
+            rawShape: {"icon":{"id":"icon8","name":"1-circle-fill","position":"left"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-            .shape7.circle {
+            .shape7.icon {
                 position: fixed;
-                top: 448px;
-                left: 198px;
-                width: 100px;
+                top: 75px;
+                left: 125px;
+                width: 50px;
                 height: 50px;
-                
-                border-width: 4px;
-                border-style: solid;
-                border-color: deeppink;
-                border-radius: 50px / 25px;
-                box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.13);
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape7.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
             }
         </style>
-        <div id="circle2" class="shape7 circle"></div>
+        <div id="icon8" class="shape7 icon">
+            <i class="bi bi-1-circle-fill"></i>
+        </div>
 
 
         <style>
         .shape7.helper {
             position: fixed;
-            top: 450px;
-            left: 200px;
+            top: 50px;
+            left: 150px;
             width: 100px;
-            height: 50px;
+            height: 100px;
             border: 1px solid red;
           }
          </style>
         <div id="helper-shape7" class="shape7 helper"></div>
 
 
+        <!-- icon9
+            rawShape: {"icon":{"id":"icon9","name":"1-circle-fill","position":"center"}} 
+            elPos: {"x":150,"y":50,"w":100,"h":100}    
+        -->
         <style>
-            .shape8.text {
+            .shape8.icon {
                 position: fixed;
-                top: 650px;
-                left: 20px;
-                width: 100px;
-                height: 100px;
-                ZZpadding: '${shape?.padding || 0}px';
-                font-size: 32px;
-                color: deeppink;
-                text-shadow: 2px 2px rgba(0,0,0,0.13);
+                top: 75px;
+                left: 175px;
+                width: 50px;
+                height: 50px;
+                /*text-shadow: 0 0 5px red;*/
+            }
+            .shape8.icon i.bi {
+                font-size: 50px;
+                line-height: 50px;
+                color: deeppink;                 
             }
         </style>
-        <div id="text1" class="shape8 text">Text1</div>
+        <div id="icon9" class="shape8 icon">
+            <i class="bi bi-1-circle-fill"></i>
+        </div>
 
 
         <style>
         .shape8.helper {
             position: fixed;
-            top: 650px;
-            left: 20px;
+            top: 50px;
+            left: 150px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -360,23 +353,144 @@
 
 
         <style>
-            .shape9.text {
+            .shape9.box {
                 position: fixed;
-                top: 650px;
-                left: 200px;
-                width: 100px;
-                height: 50px;
-                ZZpadding: '${shape?.padding || 0}px';
-                font-size: 32px;
-                color: deeppink;
-                text-shadow: 2px 2px rgba(0,0,0,0.13);
+                top: 248px;
+                left: 18px;
+                width: 104px;
+                height: 104px;
+                
+                border-width: 4px;
+                border-style: solid;
+                border-color: deeppink;
+                border-radius: 4px;
             }
         </style>
-        <div id="text2" class="shape9 text">Text2</div>
+        <div id="box1" class="shape9 box"></div>
 
 
         <style>
         .shape9.helper {
+            position: fixed;
+            top: 250px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape9" class="shape9 helper"></div>
+
+
+        <style>
+            .shape10.box {
+                position: fixed;
+                top: 248px;
+                left: 198px;
+                width: 104px;
+                height: 54px;
+                
+                border-width: 4px;
+                border-style: solid;
+                border-color: deeppink;
+                border-radius: 4px;
+            }
+        </style>
+        <div id="box2" class="shape10 box"></div>
+
+
+        <style>
+        .shape10.helper {
+            position: fixed;
+            top: 250px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape10" class="shape10 helper"></div>
+
+
+        <style>
+            .shape11.circle {
+                position: fixed;
+                top: 448px;
+                left: 18px;
+                width: 104px;
+                height: 104px;
+                
+                border-width: 4px;
+                border-style: solid;
+                border-color: deeppink;
+                border-radius: 50px / 50px;
+            }
+        </style>
+        <div id="circle1" class="shape11 circle"></div>
+
+
+        <style>
+        .shape11.helper {
+            position: fixed;
+            top: 450px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape11" class="shape11 helper"></div>
+
+
+        <style>
+            .shape12.circle {
+                position: fixed;
+                top: 448px;
+                left: 198px;
+                width: 104px;
+                height: 54px;
+                
+                border-width: 4px;
+                border-style: solid;
+                border-color: deeppink;
+                border-radius: 50px / 25px;
+            }
+        </style>
+        <div id="circle2" class="shape12 circle"></div>
+
+
+        <style>
+        .shape12.helper {
+            position: fixed;
+            top: 450px;
+            left: 200px;
+            width: 100px;
+            height: 50px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape12" class="shape12 helper"></div>
+
+
+
+
+        <style>
+        .shape13.helper {
+            position: fixed;
+            top: 650px;
+            left: 20px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-shape13" class="shape13 helper"></div>
+
+
+
+
+        <style>
+        .shape14.helper {
             position: fixed;
             top: 650px;
             left: 200px;
@@ -385,7 +499,6 @@
             border: 1px solid red;
           }
          </style>
-        <div id="helper-shape9" class="shape9 helper"></div>
+        <div id="helper-shape14" class="shape14 helper"></div>
       </body>
       </html>
-    

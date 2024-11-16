@@ -36,7 +36,9 @@ test.describe('Main screenshotter', () => {
             //const jsonPath = path.join(__dirname, SNAPSHOTS_DIR_NAME, COMPARE_DIR_NAME, 'main-default.json');
             const positions = await findPositions(log, page, {
                 shotName: 'test-name',
-                shapes: [{circle: {at: '#box1'}}],
+                shapes: [
+                    {at: '#box1', circle: {}}
+                ],
                 focus: {at: 'body'},
             });
             test.expect(positions.focusBoxPosition.w).toBe(320);

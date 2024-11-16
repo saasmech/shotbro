@@ -1,11 +1,11 @@
 import {ShapeCommon, ShapePosition} from "./shape-types";
 import {ShotBroBox, ShotBroInput} from "../annotate-types";
+import {CliLog} from "../../util/log";
 
 /**
- * Take position and convert into a location string for playwright
- * @param pos
+ * Take position and convert into a locator string for playwright
  */
-export const atToLocatorStr = (pos?: ShapePosition) => {
+export const atToLocatorStr = (log: CliLog, pos?: ShapePosition) => {
     let locatorStr;
     // if (pos?.atShape) {
     //   locatorStr = `[data-shapeid="${pos.atShape}"]`
@@ -17,7 +17,7 @@ export const atToLocatorStr = (pos?: ShapePosition) => {
     } else { // `at` must go last, higher specifity should win
         locatorStr = pos?.at ? pos.at : 'body';
     }
-    console.log(`locatorStr ${locatorStr}`)
+    log.debug(`locatorStr ${locatorStr}`)
     return locatorStr
 }
 
@@ -52,10 +52,9 @@ export function ensureShapesHaveId(s: ShotBroInput) {
                 i++;
             }
         }
-        //ensureShapeHasId(shape.arrow);
         ensureShapeHasId(shape.box);
         ensureShapeHasId(shape.circle);
-        ensureShapeHasId(shape.text);
+        ensureShapeHasId(shape.icon);
     })
 }
 

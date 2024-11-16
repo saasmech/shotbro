@@ -1,21 +1,20 @@
-import {renderText} from "../shape/shape-text";
 import {renderBox} from "../shape/shape-box";
 import {renderCircle} from "../shape/shape-circle";
 import {type ShotBroBox, ShotBroInput} from "../annotate-types";
 import {InputPositions} from "../../main-shot/main-screenshotter";
-import {renderArrow} from "../shape/shape-arrow";
 import {CliLog} from "../../util/log";
+import {renderIcon} from "../shape/shape-icon";
 
 export async function generateHtmlForOverlayString(
     log: CliLog,
-    mainPng: string | null,
+    mainPng: string,
     input: ShotBroInput,
     inputPositions: InputPositions,
     debug: boolean | undefined,
-    bundledPathPrefix: string | undefined
+    bundledPath: string | undefined
 ) {
     const shapesHtml = [];
-    log.debug("generateHtmlForOverlayString: ", input, inputPositions, debug, bundledPathPrefix);
+    log.debug("generateHtmlForOverlayString: ", mainPng, debug, bundledPath);
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
@@ -23,10 +22,9 @@ export async function generateHtmlForOverlayString(
             let shapePos = inputPositions.shapePositions[i];
             if (shape && shapePos) {
                 let html: string = '';
-                if (shape.arrow) html = await renderArrow(shapeUniqId, shapePos, shape.arrow);
-                if (shape.box) html = await renderBox(shapeUniqId, shapePos, shape.box);
-                if (shape.circle) html = await renderCircle(shapeUniqId, shapePos, shape.circle);
-                if (shape.text) html = await renderText(shapeUniqId, shapePos, shape.text);
+                if (shape.box) html = await renderBox(shapeUniqId, shapePos, shape);
+                if (shape.circle) html = await renderCircle(shapeUniqId, shapePos, shape);
+                if (shape.icon) html = await renderIcon(shapeUniqId, shapePos, shape);
                 shapesHtml.push(html);
                 if (debug) {
                     let posHelper = debug ? renderHelperBox(shapeUniqId, shapePos) : '';
@@ -35,10 +33,6 @@ export async function generateHtmlForOverlayString(
             }
         }
     }
-    const bundledPath = bundledPathPrefix ? bundledPathPrefix : '';
-    const modernNormalizePath = bundledPath + "bundled/modern-normalize/modern-normalize.css";
-    const openSansPath = bundledPath + "bundled/@fontsource/open-sans/500.css";
-    const mainPngCss = mainPng ? "url('" + mainPng + "')" : 'none';
 
     /**
      * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
@@ -48,15 +42,16 @@ export async function generateHtmlForOverlayString(
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="${modernNormalizePath}" rel="stylesheet"/>
-        <link href="${openSansPath}" rel="stylesheet"/>
+        <link href="${bundledPath}/@fontsource/open-sans/500.css" rel="stylesheet"/>
+        <link href="${bundledPath}/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <link href="${bundledPath}/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;
             width: ${inputPositions.focusBoxPosition!.w}px;
             height: ${inputPositions.focusBoxPosition!.h}px;
             overflow: hidden;
-            background-image: ${mainPngCss};
+            background-image: url('${mainPng}');
             background-repeat: no-repeat;
           }
         </style>

@@ -1,9 +1,8 @@
-import {ShotBroShape} from "./shape/shape-types";
+import {ShapePosition, ShotBroShape} from "./shape/shape-types";
 
 export type ShotBroBox = {
     w: number, h: number,
     x: number, y: number,
-
 };
 
 export type ShotBroFocus = {
@@ -46,8 +45,10 @@ export type ShotBroFocus = {
     translateY?: number
 }
 
+export type ShotBroShapeInput = ShapePosition & ShotBroShape;
+
 export type ShotBroInput = {
     shotName: string,
-    shapes?: ShotBroShape[],
+    shapes?: ShotBroShapeInput[],
     focus?: ShotBroFocus
 };

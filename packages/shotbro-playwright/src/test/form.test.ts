@@ -20,7 +20,7 @@ test.describe('Form test', () => {
         let input: ShotBroInput = {
             shotName: "Test",
             focus: {at: "#myform"},
-            shapes: [{circle: {at: '#name-field'}}]
+            shapes: [{at: '#name-field', circle: {}}]
         };
         let mainPngPath = path.join(outDir, `form.png`);
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
@@ -29,7 +29,7 @@ test.describe('Form test', () => {
         let htmlPath = path.resolve(path.join(outDir, `focus.html`));
         let focusPngPath = path.join(outDir, `focus.png`);
         let mainPngName = path.basename(mainPngPath);
-        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath);
+        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '');
     });
 
 });
