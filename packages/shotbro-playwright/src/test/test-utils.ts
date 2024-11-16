@@ -39,7 +39,7 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
         numDiffPixels = pixelMatch(snapshotPng.data, outPng.data, diff.data, snapshotPng.width, snapshotPng.height, {threshold: 0.01});
     } catch (e) {
         numDiffPixels = 99;
-        log.warn(`PixelMatch failed with error: ${e}`);
+        log.warn(`PixelMatch failed: ${e}`);
     }
     if (numDiffPixels > 0) {
         const buf = PNG.sync.write(diff);
