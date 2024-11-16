@@ -35,13 +35,17 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
     const pixelMatchImport = await import('pixelmatch');
     let pixelMatch = pixelMatchImport.default;
     let numDiffPixels: number;
+    if (snapshotPng.width != outPng.width || snapshotPng.height != outPng.height) {
+        log.warn(`${testFolder}/${testName} Sizes don't match ${snapshotPng.width} != ${outPng.width} || ${snapshotPng.height} != ${outPng.height}`);
+    }
     try {
         numDiffPixels = pixelMatch(snapshotPng.data, outPng.data, diff.data, snapshotPng.width, snapshotPng.height, {threshold: 0.1});
     } catch (e) {
         numDiffPixels = 99;
-        log.warn(`PixelMatch failed: ${e}`);
+        log.warn(`${testFolder}/${testName} PixelMatch failed: ${e}`);
     }
     if (numDiffPixels > 0) {
+        log.warn(`${testFolder}/${testName} diff pixels ${numDiffPixels}`);
         const buf = PNG.sync.write(diff);
         // @ts-ignore
         await fs.writeFile(compareFilePath, buf);
