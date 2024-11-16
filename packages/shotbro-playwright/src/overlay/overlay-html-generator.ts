@@ -5,6 +5,8 @@ import {InputPositions} from "../main-shot/main-screenshot";
 import {CliLog} from "../util/log";
 import {renderIcon} from "../shape/shape-icon";
 
+import {box2dp} from "../shape/shape-utils";
+
 export async function generateHtmlForOverlayString(
     log: CliLog,
     mainPng: string,
@@ -65,6 +67,7 @@ export async function generateHtmlForOverlayString(
 }
 
 function renderHelperBox(scope: string, elPos: ShotBroBox): string {
+    elPos = box2dp(elPos);
     return `
         <style>
         .${scope}.helper {

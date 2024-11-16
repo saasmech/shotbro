@@ -36,7 +36,7 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
     let pixelMatch = pixelMatchImport.default;
     let numDiffPixels: number;
     if (snapshotPng.width != outPng.width || snapshotPng.height != outPng.height) {
-        log.warn(`${testFolder}/${testName} Sizes don't match ${snapshotPng.width} != ${outPng.width} || ${snapshotPng.height} != ${outPng.height}`);
+        log.warn(`${testFolder}/${testName} Sizes don't match snapshot: ${snapshotPng.width}x${snapshotPng.height} out: ${outPng.width}x${outPng.height}`);
     }
     try {
         numDiffPixels = pixelMatch(snapshotPng.data, outPng.data, diff.data, snapshotPng.width, snapshotPng.height, {threshold: 0.1});

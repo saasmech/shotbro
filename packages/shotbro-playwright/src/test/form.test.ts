@@ -1,7 +1,8 @@
 import {test} from '@playwright/test';
+import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import {CliLog} from "../util/log";
-import {expectPngToMatchSnapshot} from "./test-utils";
+import {expectHtmlToMatchSnapshot, expectPngToMatchSnapshot} from "./test-utils";
 import {findPositions, generateMainScreenshot} from "../main-shot/main-screenshot";
 import {shotBroPlaywrightAnnotate} from "../annotate/annotate";
 import {ShotBroInput} from "../annotate/annotate-types";
@@ -14,7 +15,7 @@ test.describe('Form test', () => {
     });
 
     test('form with some shapes', async ({page}) => {
-        const log = new CliLog('info');
+        const log = new CliLog('debug');
         const outDir = path.join('test-results', 'form-test');
         let input: ShotBroInput = {
             shotName: "Test",
@@ -28,7 +29,9 @@ test.describe('Form test', () => {
         let htmlPath = path.resolve(path.join(outDir, `some-shapes-with-shapes.html`));
         let focusPngPath = path.join(outDir, `some-shapes-with-shapes.png`);
         let mainPngName = path.basename(mainPngPath);
-        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../src/bundled', false);
+        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../src/bundled', true);
+        let html = await fs.readFile(htmlPath, {encoding: 'utf-8'});
+        await expectHtmlToMatchSnapshot('info', html, 'form-test', 'some-shapes');
         await expectPngToMatchSnapshot('info', focusPngPath, 'form-test', 'some-shapes');
     });
 

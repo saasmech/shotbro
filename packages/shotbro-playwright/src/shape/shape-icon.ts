@@ -1,6 +1,8 @@
 import type {IconShape, RelativePosition, ShotBroShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate/annotate-types";
 
+import {n2dp} from "./shape-utils";
+
 const defaultProps: IconShape = {
     color: 'deeppink',
     translate: 0,
@@ -28,8 +30,8 @@ export async function renderIcon(scope: string, elPos: ShotBroBox, rawShape: Sho
         <style>
             .${scope}.icon {
                 position: absolute;
-                top: ${top + translateY}px;
-                left: ${left + translateX}px;
+                top: ${n2dp(top + translateY)}px;
+                left: ${n2dp(left + translateX)}px;
                 width: ${shape.size}px;
                 height: ${shape.size}px;
                 /*text-shadow: 0 0 5px red;*/

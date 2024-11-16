@@ -1,7 +1,7 @@
 import type {Page} from "@playwright/test";
 import {ShotBroBox, ShotBroFocus, ShotBroInput} from "../annotate/annotate-types";
 import {ShapePosition} from "../shape/shape-types";
-import {atToLocatorStr} from "../shape/shape-locator";
+import {atToLocatorStr} from "../shape/shape-utils";
 import {stringifySbBb} from "../annotate/box-utils";
 import {CliLog} from "../util/log";
 
@@ -93,8 +93,6 @@ export async function findPositions(log: CliLog, page: Page, input: ShotBroInput
         if (atBox && focusBox?.translateY) {
             atBox = {w: atBox.w, h: atBox.h, x: atBox.x, y: atBox.y + focusBox.translateY};
         }
-
-
         if (atBox) {
             log.debug(`calculated focusBox ${stringifySbBb(atBox)}`)
         }

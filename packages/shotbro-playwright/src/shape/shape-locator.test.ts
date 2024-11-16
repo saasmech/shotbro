@@ -1,5 +1,4 @@
-import {atToLocatorStr, ensureShapesHaveId} from "./shape-locator";
-import {ShotBroInput} from "../annotate/annotate-types";
+import {atToLocatorStr} from "./shape-utils";
 import {test} from "@playwright/test";
 import {CliLog} from "../util/log";
 
@@ -37,21 +36,5 @@ test.describe('Shape Locator', () => {
     //   const shotBoxes = await locateShapes(`<html lang="en"><body><div id="el1" data-sb-bb="x:12;y:13;w:14;h:15;"></div></body></html>`, input);
     //   expect(shotBoxes).toMatchObject({s1: {x: 12, y: 13, w: 14, h: 15}});
     // });
-
-    test('Ensure shapes have ids', async () => {
-        const input: ShotBroInput = {
-            shotName: 'test', shapes: [{circle: {}}]
-        }
-        ensureShapesHaveId(input);
-        test.expect(input.shapes).toMatchObject([{circle: {id: '_shape0'}}]);
-    });
-
-    test('Ensure ids are not overwritten', async () => {
-        const input: ShotBroInput = {
-            shotName: 'test', shapes: [{circle: {id: 's1'}}]
-        }
-        ensureShapesHaveId(input);
-        test.expect(input.shapes).toMatchObject([{circle: {id: 's1'}}]);
-    });
 
 });
