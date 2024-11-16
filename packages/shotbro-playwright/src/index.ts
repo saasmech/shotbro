@@ -154,7 +154,7 @@ export async function shotBroPlaywright(
             let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
             let mainPngName = path.basename(mainPngPath);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, 'bundled');
+            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, 'bundled', false);
         }
 
         // MAYBE: generate markdown doc of screenshots appended to for each test run

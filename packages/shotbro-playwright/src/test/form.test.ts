@@ -18,7 +18,7 @@ test.describe('Form test', () => {
         const outDir = path.join('test-results', 'form-test');
         let input: ShotBroInput = {
             shotName: "Test",
-            focus: {at: "form.needs-validation", scale: 1.1},
+            focus: {at: "form.needs-validation", scale: 1.1, translateX: -25, translateY: -50},
             shapes: [{at: '#firstName', icon: {}}]
         };
         let mainPngPath = path.join(outDir, `some-shapes-main.png`);
@@ -28,7 +28,7 @@ test.describe('Form test', () => {
         let htmlPath = path.resolve(path.join(outDir, `some-shapes-with-shapes.html`));
         let focusPngPath = path.join(outDir, `some-shapes-with-shapes.png`);
         let mainPngName = path.basename(mainPngPath);
-        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../src/bundled');
+        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../src/bundled', false);
         await expectPngToMatchSnapshot('info', focusPngPath, 'form-test', 'some-shapes');
     });
 

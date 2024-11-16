@@ -18,7 +18,7 @@ export async function renderCircle(scope: string, elPos: ShotBroBox, rawShape: S
     return `
         <style>
             .${scope}.circle {
-                position: fixed;
+                position: absolute;
                 top: ${elPos.y - (thickness/2) + translateY}px;
                 left: ${elPos.x - (thickness/2) + translateX}px;
                 width: ${elPos.w + thickness}px;

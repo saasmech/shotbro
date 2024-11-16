@@ -75,6 +75,26 @@ export async function findPositions(log: CliLog, page: Page, input: ShotBroInput
                 log.warn('Unable to find a locator node main screenshot')
             }
         }
+        if (atBox && focusBox?.scale) {
+            atBox = {w: atBox.w * focusBox.scale, h: atBox.h * focusBox.scale, x: atBox.x, y: atBox.y};
+        }
+        if (atBox && focusBox?.scaleX) {
+            atBox = {w: atBox.w * focusBox.scaleX, h: atBox.h, x: atBox.x, y: atBox.y};
+        }
+        if (atBox && focusBox?.scaleY) {
+            atBox = {w: atBox.w, h: atBox.h * focusBox.scaleY, x: atBox.x, y: atBox.y};
+        }
+        if (atBox && focusBox?.translate) {
+            atBox = {w: atBox.w, h: atBox.h, x: atBox.x + focusBox.translate, y: atBox.y + focusBox.translate};
+        }
+        if (atBox && focusBox?.translateX) {
+            atBox = {w: atBox.w, h: atBox.h, x: atBox.x + focusBox.translateX, y: atBox.y};
+        }
+        if (atBox && focusBox?.translateY) {
+            atBox = {w: atBox.w, h: atBox.h, x: atBox.x, y: atBox.y + focusBox.translateY};
+        }
+
+
         if (atBox) {
             log.debug(`calculated focusBox ${stringifySbBb(atBox)}`)
         }

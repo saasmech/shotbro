@@ -3,7 +3,6 @@ import type {ShotBroBox} from "../annotate/annotate-types";
 
 const defaultProps: BoxShape = {
     thickness: 4,
-    //padding: 4,
     color: 'deeppink',
     translate: 0,
     translateX: 0,
@@ -19,7 +18,7 @@ export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: Shot
     return `
         <style>
             .${scope}.box {
-                position: fixed;
+                position: absolute;
                 top: ${elPos.y - (thickness / 2) + translateY}px;
                 left: ${elPos.x - (thickness / 2) + translateX}px;
                 width: ${elPos.w + thickness}px;

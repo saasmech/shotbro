@@ -81,7 +81,7 @@ export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFo
     let focusPngPath = path.join(outDir, `${testName}.png`);
     await generateMainScreenshot(page, mainPngPath);
     let inputPositions = await findPositions(log, page, input);
-    await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled');
+    await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', false);
     if (logLevel != 'debug') {
         await fs.rm(mainPngPath, {force: true});
         await fs.rm(htmlPath, {force: true});

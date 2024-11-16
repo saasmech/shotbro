@@ -33,6 +33,10 @@ export async function generateHtmlForOverlayString(
             }
         }
     }
+    if (inputPositions.focusBoxPosition && debug) {
+        let posHelper = debug ? renderHelperBox('focus', inputPositions.focusBoxPosition) : '';
+        shapesHtml.push(posHelper);
+    }
 
     /**
      * Note use of normalize and open sans font is to ensure there are minimal cross OS differences.
@@ -48,9 +52,6 @@ export async function generateHtmlForOverlayString(
         <style>
           body {
             font-family: "Open Sans", sans-serif;
-            width: ${inputPositions.focusBoxPosition!.w}px;
-            height: ${inputPositions.focusBoxPosition!.h}px;
-            overflow: hidden;
             background-image: url('${mainPng}');
             background-repeat: no-repeat;
           }
@@ -67,7 +68,7 @@ function renderHelperBox(scope: string, elPos: ShotBroBox): string {
     return `
         <style>
         .${scope}.helper {
-            position: fixed;
+            position: absolute;
             top: ${elPos.y}px;
             left: ${elPos.x}px;
             width: ${elPos.w}px;

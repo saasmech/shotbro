@@ -42,6 +42,15 @@ test.describe('Main screenshot', () => {
             test.expect(positions.shapePositions[0].x).toBe(10);
         });
 
+        test('scale up', async ({page}) => {
+            const positions = await findPositions(log, page, {
+                shotName: 'test-name',
+                focus: {at: '#box3', scale: 2},
+            });
+            test.expect(positions.focusBoxPosition.w).toBe(100);
+            test.expect(positions.focusBoxPosition.x).toBe(150);
+        });
+
     });
 
     test.describe('Box extra long', () => {

@@ -7,7 +7,7 @@ function specificityNumber(verySpecific?: number, somewhatSpecific?: number, not
 }
 
 /**
- * Calculate box with padding or other modifiers.
+ * Calculate box with adjustments.
  */
 export async function applyFocusBoxAdjustments(log: CliLog, atBox: ShotBroBox, focus?: ShotBroFocus): Promise<ShotBroBox> {
     const box = Object.assign({}, atBox);

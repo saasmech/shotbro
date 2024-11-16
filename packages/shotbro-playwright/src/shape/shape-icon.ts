@@ -27,7 +27,7 @@ export async function renderIcon(scope: string, elPos: ShotBroBox, rawShape: Sho
         -->
         <style>
             .${scope}.icon {
-                position: fixed;
+                position: absolute;
                 top: ${top + translateY}px;
                 left: ${left + translateX}px;
                 width: ${shape.size}px;
