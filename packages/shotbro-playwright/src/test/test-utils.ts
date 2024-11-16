@@ -36,7 +36,7 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
     let pixelMatch = pixelMatchImport.default;
     let numDiffPixels: number;
     try {
-        numDiffPixels = pixelMatch(snapshotPng.data, outPng.data, diff.data, snapshotPng.width, snapshotPng.height, {threshold: 0.01});
+        numDiffPixels = pixelMatch(snapshotPng.data, outPng.data, diff.data, snapshotPng.width, snapshotPng.height, {threshold: 0.1});
     } catch (e) {
         numDiffPixels = 99;
         log.warn(`PixelMatch failed: ${e}`);

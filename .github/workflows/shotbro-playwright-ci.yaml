@@ -39,6 +39,6 @@ jobs:
         if: always()
         with:
           retention-days: 2
-          name: playwright-tests-compare-to
+          name: shotbro-playwright-test-results
           path: |
             packages/shotbro-playwright/test-results/
