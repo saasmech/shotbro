@@ -1,4 +1,4 @@
-import {ShapePosition, ShotBroShape} from "./shape/shape-types";
+import {ShapePosition, ShotBroShape} from "../shape/shape-types";
 
 export type ShotBroBox = {
     w: number, h: number,

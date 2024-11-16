@@ -40,4 +40,4 @@ jobs:
           retention-days: 2
           name: playwright-tests-compare-to
           path: |
-            packages/shotbro-playwright/**/__snapshots__/compare
+            packages/shotbro-playwright/test-results/

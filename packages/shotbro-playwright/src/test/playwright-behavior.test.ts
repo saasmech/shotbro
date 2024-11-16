@@ -1,6 +1,6 @@
 import {test} from '@playwright/test';
 import * as path from "node:path";
-import {expectImageToMatchBaseline} from "./test-utils";
+import {expectPngToMatchSnapshot} from "./test-utils";
 
 test.describe('Playwright Behavior', () => {
 
@@ -15,13 +15,13 @@ test.describe('Playwright Behavior', () => {
         });
 
         test('playwright scroll the viewport', async ({page}) => {
-            const outPath = 'src/test/__snapshots__/compare/playwright-boxes-scroll.png';
+            const outPath = 'test-results/playwright-behavior/scroll.png';
             await page.screenshot({
                 path: outPath,
                 fullPage: true,
                 animations: 'disabled'
             });
-            await expectImageToMatchBaseline(outPath);
+            await expectPngToMatchSnapshot('info', outPath, 'playwright-behavior', 'scroll');
         })
 
         test('playwright bounding box for the body', async ({page}) => {

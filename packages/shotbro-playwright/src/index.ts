@@ -4,13 +4,10 @@ import type {FullConfig, FullResult, Reporter, Suite, TestCase, TestResult} from
 import type {ShotBroLogLevel, ShotBroOutput, ShotBroReporterConfig, ShotBroSystemInfo} from './shotbro-types';
 import {ShotBroCaptureConfig} from "./shotbro-types";
 
-import * as fs from 'node:fs';
+import * as fs from 'node:fs/promises';
 import * as os from 'node:os';
 import * as path from 'node:path';
-import {
-    generateMainScreenshot,
-    findPositions
-} from './main-shot/main-screenshotter';
+import {findPositions, generateMainScreenshot} from './main-shot/main-screenshot';
 import {CliLog} from './util/log';
 import {ulid} from './util/ulid';
 import {ShotBroInput} from "./annotate/annotate-types";
@@ -99,11 +96,11 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Prom
 }
 
 
-function prepareOutDir(outDir: string) {
+async function prepareOutDir(outDir: string) {
     if (!outDir) {
-        outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ShotBro'));
+        outDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ShotBro'));
     } else {
-        fs.mkdirSync(outDir, {recursive: true});
+        await fs.mkdir(outDir, {recursive: true});
     }
     return path.resolve(outDir);
 }
@@ -121,7 +118,7 @@ export async function shotBroPlaywright(
 ): Promise<ShotBroOutput> {
 
     let outDir = '.shotbro/out';
-    let logLevel: ShotBroLogLevel = 'debug';
+    let logLevel: ShotBroLogLevel = 'info';
     testInfo.annotations.forEach((a) => {
         if (a.type === PW_TEST_INFO_WORKING_DIR_KEY) outDir = a.description as string;
         if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
@@ -142,10 +139,10 @@ export async function shotBroPlaywright(
     };
     let cleanOutDir = false;
     try {
-        if (cleanOutDir) cleanupOutDir(outDir)
+        if (cleanOutDir) await cleanupOutDir(outDir)
 
         log.debug(`Prepare output dir ${outDir}`)
-        outDir = prepareOutDir(outDir);
+        outDir = await prepareOutDir(outDir);
         let mainPngPath = path.join(outDir, `${systemInfo.inputUlid}.png`);
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
 
@@ -168,9 +165,9 @@ export async function shotBroPlaywright(
     return output
 }
 
-function cleanupOutDir(outDir: string) {
+async function cleanupOutDir(outDir: string) {
     try {
-        if (outDir) fs.rmSync(outDir, {recursive: true});
+        if (outDir) await fs.rm(outDir, {recursive: true});
     } catch (e) {
         console.error(`An error has occurred while cleaning up ${outDir}. Error: ${e}`);
     }

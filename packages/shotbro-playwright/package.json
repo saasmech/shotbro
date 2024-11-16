@@ -34,7 +34,7 @@
   "scripts": {
     "pretest": "npx playwright install && node --loader ts-node/esm copy-bundled.ts",
     "test": "npx playwright test",
-    "test:update-snapshots": "npx playwright test --update-snapshots",
+    "test:update-snapshots": "UPDATE_SNAPSHOTS=yes npx playwright test",
     "prebuild": "node --loader ts-node/esm copy-bundled.ts",
     "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
   },

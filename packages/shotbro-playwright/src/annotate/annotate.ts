@@ -1,8 +1,8 @@
 import type {Page} from "@playwright/test";
 import {ShotBroInput} from "./annotate-types";
-import {generateHtmlForOverlayString} from "./overlay/overlay-html-generator";
-import * as fs from "node:fs";
-import {InputPositions} from "../main-shot/main-screenshotter";
+import {generateHtmlForOverlayString} from "../overlay/overlay-html-generator";
+import * as fs from "node:fs/promises";
+import {InputPositions} from "../main-shot/main-screenshot";
 import {CliLog} from "../util/log";
 
 export async function shotBroPlaywrightAnnotate(
@@ -16,7 +16,7 @@ export async function shotBroPlaywrightAnnotate(
     bundledPath: string
 ) {
     let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, false, bundledPath);
-    fs.writeFileSync(htmlPath, html);
+    await fs.writeFile(htmlPath, html);
 
     let browser = origPage.context().browser();
     let ctx = await browser!.newContext();

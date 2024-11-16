@@ -5,7 +5,7 @@ import {CliLog} from "./util/log";
 
 test.describe('ShotBro Playwright Client', () => {
 
-    const log = new CliLog('debug');
+    const log = new CliLog('info');
 
     test.beforeEach(async ({page}) => {
         await page.setViewportSize({width: 320, height: 640});
@@ -14,7 +14,7 @@ test.describe('ShotBro Playwright Client', () => {
 
     test('system info looks pretty good', async ({page}) => {
         const systemInfo = await playwrightPrepareSystemInfo(page, log)
-        console.log(systemInfo)
+        log.debug(systemInfo)
         test.expect(systemInfo.osPlatform?.length).toBeGreaterThan(3);
         test.expect(systemInfo.osVersion?.length).toBeGreaterThan(3);
         test.expect(systemInfo.browserType?.length).toBeGreaterThan(3);
@@ -32,8 +32,8 @@ test.describe('ShotBro Playwright Client', () => {
     });
 
     test('box1 shapes', async ({page}, testInfo) => {
-        testInfo.annotations.push({ type: 'shotbro-working-dir', description: 'out'});
-        testInfo.annotations.push({ type: 'shotbro-log-level', description: 'debug'});
+        testInfo.annotations.push({type: 'shotbro-working-dir', description: 'out'});
+        testInfo.annotations.push({type: 'shotbro-log-level', description: 'info'});
         await shotBroPlaywright(page, testInfo, {
             streamCode: 'test'
         }, {
