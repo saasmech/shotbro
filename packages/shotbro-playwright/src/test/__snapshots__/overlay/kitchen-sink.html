@@ -9,10 +9,7 @@
         <style>
           body {
             font-family: "Open Sans", sans-serif;
-            width: 400px;
-            height: 1000px;
-            overflow: hidden;
-            background-image: url('main.png');
+            background-image: url('../../checkerboard.png');
             background-repeat: no-repeat;
           }
         </style>
@@ -25,7 +22,7 @@
         -->
         <style>
             .shape0.icon {
-                position: fixed;
+                position: absolute;
                 top: 25px;
                 left: 125px;
                 width: 50px;
@@ -45,7 +42,7 @@
 
         <style>
         .shape0.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -62,7 +59,7 @@
         -->
         <style>
             .shape1.icon {
-                position: fixed;
+                position: absolute;
                 top: 25px;
                 left: 175px;
                 width: 50px;
@@ -82,7 +79,7 @@
 
         <style>
         .shape1.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -99,7 +96,7 @@
         -->
         <style>
             .shape2.icon {
-                position: fixed;
+                position: absolute;
                 top: 25px;
                 left: 225px;
                 width: 50px;
@@ -119,7 +116,7 @@
 
         <style>
         .shape2.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -136,7 +133,7 @@
         -->
         <style>
             .shape3.icon {
-                position: fixed;
+                position: absolute;
                 top: 75px;
                 left: 225px;
                 width: 50px;
@@ -156,7 +153,7 @@
 
         <style>
         .shape3.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -173,7 +170,7 @@
         -->
         <style>
             .shape4.icon {
-                position: fixed;
+                position: absolute;
                 top: 125px;
                 left: 225px;
                 width: 50px;
@@ -193,7 +190,7 @@
 
         <style>
         .shape4.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -210,7 +207,7 @@
         -->
         <style>
             .shape5.icon {
-                position: fixed;
+                position: absolute;
                 top: 125px;
                 left: 175px;
                 width: 50px;
@@ -230,7 +227,7 @@
 
         <style>
         .shape5.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -247,7 +244,7 @@
         -->
         <style>
             .shape6.icon {
-                position: fixed;
+                position: absolute;
                 top: 125px;
                 left: 125px;
                 width: 50px;
@@ -267,7 +264,7 @@
 
         <style>
         .shape6.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -284,7 +281,7 @@
         -->
         <style>
             .shape7.icon {
-                position: fixed;
+                position: absolute;
                 top: 75px;
                 left: 125px;
                 width: 50px;
@@ -304,7 +301,7 @@
 
         <style>
         .shape7.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -321,7 +318,7 @@
         -->
         <style>
             .shape8.icon {
-                position: fixed;
+                position: absolute;
                 top: 75px;
                 left: 175px;
                 width: 50px;
@@ -341,7 +338,7 @@
 
         <style>
         .shape8.helper {
-            position: fixed;
+            position: absolute;
             top: 50px;
             left: 150px;
             width: 100px;
@@ -354,7 +351,7 @@
 
         <style>
             .shape9.box {
-                position: fixed;
+                position: absolute;
                 top: 248px;
                 left: 18px;
                 width: 104px;
@@ -371,7 +368,7 @@
 
         <style>
         .shape9.helper {
-            position: fixed;
+            position: absolute;
             top: 250px;
             left: 20px;
             width: 100px;
@@ -384,7 +381,7 @@
 
         <style>
             .shape10.box {
-                position: fixed;
+                position: absolute;
                 top: 248px;
                 left: 198px;
                 width: 104px;
@@ -401,7 +398,7 @@
 
         <style>
         .shape10.helper {
-            position: fixed;
+            position: absolute;
             top: 250px;
             left: 200px;
             width: 100px;
@@ -414,7 +411,7 @@
 
         <style>
             .shape11.circle {
-                position: fixed;
+                position: absolute;
                 top: 448px;
                 left: 18px;
                 width: 104px;
@@ -431,7 +428,7 @@
 
         <style>
         .shape11.helper {
-            position: fixed;
+            position: absolute;
             top: 450px;
             left: 20px;
             width: 100px;
@@ -444,7 +441,7 @@
 
         <style>
             .shape12.circle {
-                position: fixed;
+                position: absolute;
                 top: 448px;
                 left: 198px;
                 width: 104px;
@@ -461,7 +458,7 @@
 
         <style>
         .shape12.helper {
-            position: fixed;
+            position: absolute;
             top: 450px;
             left: 200px;
             width: 100px;
@@ -470,5 +467,18 @@
           }
          </style>
         <div id="helper-shape12" class="shape12 helper"></div>
+
+
+        <style>
+        .focus.helper {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 400px;
+            height: 1000px;
+            border: 1px solid red;
+          }
+         </style>
+        <div id="helper-focus" class="focus helper"></div>
       </body>
       </html>

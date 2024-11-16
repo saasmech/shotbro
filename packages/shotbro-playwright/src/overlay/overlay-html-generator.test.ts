@@ -20,7 +20,7 @@ test.describe('Shapes HTML Generator', () => {
             focusBoxPosition: {x: 0, y: 0, w: 100, h: 100},
             shapePositions: [{x: 4, y: 5, w: 40, h: 50}]
         };
-        const html = await generateHtmlForOverlayString(log, 'main.png', input, positions, true, '../../../bundled');
+        const html = await generateHtmlForOverlayString(log, '../../checkerboard.png', input, positions, true, '../../../bundled');
         await expectHtmlToMatchSnapshot('info', html, 'overlay', 'simple');
     })
 
@@ -65,7 +65,7 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 200, y: 450, w: 100, h: 50},
             ]
         };
-        const html = await generateHtmlForOverlayString(log, 'main.png', input, positions, true, '../../../bundled');
+        const html = await generateHtmlForOverlayString(log, '../../checkerboard.png', input, positions, true, '../../../bundled');
         await expectHtmlToMatchSnapshot('info', html, 'overlay', 'kitchen-sink');
     });
 
