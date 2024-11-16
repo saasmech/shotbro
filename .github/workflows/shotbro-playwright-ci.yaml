@@ -36,6 +36,7 @@ jobs:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
+        if: always()
         with:
           retention-days: 2
           name: playwright-tests-compare-to
