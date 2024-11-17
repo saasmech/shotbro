@@ -13,6 +13,10 @@ export function isUpdatingSnapshots() {
     return process.env.UPDATE_SNAPSHOTS === 'yes';
 }
 
+export function isSkipPngCompare() {
+    return process.env.SKIP_PNG_COMPARE === 'yes';
+}
+
 export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPath: string, testFolder: string, testName: string) {
     const log = new CliLog(logLevel);
     let snapshotsDir = `src/__snapshots__/${testFolder}`;
@@ -25,7 +29,7 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
     let snapshotFilePath = path.resolve(path.join(snapshotsDir, fileName));
     let outFile = path.resolve(pngPath);
     if (isUpdatingSnapshots()) {
-        log.info(`Updating baseline snapshot for ${fileName}`);
+        log.info(`Updating baseline snapshot for ${testFolder}/${fileName}`);
         await fs.copyFile(outFile, snapshotFilePath);
         // continue anyway to verify matching is working
     }
@@ -50,7 +54,9 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
         // @ts-ignore
         await fs.writeFile(compareFilePath, buf);
     }
-    test.expect(numDiffPixels).toBe(0);
+    if (!isSkipPngCompare()) {
+        test.expect(numDiffPixels).toBe(0);
+    }
 }
 
 export async function expectHtmlToMatchSnapshot(logLevel: ShotBroLogLevel, html: string, testFolder: string, testName: string) {
@@ -66,7 +72,7 @@ export async function expectHtmlToMatchSnapshot(logLevel: ShotBroLogLevel, html:
     log.debug(`outFile ${outFile}`);
     await fs.writeFile(outFile, html);
     if (isUpdatingSnapshots()) {
-        log.info(`Updating baseline snapshot for ${fileName}`);
+        log.info(`Updating baseline snapshot for ${testFolder}/${fileName}`);
         await fs.copyFile(outFile, snapshotFilePath);
         // continue anyway to verify matching is working
     }
@@ -95,7 +101,7 @@ export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFo
     await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', false);
     if (logLevel != 'debug') {
         await fs.rm(mainPngPath, {force: true});
-        await fs.rm(htmlPath, {force: true});
     }
+    await expectHtmlToMatchSnapshot(logLevel, htmlPath, testFolder, testName);
     await expectPngToMatchSnapshot(logLevel, focusPngPath, testFolder, testName);
 }
