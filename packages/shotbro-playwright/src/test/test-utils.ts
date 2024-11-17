@@ -103,6 +103,7 @@ export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFo
     if (logLevel != 'debug') {
         await fs.rm(mainPngPath, {force: true});
     }
-    await expectHtmlToMatchSnapshot(logLevel, htmlPath, testFolder, testName);
+    const html = await fs.readFile(htmlPath, {encoding: 'utf-8'});
+    await expectHtmlToMatchSnapshot(logLevel, html, testFolder, testName);
     await expectPngToMatchSnapshot(logLevel, focusPngPath, testFolder, testName);
 }
