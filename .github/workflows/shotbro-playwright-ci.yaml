@@ -32,7 +32,9 @@ jobs:
 
       - name: Test
         working-directory: packages/shotbro-playwright
-        run: npm run test-ci
+        run: |
+          npm run pretest
+          npm run test-ci
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3

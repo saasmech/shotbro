@@ -55,6 +55,7 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
         await fs.writeFile(compareFilePath, buf);
     }
     if (!isSkipPngCompare()) {
+        // when running on different machines (ci) sub-pixel rendering screws with PNG compare
         test.expect(numDiffPixels).toBe(0);
     }
 }
