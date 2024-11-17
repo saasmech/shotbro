@@ -18,14 +18,12 @@ test.describe('Main screenshot', () => {
         });
 
         test('when default used, box should match whole page html', async ({page}) => {
-            const pngPath = path.join('test-results', 'main-screenshot', 'main-default.png');
+            const pngPath = path.join('test-results', 'compare', 'main-screenshot', 'main-default.png');
             await generateMainScreenshot(page, pngPath);
-            //const outJson = fs.readFileSync(jsonPath, 'utf-8');
-            //expect(outJson).toContain('{\"positions\":[{\"tagName\":\"HTML\",\"x\":0,\"y\":0,\"w\":320,\"h\":630,\"id\":\"\",\"className\":\"\"},');
         })
 
         test('when default used, box should match whole page png', async ({page}) => {
-            const pngPath = path.join('test-results', 'main-screenshot', 'box-whole.png');
+            const pngPath = path.join('test-results', 'compare', 'main-screenshot', 'box-whole.png');
             await generateMainScreenshot(page, pngPath);
             await expectPngToMatchSnapshot('info', pngPath, 'main-screenshot', 'box-whole');
         });
@@ -61,7 +59,7 @@ test.describe('Main screenshot', () => {
         });
 
         test('when page extra long capture should be limited', async ({page}) => {
-            const pngPath = path.join('test-results', 'main-screenshot', 'limited.png');
+            const pngPath = path.join('test-results', 'compare', 'main-screenshot', 'limited.png');
             await generateMainScreenshot(page, pngPath);
 
             test.expect(PNG.sync.read(await fs.readFile(pngPath)).height).toBe(4000);

@@ -65,7 +65,9 @@ test.describe('Shapes HTML Generator', () => {
                 {x: 200, y: 450, w: 100, h: 50},
             ]
         };
-        const html = await generateHtmlForOverlayString(log, '../../checkerboard.png', input, positions, true, '../../../bundled');
+        const html = await generateHtmlForOverlayString(
+            log, '../../../src/test/checkerboard.png', input,
+            positions, true, '../../../src/bundled');
         await expectHtmlToMatchSnapshot('info', html, 'overlay', 'kitchen-sink');
     });
 

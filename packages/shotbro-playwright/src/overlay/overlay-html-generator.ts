@@ -5,7 +5,12 @@ import {InputPositions} from "../main-shot/main-screenshot";
 import {CliLog} from "../util/log";
 import {renderIcon} from "../shape/shape-icon";
 
-import {box2dp} from "../shape/shape-utils";
+import {n2dp} from "../shape/shape-utils";
+
+/**
+ * Amount of spare space to the left and top of the main screenshot.  Only apply at the very last second when making CSS.
+ */
+export const BLEED = 100;
 
 export async function generateHtmlForOverlayString(
     log: CliLog,
@@ -16,7 +21,7 @@ export async function generateHtmlForOverlayString(
     bundledPath: string | undefined
 ) {
     const shapesHtml = [];
-    log.debug("generateHtmlForOverlayString: ", mainPng, debug, bundledPath);
+    log.debug("generateHtmlForOverlayString", mainPng, debug, bundledPath);
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
@@ -54,7 +59,9 @@ export async function generateHtmlForOverlayString(
         <style>
           body {
             font-family: "Open Sans", sans-serif;
+            background-color: transparent;
             background-image: url('${mainPng}');
+            background-position: ${BLEED}px ${BLEED}px;
             background-repeat: no-repeat;
           }
         </style>
@@ -67,15 +74,14 @@ export async function generateHtmlForOverlayString(
 }
 
 function renderHelperBox(scope: string, elPos: ShotBroBox): string {
-    elPos = box2dp(elPos);
     return `
         <style>
         .${scope}.helper {
             position: absolute;
-            top: ${elPos.y}px;
-            left: ${elPos.x}px;
-            width: ${elPos.w}px;
-            height: ${elPos.h}px;
+            top: ${n2dp(elPos.y + BLEED)}px;
+            left: ${n2dp(elPos.x + BLEED)}px;
+            width: ${n2dp(elPos.w)}px;
+            height: ${n2dp(elPos.h)}px;
             border: 1px solid red;
           }
          </style>

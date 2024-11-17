@@ -15,7 +15,7 @@ test.describe('Playwright Behavior', () => {
         });
 
         test('playwright scroll the viewport', async ({page}) => {
-            const outPath = 'test-results/playwright-behavior/scroll.png';
+            const outPath = 'test-results/compare/playwright-behavior/scroll.png';
             await page.screenshot({
                 path: outPath,
                 fullPage: true,

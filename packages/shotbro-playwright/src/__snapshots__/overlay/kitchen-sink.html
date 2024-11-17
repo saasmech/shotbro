@@ -3,13 +3,15 @@
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="../../../bundled/@fontsource/open-sans/500.css" rel="stylesheet"/>
-        <link href="../../../bundled/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-        <link href="../../../bundled/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/@fontsource/open-sans/500.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;
-            background-image: url('../../checkerboard.png');
+            background-color: transparent;
+            background-image: url('../../../src/test/checkerboard.png');
+            background-position: 100px 100px;
             background-repeat: no-repeat;
           }
         </style>
@@ -23,11 +25,11 @@
         <style>
             .shape0.icon {
                 position: absolute;
-                top: 25px;
-                left: 125px;
+                top: 125px;
+                left: 225px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape0.icon i.bi {
                 font-size: 50px;
@@ -43,8 +45,8 @@
         <style>
         .shape0.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -60,11 +62,11 @@
         <style>
             .shape1.icon {
                 position: absolute;
-                top: 25px;
-                left: 175px;
+                top: 125px;
+                left: 275px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape1.icon i.bi {
                 font-size: 50px;
@@ -80,8 +82,8 @@
         <style>
         .shape1.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -97,11 +99,11 @@
         <style>
             .shape2.icon {
                 position: absolute;
-                top: 25px;
-                left: 225px;
+                top: 125px;
+                left: 325px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape2.icon i.bi {
                 font-size: 50px;
@@ -117,8 +119,8 @@
         <style>
         .shape2.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -134,11 +136,11 @@
         <style>
             .shape3.icon {
                 position: absolute;
-                top: 75px;
-                left: 225px;
+                top: 175px;
+                left: 325px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape3.icon i.bi {
                 font-size: 50px;
@@ -154,8 +156,8 @@
         <style>
         .shape3.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -171,11 +173,11 @@
         <style>
             .shape4.icon {
                 position: absolute;
-                top: 125px;
-                left: 225px;
+                top: 225px;
+                left: 325px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape4.icon i.bi {
                 font-size: 50px;
@@ -191,8 +193,8 @@
         <style>
         .shape4.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -208,11 +210,11 @@
         <style>
             .shape5.icon {
                 position: absolute;
-                top: 125px;
-                left: 175px;
+                top: 225px;
+                left: 275px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape5.icon i.bi {
                 font-size: 50px;
@@ -228,8 +230,8 @@
         <style>
         .shape5.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -245,11 +247,11 @@
         <style>
             .shape6.icon {
                 position: absolute;
-                top: 125px;
-                left: 125px;
+                top: 225px;
+                left: 225px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape6.icon i.bi {
                 font-size: 50px;
@@ -265,8 +267,8 @@
         <style>
         .shape6.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -282,11 +284,11 @@
         <style>
             .shape7.icon {
                 position: absolute;
-                top: 75px;
-                left: 125px;
+                top: 175px;
+                left: 225px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape7.icon i.bi {
                 font-size: 50px;
@@ -302,8 +304,8 @@
         <style>
         .shape7.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -319,11 +321,11 @@
         <style>
             .shape8.icon {
                 position: absolute;
-                top: 75px;
-                left: 175px;
+                top: 175px;
+                left: 275px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape8.icon i.bi {
                 font-size: 50px;
@@ -339,8 +341,8 @@
         <style>
         .shape8.helper {
             position: absolute;
-            top: 50px;
-            left: 150px;
+            top: 150px;
+            left: 250px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -352,10 +354,11 @@
         <style>
             .shape9.box {
                 position: absolute;
-                top: 248px;
-                left: 18px;
+                top: 348px;
+                left: 118px;
                 width: 104px;
                 height: 104px;
+                transform: rotate(0deg);
                 
                 border-width: 4px;
                 border-style: solid;
@@ -369,8 +372,8 @@
         <style>
         .shape9.helper {
             position: absolute;
-            top: 250px;
-            left: 20px;
+            top: 350px;
+            left: 120px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -382,10 +385,11 @@
         <style>
             .shape10.box {
                 position: absolute;
-                top: 248px;
-                left: 198px;
+                top: 348px;
+                left: 298px;
                 width: 104px;
                 height: 54px;
+                transform: rotate(0deg);
                 
                 border-width: 4px;
                 border-style: solid;
@@ -399,8 +403,8 @@
         <style>
         .shape10.helper {
             position: absolute;
-            top: 250px;
-            left: 200px;
+            top: 350px;
+            left: 300px;
             width: 100px;
             height: 50px;
             border: 1px solid red;
@@ -412,15 +416,17 @@
         <style>
             .shape11.circle {
                 position: absolute;
-                top: 448px;
-                left: 18px;
-                width: 104px;
-                height: 104px;
+                
+                top: 546px;
+                left: 116px;
+                width: 108px;
+                height: 108px;
+                transform: rotate(0deg);
                 
                 border-width: 4px;
                 border-style: solid;
                 border-color: deeppink;
-                border-radius: 50px / 50px;
+                border-radius: 54px / 54px;
             }
         </style>
         <div id="circle1" class="shape11 circle"></div>
@@ -429,8 +435,8 @@
         <style>
         .shape11.helper {
             position: absolute;
-            top: 450px;
-            left: 20px;
+            top: 550px;
+            left: 120px;
             width: 100px;
             height: 100px;
             border: 1px solid red;
@@ -442,15 +448,17 @@
         <style>
             .shape12.circle {
                 position: absolute;
-                top: 448px;
-                left: 198px;
-                width: 104px;
-                height: 54px;
+                
+                top: 546px;
+                left: 296px;
+                width: 108px;
+                height: 58px;
+                transform: rotate(0deg);
                 
                 border-width: 4px;
                 border-style: solid;
                 border-color: deeppink;
-                border-radius: 50px / 25px;
+                border-radius: 54px / 29px;
             }
         </style>
         <div id="circle2" class="shape12 circle"></div>
@@ -459,8 +467,8 @@
         <style>
         .shape12.helper {
             position: absolute;
-            top: 450px;
-            left: 200px;
+            top: 550px;
+            left: 300px;
             width: 100px;
             height: 50px;
             border: 1px solid red;
@@ -472,8 +480,8 @@
         <style>
         .focus.helper {
             position: absolute;
-            top: 0px;
-            left: 0px;
+            top: 100px;
+            left: 100px;
             width: 400px;
             height: 1000px;
             border: 1px solid red;

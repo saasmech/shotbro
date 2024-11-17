@@ -1,5 +1,7 @@
 import type {BoxShape, ShotBroShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate/annotate-types";
+import {BLEED} from "../overlay/overlay-html-generator";
+import {n2dp} from "./shape-utils";
 
 const defaultProps: BoxShape = {
     thickness: 4,
@@ -7,6 +9,7 @@ const defaultProps: BoxShape = {
     translate: 0,
     translateX: 0,
     translateY: 0,
+    rotate: 0,
 }
 
 export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: ShotBroShape): Promise<string> {
@@ -19,10 +22,11 @@ export async function renderBox(scope: string, elPos: ShotBroBox, rawShape: Shot
         <style>
             .${scope}.box {
                 position: absolute;
-                top: ${elPos.y - (thickness / 2) + translateY}px;
-                left: ${elPos.x - (thickness / 2) + translateX}px;
+                top: ${n2dp(elPos.y - (thickness / 2) + translateY + BLEED)}px;
+                left: ${n2dp(elPos.x - (thickness / 2) + translateX + BLEED)}px;
                 width: ${elPos.w + thickness}px;
                 height: ${elPos.h + thickness}px;
+                transform: rotate(${shape.rotate}deg);
                 
                 border-width: ${(shape.thickness || 0)}px;
                 border-style: solid;

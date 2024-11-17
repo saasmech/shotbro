@@ -9,7 +9,9 @@
         <style>
           body {
             font-family: "Open Sans", sans-serif;
+            background-color: transparent;
             background-image: url('../../checkerboard.png');
+            background-position: 100px 100px;
             background-repeat: no-repeat;
           }
         </style>
@@ -19,15 +21,17 @@
         <style>
             .shape0.circle {
                 position: absolute;
-                top: 3px;
-                left: 2px;
-                width: 44px;
-                height: 54px;
+                
+                top: 101px;
+                left: 100px;
+                width: 48px;
+                height: 58px;
+                transform: rotate(0deg);
                 
                 border-width: 4px;
                 border-style: solid;
                 border-color: deeppink;
-                border-radius: 20px / 25px;
+                border-radius: 24px / 29px;
             }
         </style>
         <div id="circle1" class="shape0 circle"></div>
@@ -36,8 +40,8 @@
         <style>
         .shape0.helper {
             position: absolute;
-            top: 5px;
-            left: 4px;
+            top: 105px;
+            left: 104px;
             width: 40px;
             height: 50px;
             border: 1px solid red;
@@ -49,8 +53,8 @@
         <style>
         .focus.helper {
             position: absolute;
-            top: 0px;
-            left: 0px;
+            top: 100px;
+            left: 100px;
             width: 100px;
             height: 100px;
             border: 1px solid red;

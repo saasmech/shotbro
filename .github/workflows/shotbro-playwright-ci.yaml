@@ -41,4 +41,4 @@ jobs:
           retention-days: 2
           name: shotbro-playwright-test-results
           path: |
-            packages/shotbro-playwright/test-results/
+            packages/shotbro-playwright/test-results/compare/

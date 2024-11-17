@@ -15,9 +15,9 @@ export function isUpdatingSnapshots() {
 
 export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPath: string, testFolder: string, testName: string) {
     const log = new CliLog(logLevel);
-    let snapshotsDir = `src/test/__snapshots__/${testFolder}`;
+    let snapshotsDir = `src/__snapshots__/${testFolder}`;
     await fs.mkdir(snapshotsDir, {recursive: true});
-    let outDir = `test-results/${testFolder}`;
+    let outDir = `test-results/compare/${testFolder}`;
     await fs.mkdir(outDir, {recursive: true});
     let fileName = `${testName}.png`;
     let compareFile = `${testName}-comparison-to-snapshot.png`;
@@ -55,9 +55,9 @@ export async function expectPngToMatchSnapshot(logLevel: ShotBroLogLevel, pngPat
 
 export async function expectHtmlToMatchSnapshot(logLevel: ShotBroLogLevel, html: string, testFolder: string, testName: string) {
     const log = new CliLog(logLevel);
-    let snapshotsDir = `src/test/__snapshots__/${testFolder}`;
+    let snapshotsDir = `src/__snapshots__/${testFolder}`;
     await fs.mkdir(snapshotsDir, {recursive: true});
-    let outDir = `test-results/${testFolder}`;
+    let outDir = `test-results/compare/${testFolder}`;
     await fs.mkdir(outDir, {recursive: true});
     let fileName = `${testName}.html`;
     let snapshotFilePath = path.resolve(path.join(snapshotsDir, fileName));
@@ -76,13 +76,14 @@ export async function expectHtmlToMatchSnapshot(logLevel: ShotBroLogLevel, html:
 
 export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFolder: string, testName: string, shape: ShotBroShape) {
     const log = new CliLog(logLevel)
-    let outDir = `test-results/test-shapes/${testFolder}`;
+    let outDir = `test-results/compare/${testFolder}`;
     await fs.mkdir(outDir, {recursive: true});
-    let mainPngName = `${testName}-main-bg.png`;
+    let mainPngName = `${testName}-shape-main.png`;
     let mainPngPath = path.join(outDir, mainPngName);
-    let htmlPath = path.resolve(path.join(outDir, `${testName}.html`));
-    let focusPngPath = path.join(outDir, `${testName}.png`);
+    let htmlPath = path.resolve(path.join(outDir, `${testName}-shape.html`));
+    let focusPngPath = path.join(outDir, `${testName}-shape.png`);
     let page = await pageRef.context()!.browser()!.newPage();
+    await page.setViewportSize({width: 2000, height: 2000});
     await page.goto(`file:${path.resolve(path.join('src', 'test', 'test-shapes-base.html'))}`);
     let input: ShotBroInput = {
         focus: {at: 'body'},

@@ -3,13 +3,15 @@
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="../../src/bundled/@fontsource/open-sans/500.css" rel="stylesheet"/>
-        <link href="../../src/bundled/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-        <link href="../../src/bundled/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/@fontsource/open-sans/500.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <link href="../../../src/bundled/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;
+            background-color: transparent;
             background-image: url('some-shapes-main.png');
+            background-position: 100px 100px;
             background-repeat: no-repeat;
           }
         </style>
@@ -23,11 +25,11 @@
         <style>
             .shape0.icon {
                 position: absolute;
-                top: 326.66px;
-                left: 315px;
+                top: 426.66px;
+                left: 415px;
                 width: 50px;
                 height: 50px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(0deg);
             }
             .shape0.icon i.bi {
                 font-size: 50px;
@@ -43,8 +45,8 @@
         <style>
         .shape0.helper {
             position: absolute;
-            top: 332.66px;
-            left: 44px;
+            top: 432.66px;
+            left: 144px;
             width: 296px;
             height: 38px;
             border: 1px solid red;
@@ -56,8 +58,8 @@
         <style>
         .focus.helper {
             position: absolute;
-            top: 234.66px;
-            left: 19px;
+            top: 334.66px;
+            left: 119px;
             width: 668.8px;
             height: 1184.87px;
             border: 1px solid red;

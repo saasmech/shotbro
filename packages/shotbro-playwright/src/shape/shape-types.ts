@@ -11,6 +11,11 @@ export type ShapeCommon = {
      * Example: "#ff0000", "red", "rgb(255, 0, 153)", "rgba(51, 170, 51, .1)"
      */
     color?: string
+
+    /**
+     * Rotate the shape by a number of degrees.  Any valid number 0-360.
+     */
+    rotate?: number
 }
 
 export type ShapePosition = {

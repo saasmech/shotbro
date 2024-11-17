@@ -15,8 +15,8 @@ test.describe('Form test', () => {
     });
 
     test('form with some shapes', async ({page}) => {
-        const log = new CliLog('debug');
-        const outDir = path.join('test-results', 'form-test');
+        const log = new CliLog('info');
+        const outDir = path.join('test-results', 'compare', 'form-test');
         let htmlPath = path.resolve(path.join(outDir, `some-shapes-with-shapes.html`));
         let focusPngPath = path.join(outDir, `some-shapes-with-shapes.png`);
         let mainPngName = `some-shapes-main.png`;
@@ -35,9 +35,10 @@ test.describe('Form test', () => {
         test.expect(inputPositions.shapePositions[0]).toStrictEqual({
             h: 38, w: 296, x: 44, y: 332.66,
         });
-        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../src/bundled', true);
+        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', true);
         let html = await fs.readFile(htmlPath, {encoding: 'utf-8'});
         await expectHtmlToMatchSnapshot('info', html, 'form-test', 'some-shapes');
+        await expectPngToMatchSnapshot('info', mainPngPath, 'form-test', 'some-shapes-main');
         await expectPngToMatchSnapshot('info', focusPngPath, 'form-test', 'some-shapes');
     });
 

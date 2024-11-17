@@ -15,7 +15,7 @@ test.describe('Shape Circle', () => {
         let thicknesses = [1, 8, 32];
         for (const thickness of thicknesses) {
             await testShape('info', page, 'circle', `thickness-${thickness}`, {
-                circle: {thickness: thickness}
+                circle: {thickness}
             });
         }
     });

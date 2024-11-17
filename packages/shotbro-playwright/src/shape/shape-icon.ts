@@ -2,6 +2,7 @@ import type {IconShape, RelativePosition, ShotBroShape} from "./shape-types";
 import type {ShotBroBox} from "../annotate/annotate-types";
 
 import {n2dp} from "./shape-utils";
+import {BLEED} from "../overlay/overlay-html-generator";
 
 const defaultProps: IconShape = {
     color: 'deeppink',
@@ -12,6 +13,7 @@ const defaultProps: IconShape = {
     position: 'right',
     size: 50,
     class: '',
+    rotate: 0
 }
 
 export async function renderIcon(scope: string, elPos: ShotBroBox, rawShape: ShotBroShape): Promise<string> {
@@ -30,11 +32,11 @@ export async function renderIcon(scope: string, elPos: ShotBroBox, rawShape: Sho
         <style>
             .${scope}.icon {
                 position: absolute;
-                top: ${n2dp(top + translateY)}px;
-                left: ${n2dp(left + translateX)}px;
+                top: ${n2dp(top + translateY + BLEED)}px;
+                left: ${n2dp(left + translateX + BLEED)}px;
                 width: ${shape.size}px;
                 height: ${shape.size}px;
-                /*text-shadow: 0 0 5px red;*/
+                transform: rotate(${shape.rotate}deg);
             }
             .${scope}.icon i.bi {
                 font-size: ${shape.size}px;

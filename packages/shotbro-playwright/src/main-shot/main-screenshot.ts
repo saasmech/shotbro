@@ -2,7 +2,6 @@ import type {Page} from "@playwright/test";
 import {ShotBroBox, ShotBroFocus, ShotBroInput} from "../annotate/annotate-types";
 import {ShapePosition} from "../shape/shape-types";
 import {atToLocatorStr, box2dp} from "../shape/shape-utils";
-import {stringifySbBb} from "../annotate/box-utils";
 import {CliLog} from "../util/log";
 
 const MAIN_CAPTURE_HEIGHT_LIMIT = 4000;
@@ -95,7 +94,7 @@ export async function findPositions(log: CliLog, page: Page, input: ShotBroInput
         }
         if (atBox) {
             atBox = box2dp(atBox);
-            log.debug(`calculated focusBox ${stringifySbBb(atBox)}`)
+            log.debug(`calculated focusBox ${JSON.stringify(atBox)}`)
         }
         return atBox;
     }

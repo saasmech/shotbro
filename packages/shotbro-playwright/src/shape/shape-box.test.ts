@@ -15,7 +15,16 @@ test.describe('Shape Box', () => {
         let thicknesses = [1, 8, 32];
         for (const thickness of thicknesses) {
             await testShape('info', page, 'box', `thickness-${thickness}`, {
-                box: {thickness: thickness}
+                box: {thickness}
+            });
+        }
+    });
+
+    test('Rotate', async ({page}) => {
+        let rotations = [5, 25, 270];
+        for (const rotate of rotations) {
+            await testShape('info', page, 'box', `rotate-${rotate}`, {
+                box: {rotate}
             });
         }
     });

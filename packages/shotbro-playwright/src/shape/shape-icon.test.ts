@@ -20,7 +20,7 @@ test.describe('Shape Icon', () => {
         ];
         for (const position of positions) {
             await testShape('info', page, 'icon', `position-${position}`, {
-                icon: {position: position, name: 'emoji-smile-fill'}
+                icon: {position, name: 'emoji-smile-fill'}
             });
         }
     })
