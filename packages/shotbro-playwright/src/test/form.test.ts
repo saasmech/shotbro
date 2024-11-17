@@ -10,7 +10,7 @@ import {ShotBroInput} from "../annotate/annotate-types";
 test.describe('Form test', () => {
 
     test.beforeEach(async ({page}) => {
-        await page.setViewportSize({width: 1024, height: 2000});
+        await page.setViewportSize({width: 1450, height: 2000});
         await page.goto(`file:${path.resolve(path.join('src', 'test', 'form-test.html'))}`);
     });
 
@@ -30,10 +30,10 @@ test.describe('Form test', () => {
         await generateMainScreenshot(page, mainPngPath);
         let inputPositions = await findPositions(log, page, input);
         test.expect(inputPositions.focusBoxPosition).toStrictEqual({
-            h: 1184.87, w: 668.80, x: 19, y: 234.66
+            h: 1185.58, w: 932.8, x: 52, y: 207.19
         });
         test.expect(inputPositions.shapePositions[0]).toStrictEqual({
-            h: 38, w: 296, x: 44, y: 332.66,
+            h: 38, w: 416, x: 77, y: 305.19,
         });
         await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', true);
         let html = await fs.readFile(htmlPath, {encoding: 'utf-8'});
