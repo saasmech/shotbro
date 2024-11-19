@@ -99,7 +99,7 @@ export async function testShape(logLevel: ShotBroLogLevel, pageRef: Page, testFo
     };
     await generateMainScreenshot(page, mainPngPath);
     let inputPositions = await findPositions(log, page, input);
-    await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', false);
+    await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../dist/bundled', false);
     if (logLevel != 'debug') {
         await fs.rm(mainPngPath, {force: true});
     }

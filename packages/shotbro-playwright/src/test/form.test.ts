@@ -35,7 +35,7 @@ test.describe('Form test', () => {
         test.expect(inputPositions.shapePositions[0]).toStrictEqual({
             h: 38, w: 416, x: 77, y: 305.19,
         });
-        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../src/bundled', true);
+        await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, '../../../dist/bundled', true);
         let html = await fs.readFile(htmlPath, {encoding: 'utf-8'});
         await expectHtmlToMatchSnapshot('info', html, 'form-test', 'some-shapes');
         await expectPngToMatchSnapshot('info', mainPngPath, 'form-test', 'some-shapes-main');

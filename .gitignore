@@ -52,7 +52,7 @@ dist
 .idea
 
 # tests
-/test-results/
+test-results/
 /playwright-report/
 /playwright/.cache/
 
