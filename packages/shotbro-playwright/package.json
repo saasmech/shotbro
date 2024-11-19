@@ -31,7 +31,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "pretest": "npx playwright install chromium && node --loader ts-node/esm copy-bundled.ts",
+    "pretest": "npx playwright install chromium && npx ts-node copy-bundled.ts",
     "test": "npx playwright test",
     "test-ci": "SKIP_PNG_COMPARE=yes npx playwright test",
     "test:update-snapshots": "UPDATE_SNAPSHOTS=yes npx playwright test",
