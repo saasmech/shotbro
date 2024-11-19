@@ -1,54 +1,58 @@
 import {test} from '@playwright/test';
 import * as path from 'path';
-import {shotBroPlaywright} from "shotbro-playwright";
+import {ShotBroCaptureConfig, shotBroPlaywright} from "shotbro-playwright";
 
-test('mobile light', async ({page}, testInfo) => {
-  const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 320, height: 320});
-  await page.emulateMedia({media: 'screen', colorScheme: 'light'});
-  await page.goto(`file:${examplePath}`);
-
-  await shotBroPlaywright(page, testInfo, {
+const captureConfig: ShotBroCaptureConfig = {
     streamCode: 'com.app.settings.my-form',
-  })
-});
+    //logLevel: 'debug',
+    // bundledAssetsPath is not normally needed. only needed in this case as dependency is via a relative path
+    bundledAssetsPath: path.join('node_modules', 'shotbro-playwright', 'dist', 'bundled'),
+}
 
-test('mobile dark', async ({page}, testInfo) => {
-  const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 320, height: 320});
-  await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
-  await page.goto(`file:${examplePath}`);
+test.describe('Example', () => {
 
-  await shotBroPlaywright(page, testInfo, {
-    streamCode: 'com.app.settings.my-form'
-  });
+    test('mobile light', async ({page}, testInfo) => {
+        await page.setViewportSize({width: 320, height: 320});
+        await page.emulateMedia({media: 'screen', colorScheme: 'light'});
+        await page.goto(`file:${path.join(__dirname, "example.html")}`);
 
-  // make a duplicate so we test incoming
-  await shotBroPlaywright(page, testInfo, {
-    streamCode: 'com.app.settings.my-form',
-  });
-});
+        await shotBroPlaywright(page, testInfo, captureConfig, {
+            shotName: 'mobile-light',
+            shapes: [{at: '#name-field', icon: {name: 'arrow-left-circle-fill'}}],
+        });
+    });
 
-test('desktop light', async ({page}, testInfo) => {
-  const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 1024, height: 320});
-  await page.goto(`file:${examplePath}`);
+    test('mobile dark', async ({page}, testInfo) => {
+        await page.setViewportSize({width: 320, height: 320});
+        await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
+        await page.goto(`file:${path.join(__dirname, "example.html")}`);
 
-  await shotBroPlaywright(page, testInfo, {
-    streamCode: 'com.app.settings.my-form',
-  }, {
-    shapes: [{circle: {at: '#name-field'}}],
-    shotName: 'Name field'
-  });
-});
+        await shotBroPlaywright(page, testInfo, captureConfig, {
+            shotName: 'mobile-dark',
+            shapes: [{at: '#name-field', icon: {name: 'arrow-left-circle-fill'}}],
+        });
+    });
 
-test('desktop dark', async ({page}, testInfo) => {
-  const examplePath = path.join(__dirname, "example.html");
-  await page.setViewportSize({width: 1024, height: 320});
-  await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
-  await page.goto(`file:${examplePath}`);
+    test('desktop light', async ({page}, testInfo) => {
+        await page.setViewportSize({width: 1024, height: 320});
+        await page.goto(`file:${path.join(__dirname, "example.html")}`);
+        console.log('desktop light start', testInfo.annotations.length);
 
-  await shotBroPlaywright(page, testInfo, {
-    streamCode: 'com.app.settings.my-form',
-  });
+        await shotBroPlaywright(page, testInfo, captureConfig, {
+            shotName: 'desktop-light',
+            shapes: [{at: '#name-field', circle: {}}],
+        });
+    });
+
+    test('desktop dark', async ({page}, testInfo) => {
+        await page.setViewportSize({width: 1024, height: 320});
+        await page.emulateMedia({media: 'screen', colorScheme: 'dark'});
+        await page.goto(`file:${path.join(__dirname, "example.html")}`);
+
+        await shotBroPlaywright(page, testInfo, captureConfig, {
+            shotName: 'desktop-dark',
+            shapes: [{at: '#name-field', icon: {name: 'arrow-left-circle-fill'}}],
+        });
+    });
+
 });

@@ -1,7 +1,7 @@
 {
   "name": "shotbro-playwright",
-  "version": "1.26.0",
-  "description": "Screenshot annotation and hosting for PlayWright",
+  "version": "2.0.0",
+  "description": "Screenshot annotation for PlayWright",
   "publishConfig": {
     "access": "public"
   },
@@ -28,16 +28,15 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
-  "type": "module",
   "scripts": {
     "pretest": "npx playwright install chromium && node --loader ts-node/esm copy-bundled.ts",
     "test": "npx playwright test",
     "test-ci": "SKIP_PNG_COMPARE=yes npx playwright test",
     "test:update-snapshots": "UPDATE_SNAPSHOTS=yes npx playwright test",
-    "prebuild": "node --loader ts-node/esm copy-bundled.ts",
-    "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
+    "prebuild": "npx ts-node copy-bundled.ts",
+    "build": "tsup ./src/index.ts"
   },
   "peerDependencies": {
     "@playwright/test": ">= 1"
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@fontsource/open-sans": "^5.1.0",
     "@playwright/test": "^1.48.2",
+    "@types/node": "^18.19.64",
     "@types/pixelmatch": "^5.2.6",
     "@types/pngjs": "^6.0.5",
     "bootstrap": "^5.3.3",

@@ -23,9 +23,9 @@ export type ShotBroReporterConfig = {
 
     /**
      * The directory to save work files into
-     * Default: `<current-directory>/.shotbro/out`
+     * Default: `<current-directory>/shotbro-results`
      */
-    workingDirectory?: string
+    outDirectory?: string
 
     /**
      * The API Key for the app this shot belongs to.
@@ -200,6 +200,10 @@ export type ShotBroCaptureConfig = {
      * Mandatory.
      */
     streamCode: string
+
+    logLevel?: ShotBroLogLevel
+    outDir?: string
+    bundledAssetsPath?: string
 
     /**
      * Metadata about the shot and your app

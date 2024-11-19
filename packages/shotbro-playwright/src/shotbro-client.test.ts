@@ -32,7 +32,7 @@ test.describe('ShotBro Playwright Client', () => {
     });
 
     test('box1 shapes', async ({page}, testInfo) => {
-        testInfo.annotations.push({type: 'shotbro-working-dir', description: 'out'});
+        testInfo.annotations.push({type: 'shotbro-out-dir', description: 'out'});
         testInfo.annotations.push({type: 'shotbro-log-level', description: 'info'});
         await shotBroPlaywright(page, testInfo, {
             streamCode: 'test'

@@ -28,7 +28,7 @@ test.describe('Annotate', () => {
             }, {
                 focusBoxPosition: {x: 10, y: 20, w: 400, h: 200},
                 shapePositions: [{x: 20, y: 40, w: 200, h: 100}]
-            }, pngPath, '../../../src/bundled', false);
+            }, pngPath, '../../../dist/bundled', false);
             await expectPngToMatchSnapshot('info', pngPath, 'annotate', 'circle');
         });
 

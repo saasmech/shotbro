@@ -56,9 +56,5 @@ dist
 /playwright-report/
 /playwright/.cache/
 
-# shotbro tmp dir
-.shotbro/out/
-
 out/
-test-results/
-bundled/
+shotbro-results/

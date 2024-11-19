@@ -14,10 +14,10 @@ export async function shotBroPlaywrightAnnotate(
     input: ShotBroInput,
     inputPositions: InputPositions,
     focusPngPath: string,
-    bundledPath: string,
+    bundledAssetsUrl: string,
     debugPositions: boolean
 ) {
-    let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, debugPositions, bundledPath);
+    let html = await generateHtmlForOverlayString(log, mainPngPath, input, inputPositions, debugPositions, bundledAssetsUrl);
     await fs.writeFile(htmlPath, html);
 
     let browser = origPage.context().browser();

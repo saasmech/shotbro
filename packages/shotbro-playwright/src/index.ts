@@ -15,7 +15,7 @@ import {shotBroPlaywrightAnnotate} from "./annotate/annotate";
 
 const PW_TEST_INFO_ANNOTATION_KEY = 'shotbro-input-ulid';
 const PW_TEST_INFO_RUN_ULID = 'shotbro-test-run-ulid';
-const PW_TEST_INFO_WORKING_DIR_KEY = 'shotbro-working-dir';
+const PW_TEST_INFO_OUT_DIR_KEY = 'shotbro-out-dir';
 const PW_TEST_INFO_LOG_LEVEL_KEY = 'shotbro-log-level';
 
 function prepareReporterConfig(config: ShotBroReporterConfig): ShotBroReporterConfig {
@@ -27,7 +27,7 @@ function prepareReporterConfig(config: ShotBroReporterConfig): ShotBroReporterCo
     if (!config.appApiKey) config.appApiKey = process.env.SHOTBRO_APP_API_KEY ?? undefined;
     if (!config.baseUrl) config.baseUrl = process.env.SHOTBRO_BASE_URL;
     if (!config.baseUrl) config.baseUrl = 'https://shotbro.io';
-    if (!config.workingDirectory) config.workingDirectory = '.shotbro/out';
+    if (!config.outDirectory) config.outDirectory = 'test-results/shotbro';
     if (!config.logLevel) config.logLevel = 'info';
     return config;
 }
@@ -54,7 +54,9 @@ function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureCon
 export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
     const browserInfo = await page.evaluate(async () => {
         let scheme = undefined
+        // @ts-ignore
         if (window.matchMedia('(prefers-color-scheme: light)').matches) scheme = 'light'
+        // @ts-ignore
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) scheme = 'dark'
 
         // https://developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API
@@ -67,11 +69,16 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Prom
             infoPlatform: browserPlatform,
             infoBrand: browserBrand,
             infoVersion: browserVersion,
+            // @ts-ignore
             infoLanguage: navigator.language,
+            // @ts-ignore
             infoUserAgent: navigator.userAgent,
+            // @ts-ignore
             infoViewportWidth: window.innerWidth,
+            // @ts-ignore
             infoViewportHeight: window.innerHeight,
             infoColorScheme: scheme,
+            // @ts-ignore
             infoDevicePixelRatio: window.devicePixelRatio
         };
     });
@@ -96,11 +103,18 @@ export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Prom
 }
 
 
-async function prepareOutDir(outDir: string) {
+async function prepareOutDir(log: CliLog, outDir: string) {
     if (!outDir) {
         outDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ShotBro'));
+        log.debug(`dir is not set, using temp dir ${outDir}`);
     } else {
-        await fs.mkdir(outDir, {recursive: true});
+        try {
+            await fs.access(outDir);
+            log.debug(`dir access ok ${outDir}`)
+        } catch (e) {
+            log.debug(`dir access fail, creating ${outDir}`)
+            await fs.mkdir(outDir, {recursive: true});
+        }
     }
     return path.resolve(outDir);
 }
@@ -116,14 +130,19 @@ async function prepareOutDir(outDir: string) {
 export async function shotBroPlaywright(
     page: Page, testInfo: TestInfo, inputCaptureConfig: ShotBroCaptureConfig, input?: ShotBroInput
 ): Promise<ShotBroOutput> {
-
-    let outDir = '.shotbro/out';
+    let outDir = path.join('shotbro-results');
     let logLevel: ShotBroLogLevel = 'info';
-    testInfo.annotations.forEach((a) => {
-        if (a.type === PW_TEST_INFO_WORKING_DIR_KEY) outDir = a.description as string;
-        if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
-    });
+    let bundledAssetsPath = path.join('node_modules', 'shotbro-playwright', 'dist', 'bundled');
+    // testInfo.annotations.forEach((a) => {
+    //     if (!a.description) return;
+    //     if (a.type === PW_TEST_INFO_OUT_DIR_KEY) outDir = a.description as string;
+    //     if (a.type === PW_TEST_INFO_LOG_LEVEL_KEY) logLevel = a.description as ShotBroLogLevel;
+    // });
+    if (inputCaptureConfig.logLevel) logLevel = inputCaptureConfig.logLevel;
+    if (inputCaptureConfig.outDir) outDir = inputCaptureConfig.outDir;
+    if (inputCaptureConfig.bundledAssetsPath) bundledAssetsPath = inputCaptureConfig.bundledAssetsPath;
 
+    let bundledAssetsUrl = `file://${path.resolve(bundledAssetsPath)}`;
     const log = new CliLog(logLevel);
     const captureConfig = prepareCaptureConfig(inputCaptureConfig);
     const systemInfo = await playwrightPrepareSystemInfo(page, log);
@@ -139,10 +158,10 @@ export async function shotBroPlaywright(
     };
     let cleanOutDir = false;
     try {
-        if (cleanOutDir) await cleanupOutDir(outDir)
+        if (cleanOutDir) await cleanupOutDir(log, outDir)
 
         log.debug(`Prepare output dir ${outDir}`)
-        outDir = await prepareOutDir(outDir);
+        outDir = await prepareOutDir(log, outDir);
         let mainPngName = `${systemInfo.inputUlid}.png`;
         let mainPngPath = path.join(outDir, mainPngName);
         log.debug(`Screenshot PNG be saved locally to ${mainPngPath}`)
@@ -150,11 +169,17 @@ export async function shotBroPlaywright(
         await generateMainScreenshot(page, mainPngPath);
 
         if (input) {
+            let focusPngDir = path.join(outDir, inputCaptureConfig.streamCode);
+            let focusPngPath = path.join(focusPngDir, `${input.shotName}.png`);
+            await prepareOutDir(log, focusPngDir);
             let inputPositions = await findPositions(log, page, input);
             let htmlPath = path.join(outDir, `${systemInfo.inputUlid}-focus.html`);
-            let focusPngPath = path.join(outDir, `${systemInfo.inputUlid}-focus.png`);
             log.debug(`Focus png be saved locally to ${focusPngPath}`);
-            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, 'bundled', false);
+            await shotBroPlaywrightAnnotate(log, page, mainPngName, htmlPath, input, inputPositions, focusPngPath, bundledAssetsUrl, false);
+            if (`${logLevel}` !== 'debug') {
+                await fs.rm(htmlPath);
+                await fs.rm(mainPngPath);
+            }
         }
 
         // MAYBE: generate markdown doc of screenshots appended to for each test run
@@ -165,11 +190,13 @@ export async function shotBroPlaywright(
     return output
 }
 
-async function cleanupOutDir(outDir: string) {
+async function cleanupOutDir(log: CliLog, outDir: string) {
+    if (!outDir) return;
+    log.debug(`Cleaning outDir ${outDir}`)
     try {
-        if (outDir) await fs.rm(outDir, {recursive: true});
+        await fs.rm(outDir, {recursive: true});
     } catch (e) {
-        console.error(`An error has occurred while cleaning up ${outDir}. Error: ${e}`);
+        log.warn(`An error has occurred while cleaning up ${outDir}. Error: ${e}`);
     }
 }
 
@@ -184,6 +211,7 @@ class ShotBroPlaywrightReporter implements Reporter {
         this.options = prepareReporterConfig(options);
         this.log = new CliLog(this.options.logLevel || 'info');
         this.testRunUlid = `ug:${ulid()}`;
+        console.log('ShotBroPlaywrightReporter', this.options);
     }
 
     onBegin(config: FullConfig, suite: Suite) {
@@ -191,15 +219,15 @@ class ShotBroPlaywrightReporter implements Reporter {
         this.log.info(`ShotBro: begin`, this.testRunUlid);
         this.log.debug(`ShotBro: configured for`, {
             baseUrl: this.options.baseUrl,
-            workingDirectory: this.options.workingDirectory,
+            workingDirectory: this.options.outDirectory,
             logLevel: this.options.logLevel,
         });
-
     }
 
     onTestBegin(test: TestCase, result: TestResult) {
+        console.log("onTestBegin adding");
         test.annotations.push({type: PW_TEST_INFO_RUN_ULID, description: this.testRunUlid});
-        test.annotations.push({type: PW_TEST_INFO_WORKING_DIR_KEY, description: this.options.workingDirectory!});
+        test.annotations.push({type: PW_TEST_INFO_OUT_DIR_KEY, description: this.options.outDirectory!});
         test.annotations.push({type: PW_TEST_INFO_LOG_LEVEL_KEY, description: this.options.logLevel!});
     }
 

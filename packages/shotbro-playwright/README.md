@@ -15,7 +15,7 @@ npm install shotbro-playwright
 Add to your `.gitignore`:
 
 ```gitignore
-.shotbro/
+shotbro-results/
 ```
 
 - In your local playwright test folder

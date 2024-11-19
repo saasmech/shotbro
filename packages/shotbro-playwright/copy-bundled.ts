@@ -12,11 +12,11 @@ async function main() {
     const bundledDirs = ['@fontsource', 'bootstrap', 'bootstrap-icons'];
     for (const bundledDir of bundledDirs) {
         const srcPath = path.join('node_modules', bundledDir);
-        const targetPath = path.join('src', 'bundled', bundledDir);
+        const targetPath = path.join('dist', 'bundled', bundledDir);
         await fs.rm(targetPath, {recursive: true, force: true});
         await fs.cp(srcPath, targetPath, {recursive: true});
     }
 }
 
 // @ts-ignore
-await main();
+main().then();

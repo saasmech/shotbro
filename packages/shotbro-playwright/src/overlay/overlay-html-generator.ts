@@ -18,10 +18,10 @@ export async function generateHtmlForOverlayString(
     input: ShotBroInput,
     inputPositions: InputPositions,
     debug: boolean | undefined,
-    bundledPath: string | undefined
+    bundledAssetsUrl: string | undefined
 ) {
     const shapesHtml = [];
-    log.debug("generateHtmlForOverlayString", mainPng, debug, bundledPath);
+    log.debug("generateHtmlForOverlayString", mainPng, debug, bundledAssetsUrl);
     if (input.shapes) {
         for (let i = 0; i < input.shapes.length; i++) {
             let shape = input.shapes[i];
@@ -53,9 +53,9 @@ export async function generateHtmlForOverlayString(
       <html lang="en">
       <head>
         <title>Overlay</title>
-        <link href="${bundledPath}/@fontsource/open-sans/500.css" rel="stylesheet"/>
-        <link href="${bundledPath}/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
-        <link href="${bundledPath}/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
+        <link href="${bundledAssetsUrl}/@fontsource/open-sans/500.css" rel="stylesheet"/>
+        <link href="${bundledAssetsUrl}/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+        <link href="${bundledAssetsUrl}/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
         <style>
           body {
             font-family: "Open Sans", sans-serif;
