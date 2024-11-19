@@ -24,7 +24,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: packages/shotbro-playwright
-        run: npm ci
+        run: | 
+          npm ci
+          npm run pretest
 
       - name: Build
         working-directory: packages/shotbro-playwright
@@ -32,12 +34,13 @@ jobs:
 
       - name: Test
         working-directory: packages/shotbro-playwright
-        run: npm run test
+        run: npm run test-ci
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
+        if: always()
         with:
           retention-days: 2
-          name: playwright-tests-compare-to
+          name: shotbro-playwright-test-results
           path: |
-            packages/shotbro-playwright/**/__snapshots__/compare
+            packages/shotbro-playwright/test-results/compare/

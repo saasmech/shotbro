@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist",
+    "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "strict": true,
+    "resolveJsonModule": true,
   },
   "include": [
     "src/**/*"

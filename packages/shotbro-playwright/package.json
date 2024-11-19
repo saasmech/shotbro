@@ -1,7 +1,7 @@
 {
   "name": "shotbro-playwright",
-  "version": "1.26.0",
-  "description": "Screenshot annotation and hosting for PlayWright",
+  "version": "2.0.0",
+  "description": "Screenshot annotation for PlayWright",
   "publishConfig": {
     "access": "public"
   },
@@ -28,30 +28,31 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
-    "pretest": "npx playwright install",
-    "test": "jest",
-    "test:update-snapshots": "jest --updateSnapshot",
-    "build": "tsup ./src/index.ts --format cjs,esm --dts --sourcemap --clean"
+    "pretest": "npx playwright install chromium && npx ts-node copy-bundled.ts",
+    "test": "npx playwright test",
+    "test-ci": "SKIP_PNG_COMPARE=yes npx playwright test",
+    "test:update-snapshots": "UPDATE_SNAPSHOTS=yes npx playwright test",
+    "prebuild": "npx ts-node copy-bundled.ts",
+    "build": "tsup ./src/index.ts"
   },
   "peerDependencies": {
     "@playwright/test": ">= 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.42.1",
-    "@types/jest": "^29.5.12",
+    "@fontsource/open-sans": "^5.1.0",
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^18.19.64",
     "@types/pixelmatch": "^5.2.6",
-    "@types/pngjs": "^6.0.4",
-    "jest": "^29.7.0",
-    "modern-normalize": "^2.0.0",
-    "nock": "^13.5.4",
-    "pixelmatch": "^5.3.0",
+    "@types/pngjs": "^6.0.5",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "pixelmatch": "^6.0.0",
     "pngjs": "^7.0.0",
-    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.0.2",
-    "typescript": "^5.3.3"
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
   }
 }
