@@ -38,11 +38,13 @@ jobs:
         working-directory: packages/shotbro-playwright
         run: npm run test
 
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         id: release
         name: Release
         with:
           path: packages/shotbro-playwright
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
       - if: ${{ steps.release.outputs.releases_created }}
         name: Publish
