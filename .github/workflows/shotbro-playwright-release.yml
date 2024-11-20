@@ -28,7 +28,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: packages/shotbro-playwright
-        run: npm ci
+        run: |
+          npm ci
+          npm run pretest
 
       - name: Build
         working-directory: packages/shotbro-playwright
@@ -36,7 +38,7 @@ jobs:
 
       - name: Test
         working-directory: packages/shotbro-playwright
-        run: npm run test
+        run: npm run test-ci
 
       - uses: googleapis/release-please-action@v4
         id: release
