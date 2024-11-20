@@ -36,7 +36,7 @@
     "test-ci": "SKIP_PNG_COMPARE=yes npx playwright test",
     "test:update-snapshots": "UPDATE_SNAPSHOTS=yes npx playwright test",
     "prebuild": "npx ts-node copy-bundled.ts",
-    "build": "tsup ./src/index.ts"
+    "build": "tsup ./src/index.ts --dts --clean"
   },
   "peerDependencies": {
     "@playwright/test": ">= 1"

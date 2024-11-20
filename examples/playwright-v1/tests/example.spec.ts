@@ -4,7 +4,8 @@ import {ShotBroCaptureConfig, shotBroPlaywright} from "shotbro-playwright";
 
 const captureConfig: ShotBroCaptureConfig = {
     streamCode: 'com.app.settings.my-form',
-    //logLevel: 'debug',
+    // logLevel: 'debug',
+
     // bundledAssetsPath is not normally needed. only needed in this case as dependency is via a relative path
     bundledAssetsPath: path.join('node_modules', 'shotbro-playwright', 'dist', 'bundled'),
 }
