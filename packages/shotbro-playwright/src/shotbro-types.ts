@@ -207,6 +207,7 @@ export type ShotBroCaptureConfig = {
 
     /**
      * Metadata about the shot and your app
+     * TODO: needed once uploading is supported
      */
     //metadata?: ShotBroMetadata
 }
