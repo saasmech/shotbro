@@ -34,7 +34,7 @@ function prepareCaptureConfig(rawInput: ShotBroCaptureConfig): ShotBroCaptureCon
     return input;
 }
 
-async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
+export async function playwrightPrepareSystemInfo(page: Page, log: CliLog): Promise<ShotBroSystemInfo> {
     const browserInfo = await page.evaluate(async () => {
         let scheme = undefined
         // @ts-ignore
