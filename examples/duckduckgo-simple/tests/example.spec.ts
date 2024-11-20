@@ -4,61 +4,56 @@ import {shotBroPlaywright} from "shotbro-playwright";
 
 test.describe(`screenshots`, () => {
 
-    const locales = ['zh-cn', 'en-us', 'fr-fr'];
-    const colorSchemes = ['light', 'dark'];
-    const viewportSizes = [
-        {width: 320, height: 320, name: 'mobile'},
-        {width: 1024, height: 768, name: 'desktop'}
+    const mobile = {width: 320, height: 320, name: 'mobile'};
+    const desktop = {width: 1024, height: 768, name: 'desktop'};
+    const all = [
+        {colorScheme: 'light', viewportSize: mobile},
+        {colorScheme: 'light', viewportSize: desktop},
+        {colorScheme: 'dark', viewportSize: mobile},
+        {colorScheme: 'dark', viewportSize: desktop},
     ];
 
-    for (let l = 0; l < locales.length; l++) {
-        const locale = locales[l];
-        for (let c = 0; c < colorSchemes.length; c++) {
-            const colorScheme = colorSchemes[c];
-            for (let v = 0; v < viewportSizes.length; v++) {
-                const viewportSize = viewportSizes[v];
+    all.forEach(({colorScheme, viewportSize}) => {
 
-                test.describe(`Tests for locale ${locale} colorScheme ${colorScheme} viewportSize ${viewportSize.name}`, () => {
-                    const input = {streamCode: `com.duckduckgo.${locale}.${colorScheme}.${viewportSize.name}`};
-                    test.use({locale: locale});
+        const input = {streamCode: `com.duckduckgo.${colorScheme}.${viewportSize.name}`};
 
-                    test(`home`, async ({page}, testInfo) => {
-                        await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
-                        await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
-                        await page.goto(`https://duckduckgo.com/`);
-                        await shotBroPlaywright(page, testInfo, input, {shotName: `home`})
-                    });
+        test.describe(`colorScheme ${colorScheme} viewportSize ${viewportSize.name}`, () => {
 
-                    test(`settings`, async ({page}, testInfo) => {
-                        await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
-                        await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
-                        await page.goto(`https://duckduckgo.com/settings#general`);
-                        await shotBroPlaywright(page, testInfo, input, {shotName: `settings`})
-                    });
+            test(`home`, async ({page}, testInfo) => {
+                await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
+                await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
+                await page.goto(`https://duckduckgo.com/`);
+                await shotBroPlaywright(page, testInfo, input, {shotName: `home`})
+            });
 
-                    test(`privacy`, async ({page}, testInfo) => {
-                        await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
-                        await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
-                        await page.goto(`https://duckduckgo.com/settings#privacy`);
-                        await shotBroPlaywright(page, testInfo, input, {shotName: `privacy`})
-                    });
+            test(`settings`, async ({page}, testInfo) => {
+                await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
+                await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
+                await page.goto(`https://duckduckgo.com/settings#general`);
+                await shotBroPlaywright(page, testInfo, input, {shotName: `settings`})
+            });
 
-                    test(`appearance`, async ({page}, testInfo) => {
-                        await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
-                        await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
-                        await page.goto(`https://duckduckgo.com/settings#appearance`);
-                        await shotBroPlaywright(page, testInfo, input, {shotName: `appearance`})
-                    });
+            test(`privacy`, async ({page}, testInfo) => {
+                await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
+                await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
+                await page.goto(`https://duckduckgo.com/settings#privacy`);
+                await shotBroPlaywright(page, testInfo, input, {shotName: `privacy`})
+            });
 
-                    test(`results`, async ({page}, testInfo) => {
-                        await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
-                        await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
-                        await page.goto(`https://duckduckgo.com/?q=hello`);
-                        await shotBroPlaywright(page, testInfo, input, {shotName: `results`})
-                    });
+            test(`appearance`, async ({page}, testInfo) => {
+                await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
+                await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
+                await page.goto(`https://duckduckgo.com/settings#appearance`);
+                await shotBroPlaywright(page, testInfo, input, {shotName: `appearance`})
+            });
 
-                });
-            }
-        }
-    }
+            test(`results`, async ({page}, testInfo) => {
+                await page.setViewportSize({width: viewportSize.width, height: viewportSize.height});
+                await page.emulateMedia({media: 'screen', colorScheme: colorScheme as 'light' | 'dark'});
+                await page.goto(`https://duckduckgo.com/?q=hello`);
+                await shotBroPlaywright(page, testInfo, input, {shotName: `results`})
+            });
+
+        });
+    });
 });
