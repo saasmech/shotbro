@@ -44,7 +44,7 @@
   "devDependencies": {
     "@fontsource/open-sans": "^5.1.0",
     "@playwright/test": "^1.49.0",
-    "@types/node": "^18.19.64",
+    "@types/node": "^22.10.1",
     "@types/pixelmatch": "^5.2.6",
     "@types/pngjs": "^6.0.5",
     "bootstrap": "^5.3.3",
